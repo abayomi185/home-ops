@@ -1,7 +1,7 @@
 apiVersion: notification.toolkit.fluxcd.io/v1beta1
 kind: Alert
 metadata:
-  name: mysecret
+  name: discord-alert-secret
   namespace: flux-system
 spec:
   providerRef:
