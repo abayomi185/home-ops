@@ -5,8 +5,9 @@ metadata:
   namespace: flux-system
 spec:
   targetNamespace: media-service
-  labels:
-    app.kubernetes.io/name: *app
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app  
   path: ./apps/media-service/nginx-test/app
   prune: true
   sourceRef:
