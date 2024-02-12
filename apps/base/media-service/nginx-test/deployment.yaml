@@ -4,6 +4,7 @@ metadata:
   name: nginx-deployment
   namespace: media-service
 spec:
+  prune: true
   selector:
     matchLabels:
       app: nginx

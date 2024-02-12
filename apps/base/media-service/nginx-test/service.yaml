@@ -4,6 +4,7 @@ metadata:
   name: nginx-service
   namespace: media-service
 spec:
+  prune: true
   selector:
     app: nginx
   ports:
