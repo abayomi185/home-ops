@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &deploymentName jellyfin-deployment
+  namespace: media-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: *deploymentName
+  template:
+    metadata:
+      labels:
+        app: *deploymentName
+    spec:
+      containers:
+      - env:
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "100"
+        - name: TZ
+          value: Europe/London
+        - name: UMASK
+          value: "007"
+        image: linuxserver/jellyfin:latest
+        imagePullPolicy: Always
+        name: jellyfin
+        ports:
+        - containerPort: 8096
+          name: http
+          protocol: TCP
+        - containerPort: 8920
+          name: https
+          protocol: TCP
+        resources:
+          requests:
+            cpu: 100m # 100 millicores, equivalent to 0.25 CPU cores
+          limits:
+            gpu.intel.com/i915: "1"
+        volumeMounts:
+        - mountPath: /media
+          name: media
+          subPath: jellyfin/media
+        - mountPath: /cache
+          name: config-data
+          subPath: jellyfin/cache
+        - mountPath: /config
+          name: config-data
+          subPath: jellyfin/config
+        - mountPath: /home
+          name: config-data
+          subPath: jellyfin/transcode
+      hostname: jellyfin
+      nodeName: k-node3
+      volumes:
+      - name: media
+        nfs:
+          path: /mnt/mopower/swarm-data
+          server: 10.0.7.202
+      - name: config-data
+        nfs:
+          path: /mnt/mospeed/swarm-config
+          server: 10.0.7.202
