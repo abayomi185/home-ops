@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - ../../base/media-service
   - ./nginx-test/modification.yaml
+  - ./jellyfin/modification.yaml
