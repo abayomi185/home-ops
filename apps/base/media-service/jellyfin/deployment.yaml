@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: &deploymentName jellyfin-deployment
-  namespace: media-service
 spec:
   replicas: 0
   selector:
