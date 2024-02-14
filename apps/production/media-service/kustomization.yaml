@@ -4,4 +4,4 @@ namespace: media-service
 resources:
   - namespace.yaml
   - nginx-test/install.yaml
-  - jellyfin/install.yaml
+  # - jellyfin/install.yaml

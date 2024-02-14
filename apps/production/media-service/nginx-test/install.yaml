@@ -17,6 +17,5 @@ spec:
           path: /spec/replicas
           value: 2
       target:
-        group: apps
         kind: Deployment
         name: nginx-deployment
