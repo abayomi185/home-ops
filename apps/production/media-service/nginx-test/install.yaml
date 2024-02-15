@@ -6,7 +6,7 @@ metadata:
 spec:
   interval: 10m
   targetNamespace: media-service
-  path: "../../../base/media-service/nginx-test"
+  path: ./apps/base/media-service/nginx-test
   prune: true
   sourceRef:
     kind: GitRepository
