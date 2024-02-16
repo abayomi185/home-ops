@@ -6,5 +6,6 @@ resources:
   # - ./testbench
   # - ./monitoring
   - ./media-service
-commonLabels:
-  env: production
+labels:
+  - pairs:
+      env: production
