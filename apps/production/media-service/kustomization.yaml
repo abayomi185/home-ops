@@ -3,5 +3,6 @@ kind: Kustomization
 namespace: media-service
 resources:
   - ./namespace.yaml
+  # Flux Kustomizations
   - ./nginx-test/install.yaml
   # - jellyfin/install.yaml

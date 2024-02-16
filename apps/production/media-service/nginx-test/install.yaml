@@ -20,4 +20,5 @@ spec:
         version: v1
         kind: Deployment
         name: nginx-deployment
+  wait: true
   interval: 10m
