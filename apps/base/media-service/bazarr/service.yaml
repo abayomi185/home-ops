@@ -10,5 +10,5 @@ spec:
     port: 6767
     targetPort: 6767
     protocol: TCP
-    nodePort: 30067
+    nodePort: 30767
   type: NodePort
