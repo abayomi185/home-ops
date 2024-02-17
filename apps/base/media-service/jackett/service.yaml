@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jackett-service
+spec:
+  selector:
+    app: jackett-deployment
+  ports:
+  - name: http
+    port: 9117
+    targetPort: 9117
+    protocol: TCP
+    nodePort: 30117
+  type: NodePort
