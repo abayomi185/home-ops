@@ -4,11 +4,12 @@ metadata:
   name: nginx-test
   namespace: flux-system
 spec:
-  path: ./apps/base/media-service/nginx-test
+  path: ./apps/production/media-service/nginx-test
   prune: true
+  wait: false
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: true
   interval: 10m
+  retryInterval: 1m
   timeout: 5m

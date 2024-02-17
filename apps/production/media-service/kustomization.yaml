@@ -5,5 +5,5 @@ resources:
   - ./namespace.yaml
   # - ./nginx-test
   # Flux Kustomizations
-  - ./nginx-test/install.yaml
+  - ./nginx-test/ks.yaml
   # - jellyfin/install.yaml
