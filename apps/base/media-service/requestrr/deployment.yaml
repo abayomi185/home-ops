@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &deploymentName requestrr-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: *deploymentName
+  template:
+    metadata:
+      labels:
+        app: *deploymentName
+    spec:
+      containers:
+      - image: darkalfx/requestrr
+        imagePullPolicy: Always
+        name: requestrr
+        ports:
+        - containerPort: 4545
+          name: http
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /config
+          name: config-volume
+          subPath: requestrr/config
+      hostname: requestrr
+      volumes:
+      - name: config-volume
+        nfs:
+          path: /mnt/mospeed/swarm-config
+          server: 10.0.7.202
