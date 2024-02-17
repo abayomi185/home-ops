@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: lidarr-service
+spec:
+  selector:
+    app: lidarr-deployment
+  ports:
+  - name: http
+    port: 8686
+    targetPort: 8686
+    protocol: TCP
+    nodePort: 30686
+  type: NodePort

@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &deploymentName lidarr-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: *deploymentName
+  template:
+    metadata:
+      labels:
+        app: *deploymentName
+    spec:
+      containers:
+      - env:
+        - name: TZ
+          value: Europe/London
+        - name: PUID
+          value: "1001"
+        - name: PGID
+          value: "100"
+        image: ghcr.io/linuxserver/lidarr:latest
+        imagePullPolicy: Always
+        name: lidarr
+        ports:
+        - containerPort: 8686
+          name: http
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /config
+          name: config-volume
+          subPath: lidarr/config
+        - mountPath: /downloads
+          name: data-volume
+          subPath: jellyfin/downloads
+        - mountPath: /music
+          name: data-volume
+          subPath: jellyfin/media/music
+      hostname: lidarr
+      volumes:
+      - name: config-volume
+        nfs:
+          path: /mnt/mospeed/swarm-config
+          server: 10.0.7.202
+      - name: data-volume
+        nfs:
+          path: /mnt/mopower/swarm-data
+          server: 10.0.7.202
