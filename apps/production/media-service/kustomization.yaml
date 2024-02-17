@@ -3,8 +3,16 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   # Flux Kustomizations
-  - ./nginx-test/ks.yaml
+  - ./audiobookshelf/ks.yaml
+  - ./bazarr/ks.yaml
+  - ./jackett/ks.yaml
   - ./jellyfin/ks.yaml
+  - ./lidarr/ks.yaml
+  - ./nginx-test/ks.yaml
+  - ./ombi/ks.yaml
+  - ./prowlarr/ks.yaml
+  - ./readarr/ks.yaml
   - ./radarr/ks.yaml
   - ./sonarr/ks.yaml
-  - ./prowlarr/ks.yaml
+  - ./transmission/ks.yaml
+
