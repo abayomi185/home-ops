@@ -4,8 +4,7 @@ metadata:
   name: nginx-test
   namespace: flux-system
 spec:
-  targetNamespace: media-service
-  # path: ./apps/production/media-service/nginx-test
+  path: ./apps/base/media-service/nginx-test
   prune: true
   sourceRef:
     kind: GitRepository
