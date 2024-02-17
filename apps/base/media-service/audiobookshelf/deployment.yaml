@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &deploymentName audiobookshelf-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: *deploymentName
+  template:
+    metadata:
+      labels:
+        app: *deploymentName
+    spec:
+      containers:
+      - env:
+        - name: AUDIOBOOKSHELF_UID
+          value: "1000"
+        - name: AUDIOBOOKSHELF_GID
+          value: "100"
+        image: ghcr.io/advplyr/audiobookshelf:latest
+        imagePullPolicy: Always
+        name: audiobookshelf
+        ports:
+        - containerPort: 80
+          name: http
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /config
+          name: config-volume
+          subPath: audiobookshelf/config
+        - mountPath: /audiobooks
+          name: audiobook-data
+          subPath: audiobooks
+        - mountPath: /podcasts
+          name: audiobook-data
+          subPath: podcasts
+        - mountPath: /metadata
+          name: audiobook-data
+          subPath: metadata
+      hostname: audiobookshelf
+      volumes:
+      - name: config-volume
+        nfs:
+          path: /mnt/mospeed/swarm-config
+          server: 10.0.7.202
+      - name: audiobook-data
+        persistentVolumeClaim:
+          claimName: audiobook-pvc
