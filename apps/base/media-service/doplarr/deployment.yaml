@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &deploymentName doplarr-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: *deploymentName
+  template:
+    metadata:
+      labels:
+        app: *deploymentName
+    spec:
+      containers:
+      - env:
+        - name: TZ
+          value: Europe/London
+        - name: PUID
+          value: "1001"
+        - name: PGID
+          value: "100"
+        - name: DISCORD__TOKEN
+          value: ""
+        - name: SONARR__URL
+          value: ""
+        - name: RADARR__URL
+          value: ""
+        - name: SONARR__API
+          value: ""
+        - name: RADARR__API
+          value: ""
+        image: lscr.io/linuxserver/doplarr:latest
+        imagePullPolicy: Always
+        name: doplarr
+      hostname: doplarr
