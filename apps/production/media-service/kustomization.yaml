@@ -4,4 +4,4 @@ resources:
   - ./namespace.yaml
   # Flux Kustomizations
   - ./nginx-test/ks.yaml
-  # - jellyfin/install.yaml
+  - ./jellyfin/ks.yaml
