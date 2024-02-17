@@ -1,11 +1,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cluster-apps-production
+  name: cluster-apps
   namespace: flux-system
 spec:
   interval: 5m0s
-  path: ./apps/production
+  path: ./apps
   prune: true
   wait: true
   timeout: 10m0s
