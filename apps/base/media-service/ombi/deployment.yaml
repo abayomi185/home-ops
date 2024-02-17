@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &deploymentName ombi-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: *deploymentName
+  template:
+    metadata:
+      labels:
+        app: *deploymentName
+    spec:
+      containers:
+      - env:
+        - name: TZ
+          value: Europe/London
+        - name: PUID
+          value: "1001"
+        - name: PGID
+          value: "100"
+        image: lscr.io/linuxserver/ombi
+        imagePullPolicy: Always
+        name: ombi
+        ports:
+        - containerPort: 3579
+          name: http
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /config
+          name: config-volume
+          subPath: ombi/config
+      hostname: ombi
+      volumes:
+      - name: config-volume
+        nfs:
+          path: /mnt/mospeed/swarm-config
+          server: 10.0.7.202
