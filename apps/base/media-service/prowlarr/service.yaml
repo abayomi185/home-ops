@@ -10,5 +10,5 @@ spec:
     port: 9696
     targetPort: 9696
     protocol: TCP
-    nodePort: 30096
+    nodePort: 30696
   type: NodePort
