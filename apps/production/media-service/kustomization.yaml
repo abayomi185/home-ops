@@ -3,7 +3,7 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   # Flux Kustomizations
-  - ./audiobookshelf/ks.yaml
+  # - ./audiobookshelf/ks.yaml # pvc not available
   - ./bazarr/ks.yaml
   - ./jackett/ks.yaml
   - ./jellyfin/ks.yaml
