@@ -4,6 +4,7 @@ metadata:
   name: nginx-test
   namespace: flux-system
 spec:
+  targetNamespace: media-service
   path: ./apps/production/media-service/nginx-test
   prune: true
   wait: false
