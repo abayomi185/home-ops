@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &deploymentName readarr-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: *deploymentName
+  template:
+    metadata:
+      labels:
+        app: *deploymentName
+    spec:
+      containers:
+      - env:
+        - name: UMASK
+          value: "007"
+        - name: TZ
+          value: Europe/London
+        - name: PUID
+          value: "1001"
+        - name: PGID
+          value: "100"
+        image: linuxserver/readarr:nightly
+        imagePullPolicy: Always
+        name: readarr
+        ports:
+        - containerPort: 8787
+          name: http
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /config
+          name: config-volume
+          subPath: readarr/config
+        - mountPath: /data
+          name: media-volume
+          subPath: jellyfin/downloads
+        - mountPath: /books
+          name: media-volume
+          subPath: jellyfin/media/books
+      hostname: readarr
+      volumes:
+      - name: config-volume
+        nfs:
+          path: /mnt/mospeed/swarm-config
+          server: 10.0.7.202
+      - name: media-volume
+        nfs:
+          path: /mnt/mopower/swarm-data
+          server: 10.0.7.202
