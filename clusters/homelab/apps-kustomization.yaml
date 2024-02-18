@@ -16,5 +16,5 @@ spec:
     provider: sops
     secretRef:
       name: sops-age
-  # dependsOn:
-  #   - name: cluster-configs
+  dependsOn:
+    - name: cluster-configs
