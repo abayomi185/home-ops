@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: doplarr-deployment
+spec:
+  template:
+    spec:
+      containers:
+      - name: doplarr
+        env:
+        - name: DISCORD__TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: doplarr-secrets
+              key: discord_token
+        - name: SONARR__URL
+          valueFrom:
+            secretKeyRef:
+              name: doplarr-secrets
+              key: sonarr_url
+        - name: RADARR__URL
+          valueFrom:
+            secretKeyRef:
+              name: doplarr-secrets
+              key: radarr_url
+        - name: SONARR__API
+          valueFrom:
+            secretKeyRef:
+              name: doplarr-secrets
+              key: sonarr_api
+        - name: RADARR__API
+          valueFrom:
+            secretKeyRef:
+              name: doplarr-secrets
+              key: radarr_api

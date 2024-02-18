@@ -20,16 +20,13 @@ spec:
           value: "1001"
         - name: PGID
           value: "100"
-        - name: DISCORD__TOKEN
-          value: ""
-        - name: SONARR__URL
-          value: ""
-        - name: RADARR__URL
-          value: ""
-        - name: SONARR__API
-          value: ""
-        - name: RADARR__API
-          value: ""
+        # The following environment variables are required for the doplarr container to run
+        # This is set in the overlay for the production environment
+        # - name: DISCORD__TOKEN
+        # - name: SONARR__URL
+        # - name: RADARR__URL
+        # - name: SONARR__API
+        # - name: RADARR__API
         image: lscr.io/linuxserver/doplarr:latest
         imagePullPolicy: Always
         name: doplarr
