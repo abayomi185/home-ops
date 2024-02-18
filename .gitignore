@@ -1,9 +1,8 @@
+# Trash
 .DS_Store
 Thumbs.db
+# SOPS
 .decrypted~*
-*.secret.env
-*.secret.yaml
-*.sops.yaml
 *.agekey
 *.pub
 *.key
