@@ -1,12 +1,11 @@
 creation_rules:
-
-  - path_regex: apps/.+\.secret(\.sops)?\.ya?ml
+  - path_regex: '.*\.sops\.ya?ml$'
     encrypted_regex: '^(data|stringData)$'
     key_groups:
       - age:
         - age1w3jq4l9kaka6kx8pazvykv077dajde0qtgnsyeukgfcksu0w6epsltys44
 
-  - path_regex: apps/.+\.secret(\.sops)?\.env
+  - path_regex: 'apps/.+\.sops\.env$'
     input_type: env
     key_groups:
       - age:

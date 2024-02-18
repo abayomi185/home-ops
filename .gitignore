@@ -3,6 +3,7 @@ Thumbs.db
 .decrypted~*
 *.secret.env
 *.secret.yaml
+*.sops.yaml
 *.agekey
 *.pub
 *.key
