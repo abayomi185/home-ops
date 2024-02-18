@@ -4,7 +4,7 @@ metadata:
   name: cluster-apps
   namespace: flux-system
 spec:
-  interval: 5m0s
+  interval: 10m0s
   path: ./apps
   prune: true
   wait: true
@@ -15,4 +15,6 @@ spec:
   decryption:
     provider: sops
     secretRef:
-      name: sops-age-private-key
+      name: sops-age
+  # dependsOn:
+  #   - name: cluster-configs
