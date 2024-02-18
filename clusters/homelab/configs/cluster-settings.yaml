@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-settings
+  namespace: flux-system
+data:
+  TIMEZONE: Europe/London
+  NFS_STORAGE_IP: 10.0.7.202
+  NFS_STORAGE_CONFIG_DATA: /mnt/mospeed/swarm-config
+  NFS_STORAGE_MAIN_DATA: /mnt/mopower/swarm-data
