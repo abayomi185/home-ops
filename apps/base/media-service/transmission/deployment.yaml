@@ -14,22 +14,11 @@ spec:
     spec:
       containers:
       - env:
-        - name: OPENVPN_PROVIDER
-          value: PIA
-        - name: OPENVPN_CONFIG
-          value: uk_london,uk_manchester,netherlands
-        - name: OPENVPN_USERNAME
-          valueFrom:
-            secretKeyRef:
-              key: OPENVPN_USERNAME
-              name: transmission-openvpn
-              optional: false
-        - name: OPENVPN_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              key: OPENVPN_PASSWORD
-              name: transmission-openvpn
-              optional: false
+        # The following environment variables are required for the transmission container to run
+        # - name: OPENVPN_PROVIDER
+        # - name: OPENVPN_USERNAME
+        # - name: OPENVPN_PASSWORD
+        # - name: OPENVPN_CONFIG
         - name: TZ
           value: Europe/London
         - name: PUID

@@ -15,5 +15,5 @@ resources:
   - ./readarr/ks.yaml
   - ./radarr/ks.yaml
   - ./sonarr/ks.yaml
-  # - ./transmission/ks.yaml # Secrets not available
+  - ./transmission/ks.yaml
 
