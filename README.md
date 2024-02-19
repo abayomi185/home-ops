@@ -1,7 +1,5 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/abayomi185/home-ops/docs/src/assets/logo.png" align="center" width="144px" height="144px"/>
-
 ### Home Ops :octocat:
 
 </div>
