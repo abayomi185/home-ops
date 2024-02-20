@@ -2,6 +2,9 @@
 .DS_Store
 Thumbs.db
 # SOPS
+*.secret.env
+*.secret.yaml
+*.secret.yml
 .decrypted~*
 *.agekey
 *.pub
