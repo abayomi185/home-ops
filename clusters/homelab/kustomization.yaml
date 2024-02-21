@@ -1,9 +1,0 @@
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  # Flux System is important
-  - ./flux-system
-  # Kustomizations
-  - ./configs-ks.yaml
-  - ./alerts-ks.yaml
-  - ./apps-ks.yaml
