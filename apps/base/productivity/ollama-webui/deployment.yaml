@@ -13,9 +13,10 @@ spec:
         app: *deploymentName
     spec:
       containers:
-      - env:
-        - name: OLLAMA_API_BASE_URL
-        image: ghcr.io/ollama-webui/ollama-webui:main
+      # - env:
+        # - name: OLLAMA_API_BASE_URL
+          # value: http://ollama-api-service:8080
+      - image: ghcr.io/open-webui/open-webui:main
         imagePullPolicy: Always
         name: ollama-webui
         ports:
