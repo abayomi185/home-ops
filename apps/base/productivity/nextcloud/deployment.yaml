@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &deploymentName nextcloud-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: *deploymentName
+  template:
+    metadata:
+      labels:
+        app: *deploymentName
+    spec:
+      containers:
+      - image: nextcloud
+        imagePullPolicy: Always
+        name: nextcloud
+        ports:
+        - containerPort: 80
+          name: http
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /var/www/html
+          name: config-volume
+          subPath: ./
+        - mountPath: /var/www/html/data/nfs-share
+          name: nfs-data-volume
+          subPath: ./
+      hostname: nextcloud
+      volumes:
+      - name: config-volume
+        persistentVolumeClaim:
+          claimName: nextcloud-config
+      - name: nfs-data-volume
+        persistentVolumeClaim:
+          claimName: datastore

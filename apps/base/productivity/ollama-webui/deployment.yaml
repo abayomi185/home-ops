@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &deploymentName ollama-webui-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: *deploymentName
+  template:
+    metadata:
+      labels:
+        app: *deploymentName
+    spec:
+      containers:
+      - env:
+        - name: OLLAMA_API_BASE_URL
+        image: ghcr.io/ollama-webui/ollama-webui:main
+        imagePullPolicy: Always
+        name: ollama-webui
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+      hostname: ollama-webui

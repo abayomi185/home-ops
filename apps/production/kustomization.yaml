@@ -5,8 +5,8 @@ resources:
   # - ../base
   # - ./testbench
   # - ./monitoring
-  - ./media-service
   - ./media
+  - ./productivity
 labels:
   - pairs:
       env: production
