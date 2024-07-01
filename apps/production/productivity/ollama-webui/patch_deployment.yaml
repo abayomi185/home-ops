@@ -1,0 +1,15 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ollama-webui-deployment
+spec:
+  template:
+    spec:
+      containers:
+      - name: ollama-webui
+        env:
+        - name: OLLAMA_BASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: ollama-webui-secrets
+              key: ollama_api_base_url_local
