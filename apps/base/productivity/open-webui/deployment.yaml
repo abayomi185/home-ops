@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: &deploymentName ollama-webui-deployment
+  name: &deploymentName open-webui-deployment
 spec:
   replicas: 1
   selector:
@@ -13,14 +13,20 @@ spec:
         app: *deploymentName
     spec:
       containers:
-      # - env:
-        # - name: OLLAMA_API_BASE_URL
-          # value: http://ollama-api-service:8080
       - image: ghcr.io/open-webui/open-webui:main
         imagePullPolicy: Always
-        name: ollama-webui
+        name: open-webui
         ports:
         - containerPort: 8080
           name: http
           protocol: TCP
-      hostname: ollama-webui
+        volumeMounts:
+        - mountPath: /app/backend/data
+          name: config-data
+          subPath: open-webui/config
+      hostname: open-webui
+      volumes:
+      - name: config-data
+        nfs:
+          path: /mnt/mospeed/swarm-config
+          server: 10.0.7.202

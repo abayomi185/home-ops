@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ollama-webui-deployment
+  name: open-webui-deployment
 spec:
   template:
     spec:
       containers:
-      - name: ollama-webui
+      - name: open-webui
         env:
         - name: OLLAMA_BASE_URL
           valueFrom:

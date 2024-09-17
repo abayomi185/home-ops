@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: ollama-webui-service
+  name: open-webui-service
 spec:
   selector:
-    app: ollama-webui-deployment
+    app: open-webui-deployment
   ports:
   - name: http
     port: 8080
