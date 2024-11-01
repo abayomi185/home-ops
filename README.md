@@ -25,3 +25,21 @@ sops -e -i secret.sops.yaml
 # Decrypt using
 sops -d secret.sops.yaml
 ```
+
+### To update GitHub Token:
+
+```sh
+# Delete the secret
+kubectl -n flux-system delete secret flux-system
+
+export GITHUB_USER=abayomi185
+
+# Bootstrap again
+flux bootstrap github \
+  --owner=$GITHUB_USER \
+  --repository=home-ops \
+  --branch=main \
+  --path=./clusters/homelab \
+  --personal \
+  --token-auth
+```
