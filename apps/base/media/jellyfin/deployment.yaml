@@ -51,7 +51,6 @@ spec:
           name: config-data
           subPath: jellyfin/transcode
       hostname: jellyfin
-      nodeName: k-node3
       volumes:
       - name: media
         nfs:
