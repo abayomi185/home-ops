@@ -39,7 +39,24 @@ flux bootstrap github \
   --owner=$GITHUB_USER \
   --repository=home-ops \
   --branch=main \
-  --path=./clusters/homelab \
+  --path=./clusters/homelab/flux \
   --personal \
   --token-auth
+```
+
+```sh
+# Add the sops age secret to flux.
+cat age.agekey |
+kubectl create secret generic sops-age \
+--namespace=flux-system \
+--from-file=age.agekey=/dev/stdin
+secret/sops-age created
+```
+
+```sh
+# The secret may need to be regenerated.
+# If so, all the secrets will have to be updated with the new age public key
+age-keygen -o age.agekey
+export SOPS_SECRET=<path-to-secret>/secret.sops.yaml
+sops -d -i $SOPS_SECRET && sops -e -i $SOPS_SECRET # This can be paired with the find command
 ```
