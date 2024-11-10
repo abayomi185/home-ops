@@ -1,16 +1,22 @@
+keys:
+  - &mbp16 age1kak7nac7pp9kel9cl43m93jdrdtzdqhw07dkc62hk0qvq37u05nqce5mf5
+  - &mbp14 age1sx0dh82apfxxdv9z0l77dmu00e9vz5rn3pfwwnxhwumdxmwy7gsshaxxlc
+  - &cluster age1t067r55hvu848a4s92d2dn97xu8v8frcszh6403gsrqrkayp7f6sddhdgh
 creation_rules:
   - path_regex: '.*\.(sops|enc)\.ya?ml$'
     encrypted_regex: '^(data|stringData)$'
     key_groups:
       - age:
-        - age1w3jq4l9kaka6kx8pazvykv077dajde0qtgnsyeukgfcksu0w6epsltys44
-
+        - *mbp16
+        - *mbp14
+        - *cluster
   - path_regex: 'apps/.+\.sops\.env$'
     input_type: env
     key_groups:
       - age:
-        - age1w3jq4l9kaka6kx8pazvykv077dajde0qtgnsyeukgfcksu0w6epsltys44
-
+        - *mbp16
+        - *mbp14
+        - *cluster
 stores:
   yaml:
     indent: 2
