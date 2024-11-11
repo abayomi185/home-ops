@@ -14,11 +14,6 @@ spec:
     spec:
       containers:
       - env:
-        # The following environment variables are required for the transmission container to run
-        # - name: OPENVPN_PROVIDER
-        # - name: OPENVPN_USERNAME
-        # - name: OPENVPN_PASSWORD
-        # - name: OPENVPN_CONFIG
         - name: TZ
           value: Europe/London
         - name: PUID
