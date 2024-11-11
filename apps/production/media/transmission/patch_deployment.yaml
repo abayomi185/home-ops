@@ -5,6 +5,7 @@ metadata:
 spec:
   template:
     spec:
+      nodeName: knode3
       containers:
       - name: transmission
         env:
