@@ -1,0 +1,26 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: csi-driver-nfs
+  namespace: kube-system
+spec:
+  values:
+    storageClass:
+      create: true
+      name: nfs-default
+      parameters:
+        type: nfs
+      mountOptions:
+        - nfsvers=4.2
+        - nconnect=8
+        - hard
+        - noatime
+        - rsize=131072
+        - wsize=131072
+      reclaimPolicy: Retain
+      volumeBindingMode: Immediate
+  valuesFrom:
+    - kind: Secret
+      name: csi-driver-nfs-secrets
+      targetPath: storageClass.parameters.server
+      valuesKey: server
