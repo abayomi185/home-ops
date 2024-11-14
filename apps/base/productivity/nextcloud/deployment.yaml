@@ -13,25 +13,27 @@ spec:
         app: *deploymentName
     spec:
       containers:
-      - image: nextcloud
-        imagePullPolicy: Always
-        name: nextcloud
-        ports:
-        - containerPort: 80
-          name: http
-          protocol: TCP
-        volumeMounts:
-        - mountPath: /var/www/html
-          name: config-volume
-          subPath: ./
-        - mountPath: /var/www/html/data/nfs-share
-          name: nfs-data-volume
-          subPath: ./
+        - image: nextcloud
+          imagePullPolicy: Always
+          name: nextcloud
+          ports:
+            - containerPort: 80
+              name: http
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /var/www/html
+              name: config-data
+              subPath: nextcloud/config
+            - mountPath: /var/www/html/data/nfs-share
+              name: nfs-data-volume
+              subPath: productivity-service-datastore-pvc-b065dfc6-440b-4b9e-9b3c-b4d705e90bcc
       hostname: nextcloud
       volumes:
-      - name: config-volume
-        persistentVolumeClaim:
-          claimName: nextcloud-config
-      - name: nfs-data-volume
-        persistentVolumeClaim:
-          claimName: datastore
+        - name: nfs-data-volume
+          nfs:
+            path: /mnt/mopower/swarm-data
+            server: 10.0.7.202
+        - name: config-data
+          nfs:
+            path: /mnt/mospeed/swarm-config
+            server: 10.0.7.202

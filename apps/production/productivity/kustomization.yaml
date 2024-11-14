@@ -3,5 +3,5 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   # Flux Kustomizations
+  - ./nextcloud/ks.yaml
   - ./open-webui/ks.yaml
-
