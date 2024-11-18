@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   targetNamespace: kube-system
-  path: ./apps/base/kube-system/node-feature-discovery
+  path: ./apps/production/kube-system/node-feature-discovery
   prune: true
   wait: false
   sourceRef:
