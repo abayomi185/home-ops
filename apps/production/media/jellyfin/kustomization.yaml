@@ -3,15 +3,4 @@ kind: Kustomization
 resources:
   - ../../../base/media/jellyfin
 patches:
-  - patch: |-
-      - op: replace
-        path: /spec/replicas
-        value: 1
-      - op: replace
-        path: /spec/template/spec/nodeName
-        value: knode3
-    target:
-      group: apps
-      version: v1
-      kind: Deployment
-      name: jellyfin-deployment
+  - path: ./patch_deployment.yaml
