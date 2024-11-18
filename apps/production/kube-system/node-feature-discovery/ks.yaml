@@ -1,3 +1,4 @@
+---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -12,5 +13,29 @@ spec:
     kind: GitRepository
     name: flux-system
   interval: 10m
+  retryInterval: 1m
+  timeout: 5m
+
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app node-feature-discovery-rules
+  namespace: flux-system
+spec:
+  targetNamespace: kube-system
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  dependsOn:
+    - name: node-feature-discovery-production
+  path: ./apps/production/kube-system/node-feature-discovery/rules
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  interval: 30m
   retryInterval: 1m
   timeout: 5m
