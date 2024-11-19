@@ -6,6 +6,7 @@ resources:
   # - ./audiobookshelf/ks.yaml # pvc not available
   - ./bazarr/ks.yaml
   - ./doplarr/ks.yaml
+  - ./immich/ks.yaml
   - ./jackett/ks.yaml
   - ./jellyfin/ks.yaml
   - ./lidarr/ks.yaml
@@ -16,4 +17,3 @@ resources:
   - ./radarr/ks.yaml
   - ./sonarr/ks.yaml
   - ./transmission/ks.yaml
-
