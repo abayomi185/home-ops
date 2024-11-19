@@ -8,8 +8,7 @@ spec:
       create: true
       name: nfs-default
       parameters:
-        type: nfs
-        share: /mnt/raid1/k8s
+        share: /mnt/mofp0/kubernetes/home-cluster/data
       mountOptions:
         - nfsvers=4.2
         - nconnect=8
