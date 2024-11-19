@@ -7,14 +7,16 @@ spec:
   # See https://github.com/immich-app/immich-charts/blob/main/charts/immich/values.yaml
   # for the full list of values that can be overriden
   values:
-    # image:
-    #   tag: "v1.120.2"
+    image:
+      tag: "v1.120.2"
     immich:
       persistence:
         library:
           existingClaim: immich-data-pvc
     postgresql:
       enabled: true
+      primary:
+        resourcesPreset: large
     redis:
       enabled: true
     machine-learning:
