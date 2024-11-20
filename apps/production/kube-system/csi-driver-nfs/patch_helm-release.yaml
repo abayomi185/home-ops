@@ -6,7 +6,7 @@ spec:
   values:
     storageClass:
       create: true
-      name: nfs-default
+      name: nfs-csi-default
       parameters:
         share: /mnt/mofp0/kubernetes/home-cluster/data
       mountOptions:

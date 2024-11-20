@@ -35,4 +35,4 @@ spec:
       persistence:
         cache:
           type: pvc
-          storageClass: nfs-default
+          storageClass: nfs-csi-default
