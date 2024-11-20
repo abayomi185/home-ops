@@ -15,10 +15,12 @@ spec:
           existingClaim: immich-data-pvc
         external-data-main:
           enabled: true
+          type: persistentVolumeClaim
           mountPath: /usr/src/app/external-data/main
           existingClaim: immich-external-data-main-pvc
         external-data-ftp:
           enabled: true
+          type: persistentVolumeClaim
           mountPath: /usr/src/app/external-data/ftp
           existingClaim: immich-external-data-ftp-pvc
       defaultPodOptions:
