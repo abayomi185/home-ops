@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: immich-external-data-main-pv
+spec:
+  persistentVolumeReclaimPolicy: Retain
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: 10.0.7.202
+    path: /mnt/mospeed/NAS-YOM/Picture-Edits
+  mountOptions:
+    - nfsvers=4.2
+    - hard
+    - noatime
+    - rsize=131072
+    - wsize=131072
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: immich-external-data-ftp-pv
+spec:
+  persistentVolumeReclaimPolicy: Retain
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: 10.0.7.202
+    path: /mnt/mospeed/NAS-YOM/FTP
+  mountOptions:
+    - nfsvers=4.2
+    - hard
+    - noatime
+    - rsize=131072
+    - wsize=131072
