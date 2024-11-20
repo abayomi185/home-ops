@@ -3,6 +3,7 @@ kind: PersistentVolume
 metadata:
   name: immich-external-data-main-pv
 spec:
+  storageClassName: manual
   persistentVolumeReclaimPolicy: Retain
   capacity:
     storage: 10Gi
@@ -23,6 +24,7 @@ kind: PersistentVolume
 metadata:
   name: immich-external-data-ftp-pv
 spec:
+  storageClassName: manual
   persistentVolumeReclaimPolicy: Retain
   capacity:
     storage: 10Gi

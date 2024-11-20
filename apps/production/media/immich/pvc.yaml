@@ -18,7 +18,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: ""
+  storageClassName: manual
   resources:
     requests:
       storage: 10Gi
@@ -30,7 +30,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: ""
+  storageClassName: manual
   resources:
     requests:
       storage: 10Gi
