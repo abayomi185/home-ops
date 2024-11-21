@@ -40,5 +40,5 @@ spec:
           type: pvc
           storageClass: nfs-csi-default
       nodeSelector:
-        kubernetes.io/hostname: knode3
+        kubernetes.io/hostname: knode2
         intel.feature.node.kubernetes.io/gpu: "true"
