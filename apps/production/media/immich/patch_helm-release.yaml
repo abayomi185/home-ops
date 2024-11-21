@@ -25,9 +25,6 @@ spec:
           mountPath: /usr/src/app/external-data/ftp
           existingClaim: immich-external-data-ftp-pvc
           readOnly: true
-      resources:
-        limits:
-          memory: 4Gi
       nodeSelector:
         kubernetes.io/hostname: knode3
         intel.feature.node.kubernetes.io/gpu: "true"
