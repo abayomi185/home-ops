@@ -32,6 +32,8 @@ spec:
       enabled: true
       primary:
         resourcesPreset: large
+        persistentVolumeClaimRetentionPolicy:
+          enabled: true
     redis:
       enabled: true
     machine-learning:
