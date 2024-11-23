@@ -14,6 +14,14 @@ spec:
         library:
           existingClaim: immich-data-pvc
     server:
+      service:
+        main:
+          type: NodePort
+          ports:
+            http:
+              port: 2283
+              targetPort: 2283
+              nodePort: 32283
       persistence:
         external-data-main:
           enabled: true
