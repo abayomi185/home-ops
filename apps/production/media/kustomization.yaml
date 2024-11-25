@@ -15,5 +15,6 @@ resources:
   - ./prowlarr/ks.yaml
   - ./readarr/ks.yaml
   - ./radarr/ks.yaml
+  - ./requestrr/ks.yaml
   - ./sonarr/ks.yaml
   - ./transmission/ks.yaml
