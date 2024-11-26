@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: overseerr-service
+spec:
+  selector:
+    app: overseerr-deployment
+  ports:
+    - name: http
+      port: 5055
+      targetPort: 5055
+      protocol: TCP
+      nodePort: 30055
+  type: NodePort

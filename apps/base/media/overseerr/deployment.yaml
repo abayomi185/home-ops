@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &deploymentName overseerr-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: *deploymentName
+  template:
+    metadata:
+      labels:
+        app: *deploymentName
+    spec:
+      securityContext:
+        fsGroup: 100
+      containers:
+        - env:
+            - name: TZ
+              value: Europe/London
+          image: sctx/overseerr
+          imagePullPolicy: Always
+          name: overseerr
+          securityContext:
+            runAsUser: 1001
+            runAsGroup: 100
+          ports:
+            - containerPort: 5055
+              name: http
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /app/config
+              name: config-volume
+              subPath: overseerr/config
+      hostname: overseerr
+      volumes:
+        - name: config-volume
+          nfs:
+            path: /mnt/mospeed/swarm-config
+            server: 10.0.7.202
