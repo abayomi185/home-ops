@@ -8,7 +8,7 @@ resources:
   # - ./testbench
   # - ./monitoring
   - ./media
-  - ./network
+  - ./network-system
   - ./productivity
 labels:
   - pairs:
