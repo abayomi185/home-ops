@@ -8,7 +8,8 @@ spec:
       containers:
         - name: open-webui
           volumeMounts:
-            - name: config-data
+            - mountPath: /app/backend/data
+              name: config-data
               subPath: open-webui-public/config
           env:
             - name: OLLAMA_BASE_URL
