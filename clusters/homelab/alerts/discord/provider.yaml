@@ -8,5 +8,5 @@ spec:
   channel: kubernetes
   secretRef:
     # Use the secret from cluster-secrets
-    name: discord-notification-webhook
-
+    name: discord-alert-secret
+    key: discordWebhookUrl
