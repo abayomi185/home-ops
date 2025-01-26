@@ -15,4 +15,4 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: ollama-webui-public-secrets
-                  key: ollama_public_api_base_url_local
+                  key: ollama_api_base_url_local
