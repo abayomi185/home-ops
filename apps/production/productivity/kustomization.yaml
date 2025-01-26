@@ -5,4 +5,4 @@ resources:
   # Flux Kustomizations
   - ./nextcloud/ks.yaml
   - ./open-webui/ks.yaml
-  - ./open-webui-public/ks.yaml
+  - ./open-webui-public/ks.yaml # Public instance
