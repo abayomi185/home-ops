@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: open-webui-service
 spec:
+  selector:
+    app: public-open-webui-deployment
   ports:
     - name: http
       port: 8080
