@@ -4,4 +4,4 @@ resources:
   - ./secret.sops.yaml
   - ../../../base/productivity/open-webui
 patches:
-- path: ./patch_deployment.yaml
+  - path: ./patch_deployment.yaml
