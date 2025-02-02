@@ -3,6 +3,9 @@ kind: Kustomization
 resources:
   - ./secret.sops.yaml
   - ../../../base/productivity/open-webui
+namePrefix: public-
+commonLabels:
+  app: public-open-webui-deployment
 patches:
   - path: ./patch_deployment.yaml
   - path: ./patch_service.yaml
