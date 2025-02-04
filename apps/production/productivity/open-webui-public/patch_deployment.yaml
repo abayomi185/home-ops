@@ -17,3 +17,5 @@ spec:
                 secretKeyRef:
                   name: open-webui-public-secrets
                   key: ollama_api_base_url_local
+            - name: ENABLE_ADMIN_CHAT_ACCESS
+              value: "false"
