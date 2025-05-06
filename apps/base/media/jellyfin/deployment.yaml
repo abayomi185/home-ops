@@ -13,50 +13,50 @@ spec:
         app: *deploymentName
     spec:
       containers:
-      - env:
-        - name: PUID
-          value: "1000"
-        - name: PGID
-          value: "100"
-        - name: TZ
-          value: Europe/London
-        - name: UMASK
-          value: "007"
-        image: linuxserver/jellyfin:latest
-        imagePullPolicy: Always
-        name: jellyfin
-        ports:
-        - containerPort: 8096
-          name: http
-          protocol: TCP
-        - containerPort: 8920
-          name: https
-          protocol: TCP
-        resources:
-          requests:
-            cpu: 100m # 100 millicores, equivalent to 0.25 CPU cores
-          limits:
-            gpu.intel.com/i915: "1"
-        volumeMounts:
-        - mountPath: /media
-          name: media
-          subPath: jellyfin/media
-        - mountPath: /cache
-          name: config-data
-          subPath: jellyfin/cache
-        - mountPath: /config
-          name: config-data
-          subPath: jellyfin/config
-        - mountPath: /home
-          name: config-data
-          subPath: jellyfin/transcode
+        - env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "100"
+            - name: TZ
+              value: Europe/London
+            - name: UMASK
+              value: "007"
+          image: linuxserver/jellyfin:latest
+          imagePullPolicy: Always
+          name: jellyfin
+          ports:
+            - containerPort: 8096
+              name: http
+              protocol: TCP
+            - containerPort: 8920
+              name: https
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 100m # 100 millicores, equivalent to 0.25 CPU cores
+            limits:
+              gpu.intel.com/i915: "1"
+          volumeMounts:
+            - mountPath: /media
+              name: media
+              subPath: jellyfin/media
+            - mountPath: /cache
+              name: config-data
+              subPath: jellyfin/cache
+            - mountPath: /config
+              name: config-data
+              subPath: jellyfin/config
+            - mountPath: /home
+              name: config-data
+              subPath: jellyfin/transcode
       hostname: jellyfin
       volumes:
-      - name: media
-        nfs:
-          path: /mnt/mopower/swarm-data
-          server: 10.0.7.202
-      - name: config-data
-        nfs:
-          path: /mnt/mospeed/swarm-config
-          server: 10.0.7.202
+        - name: config-data
+          nfs:
+            server: ${NFS_STORAGE_IP}
+            path: ${NFS_STORAGE_CONFIG_DATA_PATH}
+        - name: media
+          nfs:
+            server: ${NFS_STORAGE_IP}
+            path: ${NFS_STORAGE_MAIN_DATA_PATH}
