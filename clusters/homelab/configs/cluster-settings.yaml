@@ -6,5 +6,5 @@ metadata:
 data:
   TIMEZONE: Europe/London
   NFS_STORAGE_IP: 10.0.7.202
-  NFS_STORAGE_CONFIG_DATA_PATH: /mnt/mospeed/swarm-config
-  NFS_STORAGE_MAIN_DATA_PATH: /mnt/mopower/swarm-data
+  NFS_STORAGE_CONFIG_DATA_PATH: /mnt/mofp0/kubernetes/home-cluster/configs
+  NFS_STORAGE_MAIN_DATA_PATH: /mnt/mofp0/kubernetes/home-cluster/data
