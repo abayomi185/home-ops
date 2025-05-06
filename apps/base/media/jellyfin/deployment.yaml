@@ -59,4 +59,4 @@ spec:
         - name: media
           nfs:
             server: ${NFS_STORAGE_IP}
-            path: ${NFS_STORAGE_MAIN_DATA_PATH}
+            path: /mnt/mopower/swarm-data
