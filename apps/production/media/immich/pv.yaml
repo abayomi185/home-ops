@@ -11,7 +11,7 @@ spec:
     - ReadWriteMany
   nfs:
     server: 10.0.7.202
-    path: /mnt/mospeed/NAS-YOM/Picture-Edits
+    path: /mnt/mofp0/data/NAS-YOM/Picture-Edits
   mountOptions:
     - nfsvers=4.2
     - hard
@@ -33,7 +33,7 @@ spec:
     - ReadWriteMany
   nfs:
     server: 10.0.7.202
-    path: /mnt/mospeed/NAS-YOM/FTP
+    path: /mnt/mofp0/data/NAS-YOM/FTP
   mountOptions:
     - nfsvers=4.2
     - hard
