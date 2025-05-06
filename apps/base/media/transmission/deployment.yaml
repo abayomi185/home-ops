@@ -13,45 +13,45 @@ spec:
         app: *deploymentName
     spec:
       containers:
-      - env:
-        - name: TZ
-          value: Europe/London
-        - name: PUID
-          value: "1001"
-        - name: PGID
-          value: "100"
-        - name: TRANSMISSION_HOME
-          value: /config/transmission-home
-        - name: GLOBAL_APPLY_PERMISSIONS
-          value: "false"
-        image: haugene/transmission-openvpn:latest
-        imagePullPolicy: Always
-        name: transmission
-        ports:
-        - containerPort: 9091
-          name: http
-          protocol: TCP
-        securityContext:
-          allowPrivilegeEscalation: true
-          capabilities:
-            add:
-            - NET_ADMIN
-          privileged: false
-          readOnlyRootFilesystem: false
-        volumeMounts:
-        - mountPath: /config/transmission-home
-          name: config-volume
-          subPath: transmission/transmission-home
-        - mountPath: /data
-          name: downloads-volume
-          subPath: jellyfin/downloads
+        - env:
+            - name: TZ
+              value: Europe/London
+            - name: PUID
+              value: "1001"
+            - name: PGID
+              value: "100"
+            - name: TRANSMISSION_HOME
+              value: /config/transmission-home
+            - name: GLOBAL_APPLY_PERMISSIONS
+              value: "false"
+          image: haugene/transmission-openvpn:latest
+          imagePullPolicy: Always
+          name: transmission
+          ports:
+            - containerPort: 9091
+              name: http
+              protocol: TCP
+          securityContext:
+            allowPrivilegeEscalation: true
+            capabilities:
+              add:
+                - NET_ADMIN
+            privileged: false
+            readOnlyRootFilesystem: false
+          volumeMounts:
+            - mountPath: /config/transmission-home
+              name: config-volume
+              subPath: transmission/transmission-home
+            - mountPath: /data
+              name: downloads-volume
+              subPath: jellyfin/downloads
       hostname: transmission
       volumes:
-      - name: config-volume
-        nfs:
-          path: /mnt/mospeed/swarm-config
-          server: 10.0.7.202
-      - name: downloads-volume
-        nfs:
-          path: /mnt/mopower/swarm-data
-          server: 10.0.7.202
+        - name: config-volume
+          nfs:
+            server: ${NFS_STORAGE_IP}
+            path: ${NFS_STORAGE_CONFIG_DATA_PATH}
+        - name: downloads-volume
+          nfs:
+            server: ${NFS_STORAGE_IP}
+            path: ${NFS_STORAGE_MAIN_DATA_PATH}
