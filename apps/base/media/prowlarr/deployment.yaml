@@ -13,27 +13,27 @@ spec:
         app: *deploymentName
     spec:
       containers:
-      - env:
-        - name: TZ
-          value: Europe/London
-        - name: PUID
-          value: "1001"
-        - name: PGID
-          value: "100"
-        image: ghcr.io/linuxserver/prowlarr:develop
-        imagePullPolicy: Always
-        name: prowlarr
-        ports:
-        - containerPort: 9696
-          name: http
-          protocol: TCP
-        volumeMounts:
-        - mountPath: /config
-          name: config-volume
-          subPath: prowlarr/config
+        - env:
+            - name: TZ
+              value: Europe/London
+            - name: PUID
+              value: "1001"
+            - name: PGID
+              value: "100"
+          image: ghcr.io/linuxserver/prowlarr:develop
+          imagePullPolicy: Always
+          name: prowlarr
+          ports:
+            - containerPort: 9696
+              name: http
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /config
+              name: config-volume
+              subPath: prowlarr/config
       hostname: prowlarr
       volumes:
-      - name: config-volume
-        nfs:
-          path: /mnt/mospeed/swarm-config
-          server: 10.0.7.202
+        - name: config-volume
+          nfs:
+            server: ${NFS_STORAGE_IP}
+            path: ${NFS_STORAGE_CONFIG_DATA_PATH}

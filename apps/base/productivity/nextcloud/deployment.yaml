@@ -35,5 +35,5 @@ spec:
             server: 10.0.7.202
         - name: config-data
           nfs:
-            path: /mnt/mospeed/swarm-config
-            server: 10.0.7.202
+            server: ${NFS_STORAGE_IP}
+            path: ${NFS_STORAGE_CONFIG_DATA_PATH}

@@ -13,34 +13,34 @@ spec:
         app: *deploymentName
     spec:
       containers:
-      - env:
-        - name: TZ
-          value: Europe/London
-        - name: PUID
-          value: "1001"
-        - name: PGID
-          value: "100"
-        image: lscr.io/linuxserver/jackett
-        imagePullPolicy: Always
-        name: jackett
-        ports:
-        - containerPort: 9117
-          name: http
-          protocol: TCP
-        volumeMounts:
-        - mountPath: /config
-          name: config-volume
-          subPath: jackett/config
-        - mountPath: /downloads
-          name: downloads-volume
-          subPath: jellyfin/downloads
+        - env:
+            - name: TZ
+              value: Europe/London
+            - name: PUID
+              value: "1001"
+            - name: PGID
+              value: "100"
+          image: lscr.io/linuxserver/jackett
+          imagePullPolicy: Always
+          name: jackett
+          ports:
+            - containerPort: 9117
+              name: http
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /config
+              name: config-volume
+              subPath: jackett/config
+            - mountPath: /downloads
+              name: downloads-volume
+              subPath: jellyfin/downloads
       hostname: jackett
       volumes:
-      - name: config-volume
-        nfs:
-          path: /mnt/mospeed/swarm-config
-          server: 10.0.7.202
-      - name: downloads-volume
-        nfs:
-          path: /mnt/mopower/swarm-data
-          server: 10.0.7.202
+        - name: config-volume
+          nfs:
+            server: ${NFS_STORAGE_IP}
+            path: ${NFS_STORAGE_CONFIG_DATA_PATH}
+        - name: downloads-volume
+          nfs:
+            path: /mnt/mopower/swarm-data
+            server: 10.0.7.202

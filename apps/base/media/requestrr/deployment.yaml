@@ -13,20 +13,20 @@ spec:
         app: *deploymentName
     spec:
       containers:
-      - image: darkalfx/requestrr
-        imagePullPolicy: Always
-        name: requestrr
-        ports:
-        - containerPort: 4545
-          name: http
-          protocol: TCP
-        volumeMounts:
-        - mountPath: /config
-          name: config-volume
-          subPath: requestrr/config
+        - image: darkalfx/requestrr
+          imagePullPolicy: Always
+          name: requestrr
+          ports:
+            - containerPort: 4545
+              name: http
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /config
+              name: config-volume
+              subPath: requestrr/config
       hostname: requestrr
       volumes:
-      - name: config-volume
-        nfs:
-          path: /mnt/mospeed/swarm-config
-          server: 10.0.7.202
+        - name: config-volume
+          nfs:
+            server: ${NFS_STORAGE_IP}
+            path: ${NFS_STORAGE_CONFIG_DATA_PATH}

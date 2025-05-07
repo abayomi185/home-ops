@@ -13,40 +13,40 @@ spec:
         app: *deploymentName
     spec:
       containers:
-      - env:
-        - name: TZ
-          value: Europe/London
-        - name: PUID
-          value: "1001"
-        - name: PGID
-          value: "100"
-        image: ghcr.io/linuxserver/bazarr:latest
-        imagePullPolicy: Always
-        name: bazarr
-        ports:
-        - containerPort: 6767
-          name: http
-          protocol: TCP
-        volumeMounts:
-        - mountPath: /config
-          name: config-volume
-          subPath: bazarr/config
-        - mountPath: /movies
-          name: data-volume
-          subPath: jellyfin/media/movies
-        - mountPath: /tv
-          name: data-volume
-          subPath: jellyfin/media/tv
-        - mountPath: /anime
-          name: data-volume
-          subPath: jellyfin/media/anime
+        - env:
+            - name: TZ
+              value: Europe/London
+            - name: PUID
+              value: "1001"
+            - name: PGID
+              value: "100"
+          image: ghcr.io/linuxserver/bazarr:latest
+          imagePullPolicy: Always
+          name: bazarr
+          ports:
+            - containerPort: 6767
+              name: http
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /config
+              name: config-volume
+              subPath: bazarr/config
+            - mountPath: /movies
+              name: data-volume
+              subPath: jellyfin/media/movies
+            - mountPath: /tv
+              name: data-volume
+              subPath: jellyfin/media/tv
+            - mountPath: /anime
+              name: data-volume
+              subPath: jellyfin/media/anime
       hostname: bazarr
       volumes:
-      - name: config-volume
-        nfs:
-          path: /mnt/mospeed/swarm-config
-          server: 10.0.7.202
-      - name: data-volume
-        nfs:
-          path: /mnt/mopower/swarm-data
-          server: 10.0.7.202
+        - name: config-volume
+          nfs:
+            server: ${NFS_STORAGE_IP}
+            path: ${NFS_STORAGE_CONFIG_DATA_PATH}
+        - name: data-volume
+          nfs:
+            path: /mnt/mopower/swarm-data
+            server: 10.0.7.202
