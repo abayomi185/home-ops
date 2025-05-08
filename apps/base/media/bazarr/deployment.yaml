@@ -48,5 +48,5 @@ spec:
             path: ${NFS_STORAGE_CONFIG_DATA_PATH}
         - name: data-volume
           nfs:
+            server: ${NFS_STORAGE_IP}
             path: /mnt/mopower/swarm-data
-            server: 10.0.7.202

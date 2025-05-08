@@ -13,37 +13,37 @@ spec:
         app: *deploymentName
     spec:
       containers:
-      - env:
-        - name: AUDIOBOOKSHELF_UID
-          value: "1000"
-        - name: AUDIOBOOKSHELF_GID
-          value: "100"
-        image: ghcr.io/advplyr/audiobookshelf:latest
-        imagePullPolicy: Always
-        name: audiobookshelf
-        ports:
-        - containerPort: 80
-          name: http
-          protocol: TCP
-        volumeMounts:
-        - mountPath: /config
-          name: config-volume
-          subPath: audiobookshelf/config
-        - mountPath: /audiobooks
-          name: audiobook-data
-          subPath: audiobooks
-        - mountPath: /podcasts
-          name: audiobook-data
-          subPath: podcasts
-        - mountPath: /metadata
-          name: audiobook-data
-          subPath: metadata
+        - env:
+            - name: AUDIOBOOKSHELF_UID
+              value: "1000"
+            - name: AUDIOBOOKSHELF_GID
+              value: "100"
+          image: ghcr.io/advplyr/audiobookshelf:latest
+          imagePullPolicy: Always
+          name: audiobookshelf
+          ports:
+            - containerPort: 80
+              name: http
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /config
+              name: config-volume
+              subPath: audiobookshelf/config
+            - mountPath: /audiobooks
+              name: audiobook-data
+              subPath: audiobooks
+            - mountPath: /podcasts
+              name: audiobook-data
+              subPath: podcasts
+            - mountPath: /metadata
+              name: audiobook-data
+              subPath: metadata
       hostname: audiobookshelf
       volumes:
-      - name: config-volume
-        nfs:
-          path: /mnt/mospeed/swarm-config
-          server: 10.0.7.202
-      - name: audiobook-data
-        persistentVolumeClaim:
-          claimName: audiobook-pvc
+        - name: config-volume
+          nfs:
+            server: ${NFS_STORAGE_IP}
+            path: /mnt/mospeed/swarm-config
+        - name: audiobook-data
+          persistentVolumeClaim:
+            claimName: audiobook-pvc
