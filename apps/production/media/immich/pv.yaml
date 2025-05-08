@@ -10,8 +10,8 @@ spec:
   accessModes:
     - ReadWriteMany
   nfs:
-    server: 10.0.7.202
-    path: /mnt/mofp0/data/NAS-YOM/Picture-Edits
+    server: ${NFS_STORAGE_IP}
+    path: ${NFS_STORAGE_GLOBAL_DATA_PATH}/NAS-YOM/Picture-Edits
   mountOptions:
     - nfsvers=4.2
     - hard
@@ -32,8 +32,8 @@ spec:
   accessModes:
     - ReadWriteMany
   nfs:
-    server: 10.0.7.202
-    path: /mnt/mofp0/data/NAS-YOM/FTP
+    server: ${NFS_STORAGE_IP}
+    path: ${NFS_STORAGE_GLOBAL_DATA_PATH}/NAS-YOM/FTP
   mountOptions:
     - nfsvers=4.2
     - hard
