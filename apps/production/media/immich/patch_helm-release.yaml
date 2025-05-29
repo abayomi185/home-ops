@@ -8,7 +8,7 @@ spec:
   # for the full list of values that can be overriden
   values:
     image:
-      tag: "v1.132.3"
+      tag: "v1.134.0"
     immich:
       persistence:
         library:
