@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nextcloud-shared-storage-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: nextcloud-nfs-csi
+  resources:
+    requests:
+      storage: 100Gi

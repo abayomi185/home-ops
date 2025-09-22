@@ -26,14 +26,14 @@ spec:
               subPath: nextcloud/config
             - mountPath: /var/www/html/data/nfs-share
               name: nfs-data-volume
-              subPath: productivity-service-datastore-pvc-b065dfc6-440b-4b9e-9b3c-b4d705e90bcc
       hostname: nextcloud
-      volumes:
-        - name: nfs-data-volume
-          nfs:
-            server: ${NFS_STORAGE_IP}
-            path: /mnt/mopower/swarm-data
-        - name: config-data
-          nfs:
-            server: ${NFS_STORAGE_IP}
-            path: ${NFS_STORAGE_CONFIG_DATA_PATH}
+      # Volumes need to be defined in the patch file of flux deployment
+      # volumes:
+      #   - name: nfs-data-volume
+      #     nfs:
+      #       server: ${NFS_STORAGE_IP}
+      #       path: /mnt/mopower/swarm-data
+      #   - name: config-data
+      #     nfs:
+      #       server: ${NFS_STORAGE_IP}
+      #       path: ${NFS_STORAGE_CONFIG_DATA_PATH}

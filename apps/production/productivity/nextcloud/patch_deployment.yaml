@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nextcloud-deployment
+spec:
+  replicas: 1
+  template:
+    spec:
+      initContainers:
+        - name: set-permissions
+          image: busybox:1.36
+          command: ["sh", "-c", "chown -R 33:33 /data && chmod -R 755 /data"]
+          volumeMounts:
+            - name: nfs-data-volume
+              mountPath: /var/www/html/data/nfs-share
+    volumes:
+      - name: nfs-data-volume
+        persistentVolumeClaim:
+          claimName: nextcloud-shared-storage-pvc

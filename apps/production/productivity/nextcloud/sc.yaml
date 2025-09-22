@@ -1,0 +1,17 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nextcloud-nfs-csi
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: ${NFS_STORAGE_IP}
+  share: ${NFS_STORAGE_MAIN_DATA_PATH}/nextcloud
+reclaimPolicy: Retain
+volumeBindingMode: Immediate
+mountOptions:
+  - nfsvers=4.2
+  - hard
+  - noatime
+  - rsize=131072
+  - wsize=131072
+  - nconnect=4
