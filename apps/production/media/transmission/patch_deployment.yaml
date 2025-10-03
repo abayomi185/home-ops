@@ -7,19 +7,25 @@ spec:
     spec:
       nodeName: knode3
       containers:
-      - name: transmission
-        env:
-        - name: OPENVPN_PROVIDER
-          value: "PIA"
-        - name: OPENVPN_CONFIG
-          value: "uk_london,uk_manchester,netherlands"
-        - name: OPENVPN_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: transmission-secrets
-              key: openvpn_username
-        - name: OPENVPN_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: transmission-secrets
-              key: openvpn_password
+        - name: transmission
+          env:
+            - name: OPENVPN_PROVIDER
+              valueFrom:
+                secretKeyRef:
+                  name: transmission-secrets
+                  key: openvpn_provider
+            - name: OPENVPN_CONFIG
+              valueFrom:
+                secretKeyRef:
+                  name: transmission-secrets
+                  key: openvpn_config
+            - name: OPENVPN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: transmission-secrets
+                  key: openvpn_username
+            - name: OPENVPN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: transmission-secrets
+                  key: openvpn_password
