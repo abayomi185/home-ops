@@ -39,9 +39,9 @@ spec:
             privileged: false
             readOnlyRootFilesystem: false
           volumeMounts:
-            - mountPath: /config/transmission-home
+            - mountPath: /config
               name: config-volume
-              subPath: transmission/transmission-home
+              subPath: transmission
             - mountPath: /data
               name: downloads-volume
               subPath: jellyfin/downloads
