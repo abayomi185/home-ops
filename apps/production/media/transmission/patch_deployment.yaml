@@ -9,7 +9,7 @@ spec:
       containers:
         - name: transmission
           env:
-            - name: DISABLE_PORT_FORWARDER
+            - name: DISABLE_PORT_UPDATER
               value: "true"
             - name: OPENVPN_OPTS
               value: --inactive 3600 --ping 10 --ping-exit 60
