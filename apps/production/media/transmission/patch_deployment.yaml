@@ -9,6 +9,10 @@ spec:
       containers:
         - name: transmission
           env:
+            - name: DISABLE_PORT_FORWARDER
+              value: "true"
+            - name: OPENVPN_OPTS
+              value: --inactive 3600 --ping 10 --ping-exit 60
             - name: OPENVPN_PROVIDER
               valueFrom:
                 secretKeyRef:
