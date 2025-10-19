@@ -47,7 +47,7 @@ spec:
             - mountPath: /config
               name: config-data
               subPath: jellyfin/config
-            - mountPath: /home
+            - mountPath: /transcode
               name: config-data
               subPath: jellyfin/transcode
       hostname: jellyfin
