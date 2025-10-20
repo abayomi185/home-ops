@@ -2,9 +2,9 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./configmap.yaml
+  - ../../../base/network-system/metallb
   - ./ipaddresspool.yaml
   - ./l2advertisement.yaml
-  - ../../../base/network-system/metallb
 patches:
   - path: ./patch_helm-release.yaml
     target:
