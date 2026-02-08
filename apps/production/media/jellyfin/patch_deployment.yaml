@@ -9,3 +9,11 @@ spec:
       nodeName: knode3
       nodeSelector:
         feature.node.kubernetes.io/pci-0300_10de.present: "true"
+      containers:
+        - name: jellyfin
+          resources:
+            requests:
+              cpu: 100m
+              nvidia.com/gpu: "1"
+            limits:
+              nvidia.com/gpu: "1"
