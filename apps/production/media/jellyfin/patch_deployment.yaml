@@ -8,4 +8,4 @@ spec:
     spec:
       nodeName: knode3
       nodeSelector:
-        intel.feature.node.kubernetes.io/gpu: "true"
+        feature.node.kubernetes.io/pci-0300_10de.present: "true"
