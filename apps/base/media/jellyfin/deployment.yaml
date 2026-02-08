@@ -35,8 +35,6 @@ spec:
           resources:
             requests:
               cpu: 100m # 100 millicores, equivalent to 0.25 CPU cores
-            limits:
-              gpu.intel.com/i915: "1"
           volumeMounts:
             - mountPath: /media
               name: media
