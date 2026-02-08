@@ -14,7 +14,7 @@ resources:
   - ./ombi/ks.yaml
   # - ./overseerr/ks.yaml
   - ./prowlarr/ks.yaml
-  - ./readarr/ks.yaml
+  # - ./readarr/ks.yaml # Project retired [Readarr/Readarr]
   - ./radarr/ks.yaml
   - ./requestrr/ks.yaml
   - ./sonarr/ks.yaml
