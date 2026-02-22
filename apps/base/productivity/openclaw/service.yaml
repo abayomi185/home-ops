@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: openclaw-service
+spec:
+  selector:
+    app: openclaw-deployment
+  ports:
+    - name: gateway
+      port: 18789
+      targetPort: 18789
+      protocol: TCP
+      nodePort: 30789
+    - name: bridge
+      port: 18790
+      targetPort: 18790
+      protocol: TCP
+      nodePort: 30790
+  type: NodePort

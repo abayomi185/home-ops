@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &deploymentName openclaw-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: *deploymentName
+  template:
+    metadata:
+      labels:
+        app: *deploymentName
+    spec:
+      containers:
+        - image: ghcr.io/openclaw/openclaw:main
+          imagePullPolicy: IfNotPresent
+          name: openclaw
+          ports:
+            - containerPort: 18789
+              name: gateway
+              protocol: TCP
+            - containerPort: 18790
+              name: bridge
+              protocol: TCP
+          env:
+            - name: HOME
+              value: /home/node
+            - name: TERM
+              value: xterm-256color
+            - name: OPENCLAW_GATEWAY_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: openclaw-secrets
+                  key: gateway-token
+          volumeMounts:
+            - mountPath: /home/node/.openclaw
+              name: config-data
+              subPath: openclaw/config
+            - mountPath: /home/node/.openclaw/workspace
+              name: config-data
+              subPath: openclaw/workspace
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "2Gi"
+              cpu: "2"
+      hostname: openclaw
+      volumes:
+        - name: config-data
+          nfs:
+            server: ${NFS_STORAGE_IP}
+            path: ${NFS_STORAGE_CONFIG_DATA_PATH}
