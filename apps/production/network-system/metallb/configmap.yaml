@@ -312,6 +312,8 @@ data:
           # memory: 100Mi
       nodeSelector: {}
       tolerations: []
+        # - key: "node-role.kubernetes.io/master"
+        #   effect: "NoSchedule"
       priorityClassName: ""
       affinity: {}
       ## Selects which runtime class will be used by the pod.

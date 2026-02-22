@@ -4,7 +4,7 @@ metadata:
   name: metallb-network-system
   namespace: flux-system
 spec:
-  targetNamespace: network-system
+  targetNamespace: metallb-system
   path: ./apps/production/network-system/metallb
   prune: true
   wait: false

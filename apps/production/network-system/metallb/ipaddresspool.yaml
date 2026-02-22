@@ -4,4 +4,4 @@ metadata:
   name: metallb-pool
 spec:
   addresses:
-    - 10.0.8.0/24
+    - 10.0.7.200-10.0.7.240
