@@ -1,0 +1,100 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: traefik-helm-chart-value-overrides
+  namespace: traefik
+data:
+  values.yaml: |-
+    # Traefik configuration for homelab
+    # Gets LoadBalancer IP from MetalLB pool (10.0.7.200)
+
+    deployment:
+      replicas: 2
+
+    service:
+      enabled: true
+      type: LoadBalancer
+      spec:
+        externalTrafficPolicy: Local
+        loadBalancerIP: 10.0.7.200
+      annotations:
+        metallb.universe.tf/loadBalancerIPs: "10.0.7.200"
+
+    ports:
+      web:
+        port: 8000
+        exposedPort: 80
+        expose: true
+        protocol: TCP
+        redirections:
+          entryPoint:
+            to: websecure
+            scheme: https
+        proxyProtocol:
+          trustedIPs:
+            - 10.13.13.0/24
+        forwardedHeaders:
+          trustedIPs:
+            - 10.13.13.0/24
+
+      websecure:
+        port: 8443
+        exposedPort: 443
+        expose: true
+        protocol: TCP
+        tls:
+          enabled: true
+        proxyProtocol:
+          trustedIPs:
+            - 10.13.13.0/24
+        forwardedHeaders:
+          trustedIPs:
+            - 10.13.13.0/24
+
+    # Traefik API and Dashboard
+    ingressRoute:
+      dashboard:
+        enabled: true
+        entryPoints:
+          - websecure
+
+    # Providers
+    providers:
+      kubernetesCRD:
+        enabled: true
+        allowCrossNamespace: true
+        allowExternalNameServices: true
+      kubernetesIngress:
+        enabled: true
+        allowExternalNameServices: true
+
+    # TLS configuration
+    tls:
+      store:
+        default:
+          defaultCertificate:
+            # References the wildcard cert secret (user creates this)
+            # Secret should be in traefik namespace
+            secretName: wildcard-internal-yomitosh-media-tls
+
+    # Logging
+    logs:
+      general:
+        level: INFO
+      access:
+        enabled: true
+
+    # Global settings
+    global:
+      checkNewVersion: false
+      sendAnonymousUsage: false
+
+    # Security context
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 65532
+
+    # Pod disruption budget for HA
+    podDisruptionBudget:
+      enabled: true
+      minAvailable: 1

@@ -1,0 +1,35 @@
+# Example: ExternalName service + IngressRoute for a non-Kubernetes service (Ollama)
+# ExternalName services allow Traefik to route to IPs outside the cluster
+#
+# To use:
+# 1. Create ExternalName service in traefik namespace (or any namespace)
+# 2. Create IngressRoute that references the ExternalName service
+
+---
+# Step 1: ExternalName service pointing to external IP
+apiVersion: v1
+kind: Service
+metadata:
+  name: ollama-external
+  namespace: traefik
+spec:
+  type: ExternalName
+  externalName: 10.0.7.250
+
+---
+# Step 2: IngressRoute routing to the ExternalName service
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ollama
+  namespace: traefik
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`ollama.internal.yomitosh.media`)
+      kind: Rule
+      services:
+        - name: ollama-external
+          port: 11434
+  tls: {}

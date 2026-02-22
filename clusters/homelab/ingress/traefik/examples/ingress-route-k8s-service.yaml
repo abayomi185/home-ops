@@ -1,0 +1,20 @@
+# Example: IngressRoute for a Kubernetes service (Jellyfin)
+# Place IngressRoutes in the same namespace as the service
+#
+# To use: Copy to apps/production/media/jellyfin/ingress-route.yaml
+
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: jellyfin
+  namespace: media
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`jellyfin.internal.yomitosh.media`)
+      kind: Rule
+      services:
+        - name: jellyfin
+          port: 8096
+  tls: {}

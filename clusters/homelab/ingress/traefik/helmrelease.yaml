@@ -1,0 +1,23 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: traefik
+  namespace: traefik
+spec:
+  interval: 15m
+  timeout: 5m
+  chart:
+    spec:
+      chart: traefik
+      version: 34.x
+      sourceRef:
+        kind: HelmRepository
+        name: traefik
+        namespace: flux-system
+  releaseName: traefik
+  valuesFrom:
+    - kind: ConfigMap
+      name: traefik-helm-chart-value-overrides
+      valuesKey: values.yaml
