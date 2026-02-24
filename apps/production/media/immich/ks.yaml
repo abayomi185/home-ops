@@ -20,7 +20,7 @@ spec:
       name: sops-age
   dependsOn:
     - name: cluster-configs
-    - name: cnpg
+    - name: cnpg-production
   postBuild:
     substituteFrom:
       - kind: ConfigMap
