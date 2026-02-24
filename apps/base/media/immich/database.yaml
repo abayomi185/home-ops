@@ -32,8 +32,8 @@ spec:
     - name: immich-source
       connectionParameters:
         host: immich-deployment-postgresql.media.svc.cluster.local
-        user: postgres
-        dbname: postgres
+        user: immich
+        dbname: immich
         sslmode: disable
       password:
         name: immich-secrets
