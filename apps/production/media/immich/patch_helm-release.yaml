@@ -33,9 +33,9 @@ spec:
           mountPath: /usr/src/app/external-data/ftp
           existingClaim: immich-external-data-ftp-pvc
           readOnly: true
-      nodeSelector:
-        kubernetes.io/hostname: knode3
-        intel.feature.node.kubernetes.io/gpu: "true"
+      # nodeSelector:
+      # kubernetes.io/hostname: knode3
+      # intel.feature.node.kubernetes.io/gpu: "true"
       controllers:
         main:
           containers:
@@ -53,6 +53,6 @@ spec:
         cache:
           type: pvc
           storageClass: nfs-csi-default
-      nodeSelector:
-        kubernetes.io/hostname: knode2
-        intel.feature.node.kubernetes.io/gpu: "true"
+      # nodeSelector:
+      #   kubernetes.io/hostname: knode2
+      #   intel.feature.node.kubernetes.io/gpu: "true"
