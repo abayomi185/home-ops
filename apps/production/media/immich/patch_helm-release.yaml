@@ -51,7 +51,7 @@ spec:
     machine-learning:
       persistence:
         cache:
-          type: pvc
+          type: persistentVolumeClaim
           storageClass: nfs-csi-default
       # nodeSelector:
       #   kubernetes.io/hostname: knode2
