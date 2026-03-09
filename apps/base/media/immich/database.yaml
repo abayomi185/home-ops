@@ -18,6 +18,6 @@ spec:
     initdb:
       database: immich
       owner: immich
-      postInitApplicationSQL:
+      postInitTemplateSQL:
         - CREATE EXTENSION IF NOT EXISTS vchord CASCADE;
         - CREATE EXTENSION IF NOT EXISTS earthdistance CASCADE;
