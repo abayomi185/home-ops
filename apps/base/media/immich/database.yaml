@@ -18,23 +18,6 @@ spec:
     initdb:
       database: immich
       owner: immich
-      import:
-        type: microservice
-        databases:
-          - immich
-        source:
-          externalCluster: immich-source
-        postImportApplicationSQL:
-          - CREATE EXTENSION IF NOT EXISTS vchord CASCADE;
-          - CREATE EXTENSION IF NOT EXISTS earthdistance CASCADE;
-
-  externalClusters:
-    - name: immich-source
-      connectionParameters:
-        host: immich-deployment-postgresql.media.svc.cluster.local
-        user: immich
-        dbname: immich
-        sslmode: disable
-      password:
-        name: immich-secrets
-        key: postgres-password
+      postInitApplicationSQL:
+        - CREATE EXTENSION IF NOT EXISTS vchord CASCADE;
+        - CREATE EXTENSION IF NOT EXISTS earthdistance CASCADE;
