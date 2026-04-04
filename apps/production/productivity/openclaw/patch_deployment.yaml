@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openclaw-deployment
+spec:
+  template:
+    spec:
+      containers:
+        - name: openclaw
+          env:
+            - name: OPENCLAW_GATEWAY_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: openclaw-secrets
+                  key: openclaw_gateway_token
+            - name: LLAMA_CPP_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: openclaw-secrets
+                  key: llama_cpp_api_key

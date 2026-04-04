@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: openclaw-config
+data:
+  openclaw.json: |
+    {
+      gateway: {
+        bind: "lan",
+        auth: {
+          mode: "token",
+          token: "${OPENCLAW_GATEWAY_TOKEN}",
+        },
+        controlUi: {
+          enabled: true,
+          allowedOrigins: [
+            "http://127.0.0.1:18789",
+            "http://localhost:18789",
+          ],
+        },
+      },
+      models: {
+        providers: {
+          local: {
+            baseUrl: "http://machine-learning.internal.yomitosh.media:11434/v1",
+            api: "openai-completions",
+            apiKey: "${LLAMA_CPP_API_KEY}",
+            models: [
+              {
+                id: "REPLACE_WITH_LLAMA_CPP_MODEL",
+                name: "Local llama.cpp",
+                input: ["text"],
+                cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+                contextWindow: 8192,
+                maxTokens: 8192,
+              },
+            ],
+          },
+        },
+      },
+      agents: {
+        defaults: {
+          model: {
+            primary: "local/REPLACE_WITH_LLAMA_CPP_MODEL",
+          },
+          workspace: "/home/node/.openclaw/workspace",
+          sandbox: {
+            mode: "off",
+          },
+        },
+      },
+    }
