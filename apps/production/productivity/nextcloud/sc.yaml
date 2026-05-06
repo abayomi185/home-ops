@@ -4,7 +4,7 @@ metadata:
   name: nextcloud-nfs-csi
 provisioner: nfs.csi.k8s.io
 parameters:
-  server: ${NFS_STORAGE_IP}
+  server: ${NFS_STORAGE_HOST}
   share: ${NFS_STORAGE_MAIN_DATA_PATH}/nextcloud
 reclaimPolicy: Retain
 volumeBindingMode: Immediate

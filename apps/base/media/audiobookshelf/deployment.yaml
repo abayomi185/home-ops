@@ -42,7 +42,7 @@ spec:
       volumes:
         - name: config-volume
           nfs:
-            server: ${NFS_STORAGE_IP}
+            server: ${NFS_STORAGE_HOST}
             path: /mnt/mospeed/swarm-config
         - name: audiobook-data
           persistentVolumeClaim:

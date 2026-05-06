@@ -9,7 +9,7 @@ spec:
       volumes:
         - name: config-data
           nfs:
-            server: ${NFS_STORAGE_IP}
+            server: ${NFS_STORAGE_HOST}
             path: ${NFS_STORAGE_CONFIG_DATA_PATH}
         - name: nfs-data-volume
           persistentVolumeClaim:

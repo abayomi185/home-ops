@@ -71,7 +71,7 @@ spec:
   volumes:
     - name: config-volume
       nfs:
-        server: ${NFS_STORAGE_IP}
+        server: ${NFS_STORAGE_HOST}
         path: ${NFS_STORAGE_CONFIG_DATA_PATH}
 ```
 

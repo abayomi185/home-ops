@@ -43,7 +43,7 @@ home-ops/
 
 ### Deployment Standard
 - PUID: 1001, PGID: 100, UMASK: "007", TZ: Europe/London
-- NFS volumes for config (`${NFS_STORAGE_IP}`, `${NFS_STORAGE_CONFIG_DATA_PATH}`)
+- NFS volumes for config (`${NFS_STORAGE_HOST}`, `${NFS_STORAGE_CONFIG_DATA_PATH}`)
 - NFS volumes for media (`/mnt/mopower/swarm-data`)
 
 ### Secret Management
