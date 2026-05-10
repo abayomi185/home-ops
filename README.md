@@ -50,6 +50,12 @@ cat age.agekey |
 kubectl create secret generic sops-age \
 --namespace=flux-system \
 --from-file=age.agekey=/dev/stdin
+
+# Or:
+kubectl create secret generic sops-age \
+     --namespace=flux-system \
+     --from-file=age.agekey=cluster.agekey \
+     --dry-run=client -o yaml | kubectl apply -f -
 ```
 
 ```sh
