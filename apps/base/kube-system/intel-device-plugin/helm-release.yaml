@@ -54,4 +54,6 @@ spec:
   values:
     name: intel-gpu-plugin
     sharedDevNum: 5
+    nodeSelector:
+      intel.feature.node.kubernetes.io/gpu: "true"
     nodeFeatureRule: false

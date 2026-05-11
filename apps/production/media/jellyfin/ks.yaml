@@ -16,6 +16,8 @@ spec:
   timeout: 5m
   dependsOn:
     - name: cluster-configs
+    - name: intel-device-plugin-production
+    - name: node-feature-discovery-rules-production
   postBuild:
     substituteFrom:
       - kind: ConfigMap

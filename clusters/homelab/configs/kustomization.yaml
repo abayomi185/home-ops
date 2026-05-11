@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - ./cluster-secrets.sops.yaml
   - ./cluster-settings.yaml
+  - ./knode4-intel-gpu.yaml
