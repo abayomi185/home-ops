@@ -79,4 +79,4 @@ kubectl create secret generic sops-age --namespace=flux-system --from-file=age.a
 - 3 AGE keys configured: mbp16, mbp14, cluster
 - No CI/CD pipelines (GitOps only)
 - Pre-commit validates secret encryption
-- Apps organized by category: media, productivity, network-system, kube-system, cert-manager, storage, monitoring
+- Apps organized by category: media, productivity, maker, network-system, kube-system, cert-manager, storage, monitoring

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bambubuddy-service
+spec:
+  selector:
+    app: bambubuddy-deployment
+  ports:
+    - name: http
+      port: 8000
+      targetPort: 8000
+      protocol: TCP
+      nodePort: 30800
+  type: NodePort

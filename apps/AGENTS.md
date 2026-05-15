@@ -14,6 +14,7 @@ apps/
 ├── base/                    # Shared configs (no env values)
 │   ├── media/               # Sonarr, Radarr, Jellyfin, etc.
 │   ├── productivity/        # Nextcloud, Open-WebUI
+│   ├── maker/               # Bambuddy, printer tooling
 │   ├── network-system/      # Traefik, MetalLB
 │   ├── kube-system/         # CSI-driver, Intel plugin, NFD
 │   ├── cert-manager/        # Certificate management
@@ -29,6 +30,7 @@ apps/
 |------|----------|
 | Add media app | `base/media/<new-app>/` then `production/media/<new-app>/` |
 | Add productivity app | `base/productivity/<new-app>/` then `production/productivity/<new-app>/` |
+| Add maker app | `base/maker/<new-app>/` then `production/maker/<new-app>/` |
 | Modify network config | `base/network-system/` and `production/network-system/` |
 | Add secret | `production/<category>/<app>/secret.sops.yaml` |
 

@@ -8,6 +8,7 @@ resources:
   # - ./testbench
   # - ./monitoring
   - ./media
+  - ./maker
   - ./network-system
   - ./productivity
 labels:

@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &deploymentName bambubuddy-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: *deploymentName
+  template:
+    metadata:
+      labels:
+        app: *deploymentName
+    spec:
+      containers:
+        - env:
+            - name: UMASK
+              value: "007"
+            - name: TZ
+              value: Europe/London
+            - name: PUID
+              value: "1001"
+            - name: PGID
+              value: "100"
+            - name: PORT
+              value: "8000"
+          image: ghcr.io/maziggy/bambuddy:latest
+          imagePullPolicy: IfNotPresent
+          name: bambubuddy
+          ports:
+            - containerPort: 8000
+              name: http
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /app/data
+              name: config-volume
+              subPath: bambubuddy/data
+            - mountPath: /app/logs
+              name: config-volume
+              subPath: bambubuddy/logs
+      hostname: bambubuddy
+      volumes:
+        - name: config-volume
+          nfs:
+            server: ${NFS_STORAGE_HOST}
+            path: ${NFS_STORAGE_CONFIG_DATA_PATH}
