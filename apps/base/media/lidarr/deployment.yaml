@@ -20,8 +20,8 @@ spec:
               value: "1001"
             - name: PGID
               value: "100"
-          image: ghcr.io/linuxserver/lidarr:latest
-          imagePullPolicy: Always
+          image: ghcr.io/linuxserver/lidarr:latest@sha256:d2f944115de2ca6754ad142ee92f9db481b1574c7bc030974d624584106b78d7
+          imagePullPolicy: IfNotPresent
           name: lidarr
           ports:
             - containerPort: 8686

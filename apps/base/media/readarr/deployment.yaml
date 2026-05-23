@@ -22,8 +22,8 @@ spec:
               value: "1001"
             - name: PGID
               value: "100"
-          image: linuxserver/readarr:nightly
-          imagePullPolicy: Always
+          image: linuxserver/readarr:nightly@sha256:eb37f58646a901dc7727cf448cae36daaefaba79de33b5058dab79aa4c04aefb
+          imagePullPolicy: IfNotPresent
           name: readarr
           ports:
             - containerPort: 8787

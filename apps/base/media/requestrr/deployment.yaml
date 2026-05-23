@@ -13,8 +13,8 @@ spec:
         app: *deploymentName
     spec:
       containers:
-        - image: darkalfx/requestrr
-          imagePullPolicy: Always
+        - image: darkalfx/requestrr:latest@sha256:8e3b41a12e96865b6ad73d87103c592b5e26a45e3aee7a059074aeb4902eb379
+          imagePullPolicy: IfNotPresent
           name: requestrr
           ports:
             - containerPort: 4545

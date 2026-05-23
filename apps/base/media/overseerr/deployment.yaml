@@ -18,8 +18,8 @@ spec:
         - env:
             - name: TZ
               value: Europe/London
-          image: sctx/overseerr
-          imagePullPolicy: Always
+          image: sctx/overseerr:latest@sha256:6197516c9d7b58ccf113455e32aafb94df5d91995fe50e8c2cae6ba6c7c7b7de
+          imagePullPolicy: IfNotPresent
           name: overseerr
           securityContext:
             runAsUser: 1001

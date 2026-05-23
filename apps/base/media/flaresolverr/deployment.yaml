@@ -22,8 +22,8 @@ spec:
           value: "false"
         - name: CAPTCHA_SOLVER
           value: none
-        image: ghcr.io/flaresolverr/flaresolverr:latest
-        imagePullPolicy: Always
+        image: ghcr.io/flaresolverr/flaresolverr:latest@sha256:7962759d99d7e125e108e0f5e7f3cdbcd36161776d058d1d9b7153b92ef1af9e
+        imagePullPolicy: IfNotPresent
         name: flaresolverr
         ports:
         - containerPort: 8191
