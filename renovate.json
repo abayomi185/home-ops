@@ -1,0 +1,51 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "dependencyDashboard": true,
+  "ignorePaths": [
+    "clusters/**/gotk-components.yaml",
+    "clusters/**/gotk-sync.yaml"
+  ],
+  "enabledManagers": [
+    "flux",
+    "kubernetes",
+    "kustomize"
+  ],
+  "flux": {
+    "managerFilePatterns": [
+      "/(^|/)apps/.+\\.ya?ml$/"
+    ]
+  },
+  "kubernetes": {
+    "managerFilePatterns": [
+      "/(^|/)apps/.+\\.ya?ml$/"
+    ]
+  },
+  "packageRules": [
+    {
+      "matchDatasources": [
+        "docker"
+      ],
+      "pinDigests": true
+    },
+    {
+      "matchManagers": [
+        "flux"
+      ],
+      "matchDatasources": [
+        "helm"
+      ],
+      "registryAliases": {
+        "cnpg-charts": "https://cloudnative-pg.github.io/charts",
+        "csi-driver-nfs-charts": "https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts",
+        "immich-charts": "https://immich-app.github.io/immich-charts",
+        "intel-charts": "https://intel.github.io/helm-charts",
+        "jetstack-charts": "https://charts.jetstack.io",
+        "metallb": "https://metallb.github.io/metallb",
+        "node-feature-discovery-charts": "https://kubernetes-sigs.github.io/node-feature-discovery/charts"
+      }
+    }
+  ]
+}
