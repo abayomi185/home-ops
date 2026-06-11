@@ -38,9 +38,9 @@ spec:
       volumes:
         - name: config-volume
           nfs:
-            server: ${NFS_STORAGE_HOST}
+            server: ${NFS_STORAGE_HOST_FAST}
             path: ${NFS_STORAGE_CONFIG_DATA_PATH}
         - name: downloads-volume
           nfs:
-            server: ${NFS_STORAGE_HOST}
+            server: ${NFS_STORAGE_HOST_FAST}
             path: /mnt/mopower/swarm-data
