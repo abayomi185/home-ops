@@ -4,3 +4,8 @@ metadata:
   name: knode4
   labels:
     intel.feature.node.kubernetes.io/gpu: "true"
+spec:
+  taints:
+    - key: dedicated
+      value: gpu
+      effect: NoSchedule

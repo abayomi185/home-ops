@@ -9,6 +9,11 @@ spec:
       nodeSelector:
         intel.feature.node.kubernetes.io/gpu: "true"
         kubernetes.io/hostname: knode4
+      tolerations:
+        - key: dedicated
+          operator: Equal
+          value: gpu
+          effect: NoSchedule
       containers:
         - name: jellyfin
           resources:
