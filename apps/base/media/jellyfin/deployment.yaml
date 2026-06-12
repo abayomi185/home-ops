@@ -40,20 +40,22 @@ spec:
               name: media
               subPath: jellyfin/media
             - mountPath: /cache
-              name: config-data
-              subPath: jellyfin/cache
+              name: cache
             - mountPath: /config
               name: config-data
               subPath: jellyfin/config
             - mountPath: /transcode
-              name: config-data
-              subPath: jellyfin/transcode
+              name: transcode
       hostname: jellyfin
       volumes:
         - name: config-data
           nfs:
             server: ${NFS_STORAGE_HOST}
             path: ${NFS_STORAGE_CONFIG_DATA_PATH}
+        - name: cache
+          emptyDir: {}
+        - name: transcode
+          emptyDir: {}
         - name: media
           nfs:
             server: ${NFS_STORAGE_HOST}
