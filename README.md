@@ -11,6 +11,13 @@ Homelab:
 
 Taking inspiration from https://github.com/onedr0p/home-ops
 
+### Documentation pattern
+
+- Put steady-state app context next to complex manifests in `apps/**/README.md`.
+- Put dated migrations, recoveries, and incident notes in `docs/operations/YYYY-MM-DD-<slug>.md`.
+- Keep READMEs timeless; move chronology and one-off recovery details into `docs/operations/`.
+- Prefer documenting only the directories with non-obvious storage, scheduling, or recovery constraints.
+
 ### To encrypt secrets:
 
 ```sh
