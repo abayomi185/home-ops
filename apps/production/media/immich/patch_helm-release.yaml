@@ -62,7 +62,7 @@ spec:
       persistence:
         cache:
           type: persistentVolumeClaim
-          storageClass: nfs-csi-default
+          storageClass: nfs-csi-immich
       # nodeSelector:
       #   kubernetes.io/hostname: knode2
       #   intel.feature.node.kubernetes.io/gpu: "true"

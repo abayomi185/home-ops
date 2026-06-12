@@ -1,0 +1,18 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nfs-csi-immich
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: ${NFS_STORAGE_HOST_FAST}
+  share: ${NFS_STORAGE_MAIN_DATA_PATH}
+  subDir: immich/$${pvc.metadata.name}
+reclaimPolicy: Retain
+volumeBindingMode: Immediate
+mountOptions:
+  - nfsvers=4.2
+  - nconnect=8
+  - hard
+  - noatime
+  - rsize=131072
+  - wsize=131072

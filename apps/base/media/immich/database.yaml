@@ -7,6 +7,7 @@ spec:
 
   storage:
     size: 8Gi
+    storageClass: nfs-csi-immich
   imageName: ghcr.io/tensorchord/cloudnative-vectorchord:16.9-0.4.3
 
   postgresql:
