@@ -1,0 +1,43 @@
+name: validate
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  kustomize-build:
+    name: kustomize build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up kubectl (ships kustomize)
+        uses: azure/setup-kubectl@v4
+
+      - name: Render overlays
+        run: |
+          set -euo pipefail
+          # Flux-managed manifests are excluded from Renovate scanning,
+          # so we don't render them here either.
+          overlays=$(find apps/production -type f -name kustomization.yaml | sort)
+          if [ -z "$overlays" ]; then
+            echo "No production overlays found"
+            exit 1
+          fi
+          for k in $overlays; do
+            dir=$(dirname "$k")
+            echo "::group::$dir"
+            kubectl kustomize "$dir" >/dev/null
+            echo "OK"
+            echo "::endgroup::"
+          done
