@@ -6,6 +6,7 @@ provisioner: nfs.csi.k8s.io
 parameters:
   server: ${NFS_STORAGE_HOST_FAST}
   share: ${NFS_STORAGE_MAIN_DATA_PATH}/nextcloud
+  subDir: $${pvc.metadata.name}
 reclaimPolicy: Retain
 volumeBindingMode: Immediate
 mountOptions:
