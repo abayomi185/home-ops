@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &deploymentName hermes-agent-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: *deploymentName
+  template:
+    metadata:
+      labels:
+        app: *deploymentName
+    spec:
+      containers:
+        - image: nousresearch/hermes-agent:v2026.4.8
+          imagePullPolicy: IfNotPresent
+          name: hermes-agent
+          # Run the messaging gateway to handle Telegram/Discord/Slack messages
+          args:
+            - gateway
+            - start
+          envFrom:
+            - secretRef:
+                name: hermes-agent-secrets
+          volumeMounts:
+            - mountPath: /opt/data
+              name: config-data
+              subPath: hermes-agent/data
+      hostname: hermes-agent
+      volumes:
+        - name: config-data
+          nfs:
+            server: ${NFS_STORAGE_IP}
+            path: ${NFS_STORAGE_CONFIG_DATA_PATH}
