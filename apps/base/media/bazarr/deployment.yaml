@@ -20,7 +20,7 @@ spec:
               value: "1001"
             - name: PGID
               value: "100"
-          image: ghcr.io/linuxserver/bazarr:latest@sha256:7adfe3ede9ce3562098a6f944fb644da16bdf245220e707260f89f1507c87b54
+          image: ghcr.io/linuxserver/bazarr:latest@sha256:4b5e510042bf471c8bafab89cada9774fba2fb25f16ec64235151cacbe847c10
           imagePullPolicy: IfNotPresent
           name: bazarr
           ports:
