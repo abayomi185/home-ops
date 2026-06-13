@@ -6,3 +6,4 @@ resources:
   - ./nextcloud/ks.yaml
   - ./open-webui/ks.yaml
   - ./open-webui-public/ks.yaml
+  - ./openclaw/ks.yaml
