@@ -27,7 +27,7 @@ spec:
         # - name: RADARR__URL
         # - name: SONARR__API
         # - name: RADARR__API
-        image: lscr.io/linuxserver/doplarr:latest@sha256:fd40e1d712b2a6c8fdfee5654bc9815e9d973f863a3902dbdb16255c29b1317f
+        image: lscr.io/linuxserver/doplarr:latest@sha256:d4ba41b866eed96e8a2422c2ad933554b7a5e39f3dfe29d5e165ae68767a6054
         imagePullPolicy: IfNotPresent
         name: doplarr
       hostname: doplarr
