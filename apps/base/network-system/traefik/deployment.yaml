@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: traefik
     app.kubernetes.io/name: traefik
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app.kubernetes.io/name: traefik
@@ -19,9 +19,17 @@ spec:
     spec:
       serviceAccountName: traefik-ingress-controller
       terminationGracePeriodSeconds: 60
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: traefik
+                  app.kubernetes.io/instance: traefik
+              topologyKey: kubernetes.io/hostname
       containers:
         - name: traefik
-          image: traefik:2.5.4
+          image: traefik:v3.7.4
           args:
             - "--entryPoints.web.address=:8000/tcp"
             - "--entryPoints.websecure.address=:8443/tcp"
@@ -31,6 +39,18 @@ spec:
             - "--ping=true"
             - "--providers.kubernetescrd"
             - "--providers.kubernetescrd.allowCrossNamespace=true"
+          env:
+            - name: HETZNER_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: hetzner-api-token
+                  key: api-key
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
           readinessProbe:
             httpGet:
               path: /ping
@@ -74,7 +94,12 @@ spec:
 
           volumeMounts:
             - mountPath: /data
-              name: storage-volume
+              name: acme-storage
+            - mountPath: /tmp
+              name: tmp
       volumes:
-        - name: storage-volume
+        - name: acme-storage
+          persistentVolumeClaim:
+            claimName: traefik-acme
+        - name: tmp
           emptyDir: {}

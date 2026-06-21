@@ -4,8 +4,8 @@ metadata:
   name: traefik-network
   namespace: flux-system
 spec:
-  targetNamespace: network
-  path: ./apps/production/network/traefik
+  targetNamespace: network-system
+  path: ./apps/production/network-system/traefik
   prune: true
   wait: false
   sourceRef:
@@ -14,3 +14,14 @@ spec:
   interval: 10m
   retryInterval: 1m
   timeout: 5m
+  healthChecks:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: traefik
+      namespace: network-system
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: cluster-settings
+      - kind: Secret
+        name: cluster-secrets
