@@ -1,0 +1,15 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ombi
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`ombi.internal.${SECRET_DOMAIN}`) || Host(`ombi.${SECRET_DOMAIN}`)
+      kind: Rule
+      services:
+        - name: ombi-service
+          port: 3579
+  tls:
+    certResolver: letsencrypt

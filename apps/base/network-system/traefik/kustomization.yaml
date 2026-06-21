@@ -9,3 +9,5 @@ resources:
   - pvc.yaml
   - secret.yaml
   - middleware.yaml
+  - middleware-redirect.yaml
+  - ingress-route.yaml
