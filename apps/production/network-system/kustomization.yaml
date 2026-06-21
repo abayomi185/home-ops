@@ -2,5 +2,9 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./namespace.yaml
+  # CRDs must install before resources that use them
+  - ./traefik-crd/ks.yaml
   - ./metallb/ks.yaml
+  # Config depends on CRDs being installed
+  - ./metallb-config/ks.yaml
   - ./traefik/ks.yaml

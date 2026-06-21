@@ -3,8 +3,6 @@ kind: Kustomization
 resources:
   - ./configmap.yaml
   - ../../../base/network-system/metallb
-  - ./ipaddresspool.yaml
-  - ./l2advertisement.yaml
 patches:
   - path: ./patch_helm-release.yaml
     target:
