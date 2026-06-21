@@ -10,9 +10,10 @@ and GoCardless, stores transactions/holdings in PostgreSQL.
   + `:sha-<short>`) and `dev` (`:dev`). Multi-arch (amd64 + arm64).
 - **Database**: CNPG `Cluster` named `wayom-database` (1 instance, 4 Gi storage).
   Creates a `wayom-database-app` Secret with a `uri` key — used as
-  `DATABASE_URL` by both the migrate initContainer and the server.
-- **Migrations**: `sqlx migrate run` in an initContainer using the same image.
-  Migration sources are baked into the image at `/migrations`.
+  `DATABASE_URL` by the server.
+- **Migrations**: run automatically on server startup via `sqlx::migrate!`
+  (embedded at compile time). No initContainer needed — the server panics
+  if migrations fail, causing Kubernetes to restart the pod.
 - **Sync scheduler**: in-server tokio task that calls `sync_accounts` for the
   seeded `system` user every hour (`WAYOM_SYNC_INTERVAL_SECS`). Builds a
   financial record without manual HTTP calls. Disable with

@@ -12,17 +12,6 @@ spec:
       labels:
         app: *deploymentName
     spec:
-      initContainers:
-        - name: migrate
-          image: ghcr.io/abayomi185/wayom-rs:latest # renovate: datasource=github-releases depName=abayomi185/wayom-rs
-          imagePullPolicy: IfNotPresent
-          command: ["sqlx", "migrate", "run", "--source", "/migrations"]
-          env:
-            - name: DATABASE_URL
-              valueFrom:
-                secretKeyRef:
-                  name: wayom-database-app
-                  key: uri
       containers:
         - name: wayom
           image: ghcr.io/abayomi185/wayom-rs:latest # renovate: datasource=github-releases depName=abayomi185/wayom-rs
