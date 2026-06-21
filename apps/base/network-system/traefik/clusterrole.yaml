@@ -30,7 +30,7 @@ rules:
     verbs:
       - update
   - apiGroups:
-      - traefik.containo.us
+      - traefik.io
     resources:
       - middlewares
       - middlewaretcps

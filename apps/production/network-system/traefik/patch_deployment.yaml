@@ -16,6 +16,14 @@ spec:
             - "--ping=true"
             - "--providers.kubernetescrd"
             - "--providers.kubernetescrd.allowCrossNamespace=true"
-            # - "--certificatesresolvers.myresolver.acme.storage=/data/acme.json"
-            # - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
-            # - "--certificatesresolvers.myresolver.acme.email="
+            # ACME via Hetzner DNS-01 challenge
+            - "--certificatesresolvers.letsencrypt.acme.storage=/data/acme.json"
+            - "--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=hetzner"
+            - "--certificatesresolvers.letsencrypt.acme.dnschallenge.delaybeforechecks=60"
+            - "--certificatesresolvers.letsencrypt.acme.dnschallenge.resolvers[0]=1.1.1.1:53"
+            - "--certificatesresolvers.letsencrypt.acme.dnschallenge.resolvers[1]=8.8.8.8:53"
+            # Default TLS certs — wildcards for public + LAN domains
+            - "--entrypoints.websecure.http.tls.domains[0].main=${SECRET_DOMAIN}"
+            - "--entrypoints.websecure.http.tls.domains[0].sans=*.${SECRET_DOMAIN}"
+            - "--entrypoints.websecure.http.tls.domains[1].main=local.${SECRET_DOMAIN}"
+            - "--entrypoints.websecure.http.tls.domains[1].sans=*.local.${SECRET_DOMAIN}"
