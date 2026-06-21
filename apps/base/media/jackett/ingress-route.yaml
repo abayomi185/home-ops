@@ -6,7 +6,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`jackett.internal.${SECRET_DOMAIN}`)
+    - match: Host(`jackett.internal.${DOMAIN}`)
       kind: Rule
       services:
         - name: jackett-service

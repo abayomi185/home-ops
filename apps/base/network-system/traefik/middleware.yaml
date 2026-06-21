@@ -4,7 +4,7 @@ metadata:
   name: authelia-forward-auth
 spec:
   forwardAuth:
-    address: http://10.0.7.205:8008/api/verify?rd=https://auth.${SECRET_DOMAIN}/
+    address: http://10.0.7.205:8008/api/verify?rd=https://auth.${DOMAIN}/
     trustForwardHeader: true
     authResponseHeaders:
       - Remote-User

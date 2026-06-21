@@ -6,7 +6,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`transmission.internal.${SECRET_DOMAIN}`)
+    - match: Host(`transmission.internal.${DOMAIN}`)
       kind: Rule
       services:
         - name: transmission-service

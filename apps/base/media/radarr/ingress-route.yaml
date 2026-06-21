@@ -6,7 +6,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`radarr.internal.${SECRET_DOMAIN}`) || Host(`radarr.${SECRET_DOMAIN}`)
+    - match: Host(`radarr.local.${DOMAIN}`) || Host(`radarr.internal.${DOMAIN}`)
       kind: Rule
       services:
         - name: radarr-service

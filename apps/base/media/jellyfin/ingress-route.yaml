@@ -6,7 +6,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`jellyfin.internal.${SECRET_DOMAIN}`) || Host(`jellyfin.${SECRET_DOMAIN}`)
+    - match: Host(`jellyfin.local.${DOMAIN}`) || Host(`jellyfin.internal.${DOMAIN}`)
       kind: Rule
       services:
         - name: jellyfin-service

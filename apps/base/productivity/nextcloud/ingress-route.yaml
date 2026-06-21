@@ -6,7 +6,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`nextcloud.internal.${SECRET_DOMAIN}`) || Host(`nextcloud.${SECRET_DOMAIN}`)
+    - match: Host(`nextcloud.local.${DOMAIN}`) || Host(`nextcloud.internal.${DOMAIN}`)
       kind: Rule
       services:
         - name: nextcloud-service

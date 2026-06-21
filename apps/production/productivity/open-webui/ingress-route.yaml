@@ -6,7 +6,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`chat-internal.internal.${SECRET_DOMAIN}`) || Host(`chat-internal.${SECRET_DOMAIN}`)
+    - match: Host(`chat-internal.local.${DOMAIN}`) || Host(`chat-internal.internal.${DOMAIN}`)
       kind: Rule
       services:
         - name: open-webui-service

@@ -6,7 +6,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`bazarr.internal.${SECRET_DOMAIN}`)
+    - match: Host(`bazarr.internal.${DOMAIN}`)
       kind: Rule
       services:
         - name: bazarr-service
