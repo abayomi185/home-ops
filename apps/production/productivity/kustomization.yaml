@@ -9,3 +9,4 @@ resources:
   - ./authelia/ks.yaml
   - ./uptime-kuma/ks.yaml
   - ./send2ereader/ks.yaml
+  - ./wayom/ks.yaml
