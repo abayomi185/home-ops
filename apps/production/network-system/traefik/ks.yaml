@@ -15,7 +15,7 @@ spec:
   retryInterval: 1m
   timeout: 5m
   dependsOn:
-    - name: traefik-crds
+    - name: traefik-crds-production
   healthChecks:
     - apiVersion: apps/v1
       kind: Deployment
