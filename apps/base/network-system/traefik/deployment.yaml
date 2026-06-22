@@ -40,11 +40,11 @@ spec:
             - "--providers.kubernetescrd"
             - "--providers.kubernetescrd.allowCrossNamespace=true"
           env:
-            - name: HETZNER_API_KEY
+            - name: HETZNER_API_TOKEN
               valueFrom:
                 secretKeyRef:
                   name: hetzner-api-token
-                  key: api-key
+                  key: api-token
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
