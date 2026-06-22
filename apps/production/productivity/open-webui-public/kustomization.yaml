@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
   - ./secret.sops.yaml
   - ../../../base/productivity/open-webui
+  - ./ingress-route.yaml
 namePrefix: public-
 commonLabels:
   app: public-open-webui-deployment

@@ -3,5 +3,6 @@ kind: Kustomization
 resources:
   - ./secret.sops.yaml
   - ../../../base/productivity/open-webui
+  - ./ingress-route.yaml
 patches:
   - path: ./patch_deployment.yaml

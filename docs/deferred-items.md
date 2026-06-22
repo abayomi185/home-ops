@@ -83,3 +83,29 @@ These land after the in-cluster Traefik + MetalLB cutover is stable.
       etc.) is only reachable from the cluster via the knodes' eth1.
       When those services move into the cluster, the 10.0.7 segment's
       role shrinks; revisit whether the bridge is still needed.
+
+## VPS as k3s node
+
+- [ ] **Consider adding the VPS as a k3s agent node.** The VPS
+      currently runs its own Traefik v3, Authelia, and Uptime-Kuma
+      independently. If the VPS joins the cluster as an agent:
+      - Public Traefik can be an in-cluster Deployment with a
+        LoadBalancer service on the VPS's public IP (MetalLB L2
+        announcement via WireGuard, or a dedicated pool for the
+        VPS's public subnet).
+      - Authelia, Uptime-Kuma, and other VPS-hosted services become
+        k8s Deployments, managed by Flux like everything else.
+      - The VPS's Traefik static config, file providers, and NixOS
+        service definitions are replaced by k8s manifests.
+      - **Workload isolation:** use taints + tolerations (like knode4
+        with `dedicated=gpu:NoSchedule`) to restrict which pods run on
+        the VPS — e.g. only the public Traefik + Authelia, not media
+        workloads.
+      - **Challenge:** the VPS is behind WireGuard to the LAN, not on
+        the same L2 as the knodes. k3s agent traffic would tunnel
+        through WireGuard to knode1's API server. Latency and
+        reliability of the WG tunnel become cluster-critical.
+      - **Challenge:** the VPS runs NixOS — k3s agent config would
+        need to be added to `nix-dotfiles/hosts/vps/configuration.nix`.
+      - This is a significant architecture change. Plan thoroughly
+        before executing.
