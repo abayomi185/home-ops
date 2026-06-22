@@ -2,9 +2,10 @@ apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
   name: authelia-forward-auth
+  namespace: network-system
 spec:
   forwardAuth:
-    address: http://10.0.7.205:8008/api/verify?rd=https://auth.local.${DOMAIN}/
+    address: http://authelia-service.productivity.svc.cluster.local:9091/api/authz/forward-auth
     trustForwardHeader: true
     authResponseHeaders:
       - Remote-User
