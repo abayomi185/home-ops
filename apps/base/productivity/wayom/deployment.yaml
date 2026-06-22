@@ -12,6 +12,8 @@ spec:
       labels:
         app: *deploymentName
     spec:
+      imagePullSecrets:
+        - name: ghcr-pull-secret
       containers:
         - name: wayom
           image: ghcr.io/abayomi185/wayom-rs:latest # renovate: datasource=github-releases depName=abayomi185/wayom-rs

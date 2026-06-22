@@ -3,4 +3,5 @@ kind: Kustomization
 resources:
   - ./configmap.yaml
   - ./secret.sops.yaml
+  - ./ghcr-secret.sops.yaml
   - ../../../base/productivity/wayom
