@@ -28,8 +28,6 @@ spec:
               value: /secrets/jwt_secret
             - name: AUTHELIA_SESSION_SECRET_FILE
               value: /secrets/session_secret
-            - name: AUTHELIA_NOTIFIER_SMTP_PASSWORD_FILE
-              value: /secrets/smtp_password
             - name: AUTHELIA_DUO_API_SECRET_KEY_FILE
               value: /secrets/duo_secret_key
           ports:

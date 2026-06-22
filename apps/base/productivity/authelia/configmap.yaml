@@ -94,11 +94,8 @@ data:
       local:
         path: /config/db.sqlite3
     notifier:
-      smtp:
-        username: captyomjnr@gmail.com
-        host: smtp.gmail.com
-        port: 587
-        sender: authelia@yomitosh.media
+      filesystem:
+        filename: /config/notification.txt
   users_database.yml: |
     ---
     users:
