@@ -6,7 +6,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`lidarr.local.${DOMAIN}`) || Host(`lidarr.internal.${DOMAIN}`)
+    - match: Host(`lidarr.local.${DOMAIN}`)
       kind: Rule
       services:
         - name: lidarr-service

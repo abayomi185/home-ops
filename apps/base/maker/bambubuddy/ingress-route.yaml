@@ -6,7 +6,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`bambubuddy.local.${DOMAIN}`) || Host(`bambubuddy.internal.${DOMAIN}`)
+    - match: Host(`bambubuddy.local.${DOMAIN}`)
       kind: Rule
       services:
         - name: bambubuddy-service

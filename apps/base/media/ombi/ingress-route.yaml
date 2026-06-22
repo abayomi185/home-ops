@@ -6,7 +6,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`ombi.local.${DOMAIN}`) || Host(`ombi.internal.${DOMAIN}`)
+    - match: Host(`ombi.local.${DOMAIN}`)
       kind: Rule
       services:
         - name: ombi-service

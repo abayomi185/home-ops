@@ -6,7 +6,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`requestrr.internal.${DOMAIN}`)
+    - match: Host(`requestrr.local.${DOMAIN}`)
       kind: Rule
       services:
         - name: requestrr-service

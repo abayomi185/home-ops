@@ -6,7 +6,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`immich.local.${DOMAIN}`) || Host(`immich.internal.${DOMAIN}`)
+    - match: Host(`immich.local.${DOMAIN}`)
       kind: Rule
       services:
         - name: immich-deployment-server
