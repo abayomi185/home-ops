@@ -40,10 +40,10 @@ spec:
             - "--providers.kubernetescrd"
             - "--providers.kubernetescrd.allowCrossNamespace=true"
           env:
-            - name: HETZNER_API_TOKEN
+            - name: CF_DNS_API_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: hetzner-api-token
+                  name: cloudflare-api-token
                   key: api-token
           securityContext:
             allowPrivilegeEscalation: false
