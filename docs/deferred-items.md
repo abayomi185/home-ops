@@ -3,12 +3,42 @@
 Living list of work that is out of scope for the current effort but
 must not be forgotten. Cross off as resolved; do not silently delete.
 
+## Completed
+
+- [x] **In-cluster Traefik + MetalLB cutover.** MetalLB L2 mode on
+      `10.1.5.96` (VLAN 5), in-cluster Traefik v2 with Cloudflare
+      DNS-01 ACME. All 15 k8s app routes served via IngressRoutes on
+      `*.local.yomitosh.media`. DNS repointed in Unbound
+      (`local.yomitosh.media` → `10.1.5.96`). External kloadbalancer
+      LXC at `10.1.5.40` is bypassed for all k8s traffic.
+      (PRs #45, #47, #48, #49)
+- [x] **Convert all NodePort services to ClusterIP.** 19 service files
+      converted. All external access now flows through Traefik
+      IngressRoutes. Zero manually-specified NodePorts remain. Only
+      Traefik's `type: LoadBalancer` service has auto-allocated
+      NodePorts (30430, 31097) — expected, not removable.
+      (PR #49)
+- [x] **Drop `*.internal.yomitosh.media` from IngressRoutes.**
+      `internal.yomitosh.media` is a Dnsmasq zone for infrastructure
+      devices (knodes, firewall, network-share via DHCP reservations),
+      not for k8s app routing. App hostnames like
+      `bazarr.internal.yomitosh.media` never resolved. All
+      IngressRoutes now match `*.local.yomitosh.media` only.
+      (PR #48)
+- [x] **Fix restreamer duplicate nodePort bug.** `service.yaml`
+      assigned `nodePort: 30686` to five different ports. Converted to
+      ClusterIP with unique port names. App is not deployed (not in
+      any production kustomization) but the base manifest is now
+      correct.
+
 ## LB migration — long tail
 
 These land after the in-cluster Traefik + MetalLB cutover is stable.
 
 - [ ] **Retire `kloadbalancer` LXC (10.1.5.40).** Goal per the migration
-      plan. Blocked on the items below.
+      plan. The LXC is now bypassed for all k8s traffic. It still
+      serves non-k8s backends (see below). Blocked on migrating those
+      or repointing their routes.
 - [ ] **Move non-k8s backends into the cluster** (or replace with
       in-cluster equivalents). Currently routed by the external LXC
       Traefik via direct IP / internal DNS:
@@ -51,11 +81,6 @@ These land after the in-cluster Traefik + MetalLB cutover is stable.
 
 ## Pre-existing bugs to clean up (not blocking the migration)
 
-- [ ] **`apps/base/media/restreamer/service.yaml`** assigns
-      `nodePort: 30686` to five different ports (8080, 8181, 1935,
-      1936, 6000/UDP). Invalid — k8s rejects duplicate nodePorts within
-      one Service. Fix or convert to ClusterIP + IngressRoute as part
-      of the migration Phase 2.
 - [ ] **External LB `static_config.nix`** has
       `proxyProtocol.trustedIPs = ["10.13.13.1/24" "10.0.1.0/24"]` —
       `/24` mask on a single host (`10.13.13.1` is the VPS endpoint,
@@ -63,7 +88,7 @@ These land after the in-cluster Traefik + MetalLB cutover is stable.
       Don't fix in place — the LXC is on borrowed time. The fix is
       "decommission the LXC".
 
-## In-cluster Traefik hardening (post-cutover)
+## In-cluster Traefik hardening
 
 - [ ] **Tighten `allowCrossNamespace=true`.** Convenient for the
       initial migration (IngressRoutes live alongside apps in any
@@ -72,9 +97,13 @@ These land after the in-cluster Traefik + MetalLB cutover is stable.
       ever arise.
 - [ ] **Consider cert-manager vs Traefik-native ACME.** Initial
       cutover mirrors the external LB: Traefik-native ACME with
-      Hetzner DNS-01. cert-manager would give cluster-wide cert
+      Cloudflare DNS-01. cert-manager would give cluster-wide cert
       inventory, rotation history, and decouple cert issuance from
       the ingress controller. Revisit if cert surface grows.
+- [ ] **Scale Traefik replicas.** Currently 2 replicas (manual
+      scale-up from initial 1). No PodDisruptionBudget or
+      autoscaling configured. Add HPA or fixed 3-replica + PDB for
+      rolling update safety.
 
 ## Cluster bridge
 
