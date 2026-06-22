@@ -6,9 +6,7 @@ spec:
   selector:
     app: wayom-deployment
   ports:
-  - name: http
-    port: 3080
-    targetPort: 3080
-    protocol: TCP
-    nodePort: 30080
-  type: NodePort
+    - name: http
+      port: 3080
+      targetPort: 3080
+      protocol: TCP

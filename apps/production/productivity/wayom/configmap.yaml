@@ -12,7 +12,7 @@ data:
     [general]
     # External URL the browser/frontend uses to reach this API.
     # Used for CORS origin matching and GoCardless callback URLs.
-    # Update to your node IP + NodePort, or your domain if you add ingress later.
+    # Served via Traefik IngressRoute at wayom.local.${DOMAIN}.
     base_url = "https://wayom.local.yomitosh.media"
 
     # Primary provider for the sync scheduler. Defaults to "lunchflow".
