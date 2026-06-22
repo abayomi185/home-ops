@@ -22,9 +22,8 @@ spec:
             - "--certificatesresolvers.letsencrypt.acme.dnschallenge.delaybeforecheck=60"
             - "--certificatesresolvers.letsencrypt.acme.dnschallenge.resolvers=1.1.1.1:53,8.8.8.8:53"
             # Default TLS certs — wildcards for public + LAN domains
+            # internal.yomitosh.media is for infrastructure devices (Dnsmasq), not k8s apps
             - "--entrypoints.websecure.http.tls.domains[0].main=${DOMAIN}"
             - "--entrypoints.websecure.http.tls.domains[0].sans=*.${DOMAIN}"
-            - "--entrypoints.websecure.http.tls.domains[1].main=internal.${DOMAIN}"
-            - "--entrypoints.websecure.http.tls.domains[1].sans=*.internal.${DOMAIN}"
-            - "--entrypoints.websecure.http.tls.domains[2].main=local.${DOMAIN}"
-            - "--entrypoints.websecure.http.tls.domains[2].sans=*.local.${DOMAIN}"
+            - "--entrypoints.websecure.http.tls.domains[1].main=local.${DOMAIN}"
+            - "--entrypoints.websecure.http.tls.domains[1].sans=*.local.${DOMAIN}"

@@ -6,7 +6,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`sonarr.local.${DOMAIN}`) || Host(`sonarr.internal.${DOMAIN}`)
+    - match: Host(`sonarr.local.${DOMAIN}`)
       kind: Rule
       services:
         - name: sonarr-service
