@@ -31,8 +31,8 @@ spec:
             httpGet:
               path: /
               port: http
-            initialDelaySeconds: 10
-            periodSeconds: 5
+            initialDelaySeconds: 600
+            periodSeconds: 30
             failureThreshold: 3
           resources:
             requests:
