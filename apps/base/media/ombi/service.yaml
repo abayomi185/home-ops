@@ -10,5 +10,3 @@ spec:
     port: 3579
     targetPort: 3579
     protocol: TCP
-    nodePort: 30579
-  type: NodePort

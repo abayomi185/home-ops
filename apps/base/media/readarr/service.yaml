@@ -10,5 +10,3 @@ spec:
     port: 8787
     targetPort: 8787
     protocol: TCP
-    nodePort: 30787
-  type: NodePort
