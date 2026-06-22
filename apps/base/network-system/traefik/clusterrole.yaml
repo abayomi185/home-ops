@@ -7,19 +7,26 @@ rules:
       - ""
     resources:
       - services
-      - endpoints
       - secrets
+      - nodes
       - configmaps
     verbs:
       - get
       - list
       - watch
+  # The pods right is needed to inject k8s.pod.uid and k8s.pod.name OTel attributes.
+  # When OTel tracing/logs/metrics are not enabled, this rule is not needed.
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+    verbs:
+      - get
   - apiGroups:
       - discovery.k8s.io
     resources:
       - endpointslices
     verbs:
-      - get
       - list
       - watch
   - apiGroups:
@@ -34,6 +41,7 @@ rules:
       - watch
   - apiGroups:
       - extensions
+      - networking.k8s.io
     resources:
       - ingresses/status
     verbs:
