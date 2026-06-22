@@ -7,7 +7,7 @@ and GoCardless, stores transactions/holdings in PostgreSQL.
 
 - **Image**: `ghcr.io/abayomi185/wayom` — built by GitHub Actions in
   [wayom-rs](https://github.com/abayomi185/wayom-rs) on push to `main` (`:latest`
-  + `:sha-<short>`) and `dev` (`:dev`). Multi-arch (amd64 + arm64).
+  + `:sha-<short>`). Multi-arch (amd64 + arm64).
 - **Database**: CNPG `Cluster` named `wayom-database` (1 instance, 4 Gi storage).
   Creates a `wayom-database-app` Secret with a `uri` key — used as
   `DATABASE_URL` by the server.
@@ -18,7 +18,7 @@ and GoCardless, stores transactions/holdings in PostgreSQL.
   seeded `system` user every hour (`WAYOM_SYNC_INTERVAL_SECS`). Builds a
   financial record without manual HTTP calls. Disable with
   `WAYOM_SYNC_ENABLED=false`.
-- **Exposure**: NodePort 30080 → container port 3080.
+- **Exposure**: ClusterIP + Traefik IngressRoute at `wayom.local.${DOMAIN}` (TLS via Let's Encrypt).
 
 ## Secrets
 
@@ -36,7 +36,7 @@ Required keys:
 | `jwt_secret` | **Must be < 32 characters** (the app panics if ≥ 32 — likely a bug to fix in wayom-rs, but respect it for now). |
 | `github_oauth_client_id` | GitHub OAuth App client ID. |
 | `github_oauth_client_secret` | GitHub OAuth App client secret. |
-| `github_oauth_redirect_url` | e.g. `http://<node-ip>:30080/api/auth/github/callback` — must match the GitHub OAuth App callback URL. |
+| `github_oauth_redirect_url` | e.g. `https://wayom.local.yomitosh.media/api/auth/github/callback` — must match the GitHub OAuth App callback URL. |
 | `lunch_flow_api_key` | Lunch Flow personal API key. |
 
 ## Config
