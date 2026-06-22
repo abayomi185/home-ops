@@ -12,4 +12,4 @@ spec:
         - name: redirect-to-https
       services:
         - name: traefik
-          port: 9000
+          port: 80
