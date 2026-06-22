@@ -16,9 +16,9 @@ spec:
             - "--ping=true"
             - "--providers.kubernetescrd"
             - "--providers.kubernetescrd.allowCrossNamespace=true"
-            # ACME via Hetzner DNS-01 challenge
+            # ACME via Cloudflare DNS-01 challenge
             - "--certificatesresolvers.letsencrypt.acme.storage=/data/acme.json"
-            - "--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=hetzner"
+            - "--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=cloudflare"
             - "--certificatesresolvers.letsencrypt.acme.dnschallenge.delaybeforecheck=60"
             - "--certificatesresolvers.letsencrypt.acme.dnschallenge.resolvers=1.1.1.1:53,8.8.8.8:53"
             # Default TLS certs — wildcards for public + LAN domains
