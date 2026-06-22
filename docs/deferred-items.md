@@ -30,6 +30,15 @@ must not be forgotten. Cross off as resolved; do not silently delete.
       ClusterIP with unique port names. App is not deployed (not in
       any production kustomization) but the base manifest is now
       correct.
+- [x] **Migrate Authelia, Uptime-Kuma, Send2eReader to cluster.**
+      Three services moved from discovery LXC (10.0.7.205) into k8s:
+      - Authelia v4.39.20 (upgraded from v4.37.5), config updated to
+        v4.39 format, secrets in SOPS, forward-auth middleware
+        repointed to in-cluster service.
+      - Uptime-Kuma with 102M data migrated to NFS.
+      - Send2eReader image built via GitHub Actions to GHCR.
+      Routes: `auth.local`, `uptime-kuma.local`, `send2ereader.local`.
+      (PR #50)
 
 ## LB migration — long tail
 
@@ -39,15 +48,15 @@ These land after the in-cluster Traefik + MetalLB cutover is stable.
       plan. The LXC is now bypassed for all k8s traffic. It still
       serves non-k8s backends (see below). Blocked on migrating those
       or repointing their routes.
-- [ ] **Move non-k8s backends into the cluster** (or replace with
-      in-cluster equivalents). Currently routed by the external LXC
-      Traefik via direct IP / internal DNS:
+- [ ] **Move remaining non-k8s backends into the cluster.** Authelia,
+      Uptime-Kuma, and Send2eReader have been migrated. Still on the
+      discovery LXC or external:
       - AdGuard Home — `10.0.7.53:80`
-      - Authelia — `10.0.7.205:8008` (forward-auth dependency; see below)
-      - Send2eReader — `10.0.7.205:3031`
-      - Uptime-Kuma — `10.0.7.205:3001`
-      - InfluxDB — `10.0.7.205:8086`
-      - Guacamole — `10.0.7.205:8060`
+      - InfluxDB — `10.0.7.205:8086` (6.3G data — verify if still
+        used before migrating)
+      - Guacamole — `10.0.7.205:8060` (bundled Postgres, complex)
+      - Overleaf (ShareLaTeX) — `10.0.7.205:8070` (3-container stack:
+        sharelatex + mongo + redis, Mongo 4.0 EOL)
       - MinIO / S3 — `10.0.7.201:9000`
       - Proxmox VE — `10.0.7.1:8006` (likely stays external; PVE is the
         hypervisor hosting the cluster — folding into the cluster it
@@ -56,19 +65,32 @@ These land after the in-cluster Traefik + MetalLB cutover is stable.
       - LLM server — `machine-learning.internal.yomitosh.media:9000`
       - ComfyUI — `machine-learning.internal.yomitosh.media:8188`
       - 3D printer video — `k1c.internal.yomitosh.media:4409`
+      - Grafana — `10.0.7.205:3000` (see Grafana duplication below)
+      - Prometheus — `10.0.7.205:9090` (redundant with firewall)
+      - VictoriaMetrics — `10.0.7.205:8428` (empty, likely unused)
+      - Heimdall — `10.0.7.205:8080` (dashboard, likely unused)
+      - Portainer — `10.0.7.205:9000` (Docker mgmt, not needed in k8s)
 - [ ] **Expose Blocky web UI.** Blocky ad-blocker runs on the firewall
       (`blocky.nix`, port 4000) with no public route today. Decide
       whether it gets an IngressRoute or stays LAN-only.
 
 ## Authelia
 
-- [ ] **Decide Authelia's future home.** In-cluster Traefik uses
-      forward-auth pointing at the existing external Authelia
-      (`10.0.7.205:8008`). Long-term options:
-      (a) bring Authelia into the cluster as a k8s deployment;
-      (b) keep it on the LXC/10.0.7 segment and treat it as a
-          non-k8s backend via `ExternalName` Service + IngressRoute;
-      (c) replace with a different identity provider.
+- [x] **Decide Authelia's future home.** Done — Authelia migrated into
+      the cluster as a k8s deployment (option a). Forward-auth
+      middleware now points at
+      `authelia-service.productivity.svc:9091/api/authz/forward-auth`.
+- [ ] **Reconfigure SMTP notifier.** Switched to filesystem notifier
+      because the Gmail app password from 2021 is expired/revoked.
+      Generate a new Gmail app password (or switch to a different
+      SMTP provider) and update the SOPS secret + ConfigMap.
+- [ ] **Re-register TOTP.** The old SQLite DB from v4.37.5 was
+      incompatible with v4.39's encryption scheme and was deleted.
+      Users need to re-register TOTP devices.
+- [ ] **Clean up deprecated config keys.** v4.39 warns about
+      `jwt_secret` (→ `identity_validation.reset_password.jwt_secret`)
+      and `notifier.smtp.host`/`port` (→ `notifier.smtp.address`).
+      Update when switching back to SMTP.
 
 ## Grafana duplication
 
@@ -108,9 +130,10 @@ These land after the in-cluster Traefik + MetalLB cutover is stable.
 ## Cluster bridge
 
 - [ ] **10.0.7.0/24 is Proxmox-internal, not routed by the firewall.**
-      Any non-k8s backend on that segment (Authelia, AdGuard, MinIO,
-      etc.) is only reachable from the cluster via the knodes' eth1.
-      When those services move into the cluster, the 10.0.7 segment's
+      Any non-k8s backend on that segment (AdGuard, MinIO, etc.) is
+      only reachable from the cluster via the knodes' eth1. Authelia
+      and Uptime-Kuma have been migrated off this segment. When the
+      remaining services move into the cluster, the 10.0.7 segment's
       role shrinks; revisit whether the bridge is still needed.
 
 ## VPS as k3s node
