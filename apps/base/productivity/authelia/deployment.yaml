@@ -12,6 +12,7 @@ spec:
       labels:
         app: *deploymentName
     spec:
+      enableServiceLinks: false
       containers:
         - name: authelia
           image: docker.io/authelia/authelia:4.39.20
@@ -20,7 +21,7 @@ spec:
             - name: TZ
               value: Europe/London
             - name: X_AUTHELIA_CONFIG
-              value: /config/configuration.yml
+              value: /etc/authelia/configuration.yml
             - name: AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE
               value: /secrets/storage_encryption_key
             - name: AUTHELIA_JWT_SECRET_FILE
@@ -39,13 +40,8 @@ spec:
             - mountPath: /config
               name: config-volume
               subPath: authelia/config
-            - mountPath: /config/configuration.yml
+            - mountPath: /etc/authelia
               name: configmap-volume
-              subPath: configuration.yml
-              readOnly: true
-            - mountPath: /config/users_database.yml
-              name: configmap-volume
-              subPath: users_database.yml
               readOnly: true
             - mountPath: /secrets
               name: secrets-volume

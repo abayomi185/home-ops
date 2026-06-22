@@ -23,7 +23,7 @@ data:
       enable_self_enrollment: true
     authentication_backend:
       file:
-        path: /config/users_database.yml
+        path: /etc/authelia/users_database.yml
         password:
           algorithm: argon2id
           iterations: 1
