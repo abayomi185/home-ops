@@ -10,5 +10,3 @@ spec:
     port: 9091
     targetPort: 9091
     protocol: TCP
-    nodePort: 30091
-  type: NodePort

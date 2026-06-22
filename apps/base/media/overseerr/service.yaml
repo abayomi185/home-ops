@@ -10,5 +10,3 @@ spec:
       port: 5055
       targetPort: 5055
       protocol: TCP
-      nodePort: 30055
-  type: NodePort

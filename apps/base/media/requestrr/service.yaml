@@ -10,5 +10,3 @@ spec:
     port: 4545
     targetPort: 4545
     protocol: TCP
-    nodePort: 30545
-  type: NodePort

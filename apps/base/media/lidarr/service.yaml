@@ -10,5 +10,3 @@ spec:
     port: 8686
     targetPort: 8686
     protocol: TCP
-    nodePort: 30686
-  type: NodePort

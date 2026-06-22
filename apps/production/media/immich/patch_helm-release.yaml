@@ -14,12 +14,11 @@ spec:
     server:
       service:
         main:
-          type: NodePort
+          type: ClusterIP
           ports:
             http:
               port: 2283
               targetPort: 2283
-              nodePort: 32283
       persistence:
         external-data-main:
           enabled: true
