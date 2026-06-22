@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &deploymentName uptime-kuma-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: *deploymentName
+  template:
+    metadata:
+      labels:
+        app: *deploymentName
+    spec:
+      containers:
+        - name: uptime-kuma
+          image: louislam/uptime-kuma:1
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: TZ
+              value: Europe/London
+          ports:
+            - containerPort: 3001
+              name: http
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /app/data
+              name: config-volume
+              subPath: uptime-kuma
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
+            limits:
+              cpu: 500m
+              memory: 500Mi
+      volumes:
+        - name: config-volume
+          nfs:
+            server: ${NFS_STORAGE_HOST_FAST}
+            path: ${NFS_STORAGE_CONFIG_DATA_PATH}

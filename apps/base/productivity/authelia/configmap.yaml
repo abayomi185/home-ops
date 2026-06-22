@@ -1,0 +1,111 @@
+---
+# Authelia configuration (v4.39 format)
+# Updated from v4.37.5 config:
+# - session.domain -> session.cookies[].domain (multi-domain protection)
+# - default_redirection_url -> session.cookies[].default_redirection_url
+# - session.remember_me_duration -> session.remember_me
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: authelia-config
+data:
+  configuration.yml: |
+    ---
+    server:
+      address: 'tcp://0.0.0.0:9091'
+    log:
+      level: info
+    totp:
+      issuer: authelia.com
+    duo_api:
+      hostname: api-c60136e7.duosecurity.com
+      integration_key: DILCZ6YH0N7RNG8WL37V
+      enable_self_enrollment: true
+    authentication_backend:
+      file:
+        path: /config/users_database.yml
+        password:
+          algorithm: argon2id
+          iterations: 1
+          salt_length: 16
+          parallelism: 8
+          memory: 64
+    access_control:
+      default_policy: deny
+      rules:
+        - domain: "*"
+          networks:
+            - 100.64.0.0/10
+            - 10.0.1.0/24
+          policy: bypass
+        - domain: rancher.yomitosh.media
+          policy: one_factor
+        - domain: home.yomitosh.media
+          policy: bypass
+          resources:
+            - "^/api(/.*)?$"
+            - "^/auth/token.*"
+        - domain: home.yomitosh.media
+          policy: one_factor
+        - domain: jellyfin.yomitosh.media
+          policy: bypass
+        - domain: heimdall.yomitosh.media
+          policy: one_factor
+        - domain: sonarr.yomitosh.media
+          policy: bypass
+          resources:
+            - "^/api(/.*)?$"
+        - domain: sonarr.yomitosh.media
+          policy: one_factor
+        - domain: radarr.yomitosh.media
+          policy: bypass
+          resources:
+            - "^/api(/.*)?$"
+        - domain: radarr.yomitosh.media
+          policy: one_factor
+        - domain: photoprism.yomitosh.media
+          policy: two_factor
+        - domain: ombi.yomitosh.media
+          policy: bypass
+        - domain: search.yomitosh.media
+          policy: bypass
+        - domain: nextcloud.yomitosh.media
+          policy: bypass
+        - domain: audiobookshelf.yomitosh.media
+          policy: bypass
+        - domain: fidi.yomitosh.media
+          policy: one_factor
+        - domain: ollama.yomitosh.media
+          policy: one_factor
+    session:
+      name: authelia_session
+      expiration: 5400
+      inactivity: 1800
+      remember_me: 864000
+      cookies:
+        - domain: yomitosh.media
+          authelia_url: 'https://auth.local.yomitosh.media'
+          default_redirection_url: 'https://auth.yomitosh.media'
+    regulation:
+      max_retries: 3
+      find_time: 120
+      ban_time: 300
+    storage:
+      local:
+        path: /config/db.sqlite3
+    notifier:
+      smtp:
+        username: captyomjnr@gmail.com
+        host: smtp.gmail.com
+        port: 587
+        sender: authelia@yomitosh.media
+  users_database.yml: |
+    ---
+    users:
+      yomi:
+        password: "$argon2id$v=19$m=65536,t=1,p=8$ekdFaTRxOVJPNE4vTitSTA$R9g7xQZYVGFYHjR2rDhsDlBKAHTuUfDAv950ZEWT1+c"
+        displayname: Yomi
+        email: captyomjnr@gmail.com
+        groups:
+          - admins
+          - dev

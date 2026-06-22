@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &deploymentName authelia-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: *deploymentName
+  template:
+    metadata:
+      labels:
+        app: *deploymentName
+    spec:
+      containers:
+        - name: authelia
+          image: ghcr.io/authelia/authelia:v4.39.20
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: TZ
+              value: Europe/London
+            - name: X_AUTHELIA_CONFIG
+              value: /config/configuration.yml
+            - name: AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE
+              value: /secrets/storage_encryption_key
+            - name: AUTHELIA_JWT_SECRET_FILE
+              value: /secrets/jwt_secret
+            - name: AUTHELIA_SESSION_SECRET_FILE
+              value: /secrets/session_secret
+            - name: AUTHELIA_NOTIFIER_SMTP_PASSWORD_FILE
+              value: /secrets/smtp_password
+            - name: AUTHELIA_DUO_API_SECRET_KEY_FILE
+              value: /secrets/duo_secret_key
+          ports:
+            - containerPort: 9091
+              name: http
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /config
+              name: config-volume
+              subPath: authelia/config
+            - mountPath: /config/configuration.yml
+              name: configmap-volume
+              subPath: configuration.yml
+              readOnly: true
+            - mountPath: /config/users_database.yml
+              name: configmap-volume
+              subPath: users_database.yml
+              readOnly: true
+            - mountPath: /secrets
+              name: secrets-volume
+              readOnly: true
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 50m
+              memory: 50Mi
+            limits:
+              cpu: 500m
+              memory: 200Mi
+      volumes:
+        - name: config-volume
+          nfs:
+            server: ${NFS_STORAGE_HOST_FAST}
+            path: ${NFS_STORAGE_CONFIG_DATA_PATH}
+        - name: configmap-volume
+          configMap:
+            name: authelia-config
+        - name: secrets-volume
+          secret:
+            secretName: authelia-secrets
