@@ -16,7 +16,7 @@ spec:
         - name: ghcr-pull-secret
       containers:
         - name: wayom
-          image: ghcr.io/abayomi185/wayom-rs:latest # renovate: datasource=github-releases depName=abayomi185/wayom-rs
+          image: ghcr.io/abayomi185/wayom:latest@sha256:b11b530aaf664479ff46ec50e3fbd8a992af2b619217d74187823dfce07ad46d # renovate: datasource=docker depName=ghcr.io/abayomi185/wayom
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3080

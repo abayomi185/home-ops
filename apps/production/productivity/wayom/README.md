@@ -7,7 +7,7 @@ and GoCardless, stores transactions/holdings in PostgreSQL.
 
 - **Image**: `ghcr.io/abayomi185/wayom` — built by GitHub Actions in
   [wayom-rs](https://github.com/abayomi185/wayom-rs) on push to `main` (`:latest`
-  + `:sha-<short>`). Multi-arch (amd64 + arm64).
+  + `:sha-<short>`). The current manifest is amd64-only.
 - **Database**: CNPG `Cluster` named `wayom-database` (1 instance, 4 Gi storage).
   Creates a `wayom-database-app` Secret with a `uri` key — used as
   `DATABASE_URL` by the server.
@@ -47,9 +47,9 @@ reachable URL (used for CORS origin matching and GoCardless callbacks).
 
 ## Image updates
 
-The deployment pins `ghcr.io/abayomi185/wayom:latest`. After pushing a new
-image to `main`, update the digest in `deployment.yaml` (Renovate will keep it
-fresh once a `@sha256:` digest is pinned).
+The deployment pins `ghcr.io/abayomi185/wayom:latest` by digest. After pushing a
+new image to `main`, update the digest in `deployment.yaml` (Renovate will keep
+it fresh once the `@sha256:` digest is pinned).
 
 To pin a specific digest:
 ```sh
