@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: wayom-service
+spec:
+  selector:
+    app: wayom-deployment
+  ports:
+    - name: http
+      port: 3080
+      targetPort: 3080
+      protocol: TCP

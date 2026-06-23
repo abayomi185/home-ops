@@ -8,6 +8,9 @@ spec:
   routes:
     - match: Host(`bazarr.local.${DOMAIN}`)
       kind: Rule
+      middlewares:
+        - name: authelia-forward-auth
+          namespace: network-system
       services:
         - name: bazarr-service
           port: 6767

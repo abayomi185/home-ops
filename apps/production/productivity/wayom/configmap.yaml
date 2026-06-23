@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: wayom-config
+data:
+  wayom.toml: |
+    # Wayom production config.
+    # Secrets (DATABASE_URL, JWT_SECRET, LUNCH_FLOW_API_KEY, GITHUB_OAUTH_*)
+    # are injected from the wayom-secrets Secret / CNPG wayom-database-app Secret
+    # as env vars, NOT from this file.
+
+    [general]
+    # External URL the browser/frontend uses to reach this API.
+    # Used for CORS origin matching and GoCardless callback URLs.
+    # Served via Traefik IngressRoute at wayom.local.${DOMAIN}.
+    base_url = "https://wayom.local.yomitosh.media"
+
+    # Primary provider for the sync scheduler. Defaults to "lunchflow".
+    # primary_provider = "lunchflow"

@@ -8,6 +8,9 @@ spec:
   routes:
     - match: Host(`nextcloud.local.${DOMAIN}`)
       kind: Rule
+      middlewares:
+        - name: authelia-forward-auth
+          namespace: network-system
       services:
         - name: nextcloud-service
           port: 80

@@ -8,6 +8,9 @@ spec:
   routes:
     - match: Host(`prowlarr.local.${DOMAIN}`)
       kind: Rule
+      middlewares:
+        - name: authelia-forward-auth
+          namespace: network-system
       services:
         - name: prowlarr-service
           port: 9696
