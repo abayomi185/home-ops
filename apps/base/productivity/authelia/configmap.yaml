@@ -1,9 +1,4 @@
 ---
-# Authelia configuration (v4.39 format)
-# Updated from v4.37.5 config:
-# - session.domain -> session.cookies[].domain (multi-domain protection)
-# - default_redirection_url -> session.cookies[].default_redirection_url
-# - session.remember_me_duration -> session.remember_me
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -16,7 +11,7 @@ data:
     log:
       level: info
     totp:
-      issuer: authelia.com
+      issuer: yomitosh.media
     duo_api:
       hostname: api-c60136e7.duosecurity.com
       integration_key: DILCZ6YH0N7RNG8WL37V
@@ -33,59 +28,58 @@ data:
     access_control:
       default_policy: deny
       rules:
-        - domain: "*"
+        # Trusted networks bypass auth. IoT intentionally excluded.
+        - domain: '*.local.yomitosh.media'
           networks:
-            - 100.64.0.0/10
-            - 10.0.1.0/24
+            - 10.1.5.0/24    # infra / VLAN 5
+            - 10.1.10.0/24   # main LAN / VLAN 10
+            - 100.64.0.0/10  # Tailscale / CGNAT
           policy: bypass
-        - domain: rancher.yomitosh.media
-          policy: one_factor
-        - domain: home.yomitosh.media
-          policy: bypass
+
+        # API clients authenticate with app-native API keys, not browser redirects.
+        - domain: sonarr.local.yomitosh.media
           resources:
-            - "^/api(/.*)?$"
-            - "^/auth/token.*"
-        - domain: home.yomitosh.media
-          policy: one_factor
-        - domain: jellyfin.yomitosh.media
+            - '^/api(/.*)?$'
           policy: bypass
-        - domain: heimdall.yomitosh.media
-          policy: one_factor
-        - domain: sonarr.yomitosh.media
-          policy: bypass
+        - domain: radarr.local.yomitosh.media
           resources:
-            - "^/api(/.*)?$"
-        - domain: sonarr.yomitosh.media
-          policy: one_factor
-        - domain: radarr.yomitosh.media
+            - '^/api(/.*)?$'
           policy: bypass
-          resources:
-            - "^/api(/.*)?$"
-        - domain: radarr.yomitosh.media
-          policy: one_factor
-        - domain: photoprism.yomitosh.media
+
+        # Sensitive apps require MFA when accessed outside trusted networks.
+        - domain:
+            - bambubuddy.local.yomitosh.media
+            - chat-internal.local.yomitosh.media
+            - immich.local.yomitosh.media
+            - nextcloud.local.yomitosh.media
+            - uptime-kuma.local.yomitosh.media
           policy: two_factor
-        - domain: ombi.yomitosh.media
-          policy: bypass
-        - domain: search.yomitosh.media
-          policy: bypass
-        - domain: nextcloud.yomitosh.media
-          policy: bypass
-        - domain: audiobookshelf.yomitosh.media
-          policy: bypass
-        - domain: fidi.yomitosh.media
-          policy: one_factor
-        - domain: ollama.yomitosh.media
+
+        # General apps require password auth when accessed outside trusted networks.
+        - domain:
+            - bazarr.local.yomitosh.media
+            - jackett.local.yomitosh.media
+            - jellyfin.local.yomitosh.media
+            - lidarr.local.yomitosh.media
+            - ombi.local.yomitosh.media
+            - prowlarr.local.yomitosh.media
+            - radarr.local.yomitosh.media
+            - requestrr.local.yomitosh.media
+            - send2ereader.local.yomitosh.media
+            - sonarr.local.yomitosh.media
+            - transmission.local.yomitosh.media
+            - wayom.local.yomitosh.media
           policy: one_factor
     session:
       name: authelia_session
-      expiration: 5400
-      inactivity: 1800
-      remember_me: 864000
+      same_site: lax
+      expiration: 1h30m
+      inactivity: 30m
+      remember_me: 10d
       cookies:
         - domain: yomitosh.media
           authelia_url: 'https://auth.local.yomitosh.media'
-          default_redirection_url: 'https://auth.yomitosh.media'
+          default_redirection_url: 'https://chat-internal.local.yomitosh.media'
     regulation:
       max_retries: 3
       find_time: 120

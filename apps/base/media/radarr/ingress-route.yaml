@@ -8,6 +8,9 @@ spec:
   routes:
     - match: Host(`radarr.local.${DOMAIN}`)
       kind: Rule
+      middlewares:
+        - name: authelia-forward-auth
+          namespace: network-system
       services:
         - name: radarr-service
           port: 7878
