@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &deploymentName wayom-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: *deploymentName
+  template:
+    metadata:
+      labels:
+        app: *deploymentName
+    spec:
+      imagePullSecrets:
+        - name: ghcr-pull-secret
+      containers:
+        - name: wayom
+          image: ghcr.io/abayomi185/wayom:latest@sha256:b11b530aaf664479ff46ec50e3fbd8a992af2b619217d74187823dfce07ad46d # renovate: datasource=docker depName=ghcr.io/abayomi185/wayom
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3080
+              name: http
+              protocol: TCP
+          env:
+            - name: HOST
+              value: "0.0.0.0"
+            - name: PORT
+              value: "3080"
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: wayom-database-app
+                  key: uri
+            - name: WAYOM_CONFIG_PATH
+              value: /config/wayom.toml
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: wayom-secrets
+                  key: jwt_secret
+            - name: GITHUB_OAUTH_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: wayom-secrets
+                  key: github_oauth_client_id
+            - name: GITHUB_OAUTH_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: wayom-secrets
+                  key: github_oauth_client_secret
+            - name: GITHUB_OAUTH_REDIRECT_URL
+              valueFrom:
+                secretKeyRef:
+                  name: wayom-secrets
+                  key: github_oauth_redirect_url
+            - name: LUNCH_FLOW_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: wayom-secrets
+                  key: lunch_flow_api_key
+            - name: WAYOM_SYNC_ENABLED
+              value: "true"
+            - name: WAYOM_SYNC_INTERVAL_SECS
+              value: "3600"
+            - name: WAYOM_SYSTEM_USERNAME
+              value: "system"
+          volumeMounts:
+            - mountPath: /config
+              name: config
+              readOnly: true
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 20
+      volumes:
+        - name: config
+          configMap:
+            name: wayom-config
