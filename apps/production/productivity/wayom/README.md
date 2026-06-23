@@ -59,6 +59,6 @@ Then append `@sha256:<digest>` to the image reference.
 
 ## GHCR authentication
 
-`ghcr.io/abayomi185/wayom` is public, so this deployment does not use an
-`imagePullSecret`. If the package is made private later, add a
-`kubernetes.io/dockerconfigjson` Secret and reference it from the Deployment.
+The wayom GHCR package is private, so the Deployment uses the SOPS-encrypted
+`ghcr-pull-secret` from `ghcr-secret.sops.yaml`. The secret must contain a valid
+`kubernetes.io/dockerconfigjson` payload for `ghcr.io`.
