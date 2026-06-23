@@ -59,26 +59,6 @@ Then append `@sha256:<digest>` to the image reference.
 
 ## GHCR authentication
 
-The wayom-rs repo is private, so the GHCR package requires authentication to
-pull. The deployment references an `imagePullSecret` named `ghcr-pull-secret`,
-backed by the SOPS-encrypted `ghcr-secret.sops.yaml`.
-
-To generate the secret with your GitHub PAT (`read:packages` scope):
-
-```sh
-export SOPS_AGE_KEY_FILE=cluster.agekey
-
-# 1. Generate the Secret manifest (replace <PAT> with your GitHub PAT)
-kubectl create secret docker-registry ghcr-pull-secret \
-  --namespace=productivity \
-  --docker-server=ghcr.io \
-  --docker-username=abayomi185 \
-  --docker-password=<PAT> \
-  --dry-run=client -o yaml > apps/production/productivity/wayom/ghcr-secret.sops.yaml
-
-# 2. SOPS-encrypt it in-place
-sops --encrypt --in-place apps/production/productivity/wayom/ghcr-secret.sops.yaml
-```
-
-> **Note**: the committed file currently contains a placeholder — replace it
-> with a real PAT before merging. Flux will fail to pull the image otherwise.
+`ghcr.io/abayomi185/wayom` is public, so this deployment does not use an
+`imagePullSecret`. If the package is made private later, add a
+`kubernetes.io/dockerconfigjson` Secret and reference it from the Deployment.
