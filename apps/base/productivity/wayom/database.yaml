@@ -5,6 +5,7 @@ metadata:
 spec:
   instances: 1
   storage:
+    storageClass: nfs-csi-default
     size: 4Gi
   bootstrap:
     initdb:
