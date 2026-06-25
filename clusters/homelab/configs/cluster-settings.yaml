@@ -5,6 +5,7 @@ metadata:
   namespace: flux-system
 data:
   TIMEZONE: Europe/London
+  DOMAIN: yomitosh.media
   NFS_STORAGE_CONFIG_DATA_PATH: /mnt/mofp0/kubernetes/home-cluster/configs
   NFS_STORAGE_MAIN_DATA_PATH: /mnt/mofp0/kubernetes/home-cluster/data
   NFS_STORAGE_GLOBAL_DATA_PATH: /mnt/mofp0/data
