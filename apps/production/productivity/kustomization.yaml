@@ -10,3 +10,4 @@ resources:
   - ./uptime-kuma/ks.yaml
   - ./send2ereader/ks.yaml
   - ./wayom/ks.yaml
+  - ./hermes-agent/ks.yaml

@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &deploymentName hermes-agent-deployment
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: *deploymentName
+  template:
+    metadata:
+      labels:
+        app: *deploymentName
+    spec:
+      containers:
+        - image: nousresearch/hermes-agent:v2026.6.19@sha256:9f367c7756ef087661a361536a89f438d57a122b958dc23d82d456b1433e6e9e
+          imagePullPolicy: IfNotPresent
+          name: hermes-agent
+          env:
+            - name: PUID
+              value: "1001"
+            - name: PGID
+              value: "100"
+            - name: UMASK
+              value: "007"
+            - name: TZ
+              value: Europe/London
+            - name: HERMES_DASHBOARD
+              value: "true"
+            - name: HERMES_DASHBOARD_HOST
+              value: 0.0.0.0
+            - name: HERMES_DASHBOARD_PORT
+              value: "9119"
+            - name: HERMES_GATEWAY_BOOTSTRAP_STATE
+              value: running
+          envFrom:
+            - secretRef:
+                name: hermes-agent-secrets
+          ports:
+            - containerPort: 9119
+              name: http
+              protocol: TCP
+          readinessProbe:
+            tcpSocket:
+              port: http
+            initialDelaySeconds: 20
+            periodSeconds: 15
+            timeoutSeconds: 3
+            failureThreshold: 8
+          volumeMounts:
+            - mountPath: /opt/data
+              name: config-data
+              subPath: hermes-agent/config
+      hostname: hermes-agent
+      volumes:
+        - name: config-data
+          nfs:
+            server: ${NFS_STORAGE_HOST_FAST}
+            path: ${NFS_STORAGE_CONFIG_DATA_PATH}
