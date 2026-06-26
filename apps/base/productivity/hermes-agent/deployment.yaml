@@ -38,6 +38,10 @@ spec:
               value: "9119"
             - name: HERMES_GATEWAY_BOOTSTRAP_STATE
               value: running
+            - name: API_SERVER_ENABLED
+              value: "true"
+            - name: API_SERVER_HOST
+              value: 0.0.0.0
           envFrom:
             - secretRef:
                 name: hermes-agent-secrets
@@ -45,9 +49,13 @@ spec:
             - containerPort: 9119
               name: http
               protocol: TCP
+            - containerPort: 8642
+              name: api
+              protocol: TCP
           readinessProbe:
-            tcpSocket:
-              port: http
+            httpGet:
+              path: /health
+              port: api
             initialDelaySeconds: 20
             periodSeconds: 15
             timeoutSeconds: 3
