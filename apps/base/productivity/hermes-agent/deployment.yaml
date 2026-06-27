@@ -42,6 +42,8 @@ spec:
               value: "true"
             - name: API_SERVER_HOST
               value: 0.0.0.0
+            - name: GITHUB_APP_PRIVATE_KEY_FILE
+              value: /opt/data/github-app/private-key.pem
           envFrom:
             - secretRef:
                 name: hermes-agent-secrets
@@ -64,8 +66,25 @@ spec:
             - mountPath: /opt/data
               name: config-data
               subPath: hermes-agent/config
+            - mountPath: /opt/data/github-app
+              name: github-app-auth
+              readOnly: true
       hostname: hermes-agent
       volumes:
+        - name: github-app-auth
+          projected:
+            defaultMode: 0555
+            sources:
+              - configMap:
+                  name: hermes-agent-github-app-auth
+                  items:
+                    - key: github-app-token
+                      path: github-app-token
+              - secret:
+                  name: hermes-agent-secrets
+                  items:
+                    - key: GITHUB_APP_PRIVATE_KEY
+                      path: private-key.pem
         - name: config-data
           nfs:
             server: ${NFS_STORAGE_HOST_FAST}

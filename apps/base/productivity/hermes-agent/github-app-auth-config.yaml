@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hermes-agent-github-app-auth
+data:
+  github-app-token: |
+    #!/usr/bin/env python3
+    import base64
+    import json
+    import os
+    import pathlib
+    import subprocess
+    import time
+    import urllib.request
+
+    API_VERSION = "2026-03-10"
+    CACHE_SKEW_SECONDS = 300
+
+    def b64url(data: bytes) -> str:
+        return base64.urlsafe_b64encode(data).decode().rstrip("=")
+
+    def required_env(name: str) -> str:
+        value = os.environ.get(name)
+        if not value:
+            raise SystemExit(f"{name} is required")
+        return value
+
+    def cached_token(cache_path: pathlib.Path) -> str | None:
+        try:
+            payload = json.loads(cache_path.read_text())
+            expires_at = payload.get("expires_at", "")
+            expiry = time.strptime(expires_at, "%Y-%m-%dT%H:%M:%SZ")
+            if time.mktime(expiry) - time.time() > CACHE_SKEW_SECONDS:
+                return payload.get("token") or None
+        except Exception:
+            return None
+        return None
+
+    app_id = required_env("GITHUB_APP_ID")
+    installation_id = required_env("GITHUB_APP_INSTALLATION_ID")
+    private_key_file = required_env("GITHUB_APP_PRIVATE_KEY_FILE")
+    cache_path = pathlib.Path(os.environ.get("GITHUB_APP_TOKEN_CACHE", "/opt/data/home/.cache/github-app-token.json"))
+
+    token = cached_token(cache_path)
+    if token:
+        print(token)
+        raise SystemExit(0)
+
+    now = int(time.time())
+    header = b64url(json.dumps({"alg": "RS256", "typ": "JWT"}, separators=(",", ":")).encode())
+    claims = b64url(json.dumps({"iat": now - 60, "exp": now + 540, "iss": app_id}, separators=(",", ":")).encode())
+    signing_input = f"{header}.{claims}".encode()
+    signature = subprocess.check_output(["openssl", "dgst", "-sha256", "-sign", private_key_file], input=signing_input)
+    jwt = f"{header}.{claims}.{b64url(signature)}"
+
+    request = urllib.request.Request(
+        f"https://api.github.com/app/installations/{installation_id}/access_tokens",
+        data=b"",
+        method="POST",
+        headers={
+            "Accept": "application/vnd.github+json",
+            "Authorization": f"Bearer {jwt}",
+            "X-GitHub-Api-Version": API_VERSION,
+            "User-Agent": "hermes-agent-github-app-auth",
+        },
+    )
+    with urllib.request.urlopen(request, timeout=20) as response:
+        payload = json.loads(response.read().decode())
+
+    token = payload.get("token")
+    if not token:
+        raise SystemExit("GitHub token response did not include token")
+
+    cache_path.parent.mkdir(parents=True, exist_ok=True)
+    tmp_path = cache_path.with_suffix(".tmp")
+    tmp_path.write_text(json.dumps({"token": token, "expires_at": payload.get("expires_at", "")}))
+    os.chmod(tmp_path, 0o600)
+    tmp_path.replace(cache_path)
+    print(token)
