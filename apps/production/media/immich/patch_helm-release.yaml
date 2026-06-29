@@ -41,7 +41,7 @@ spec:
             main:
               image:
                 repository: ghcr.io/immich-app/immich-server
-                tag: "v2.7.5"
+                tag: "v2.7.5@sha256:c15bff75068effb03f4355997d03dc7e0fc58720c2b54ad6f7f10d1bc57efaa5"
               env:
                 DB_URL:
                   valueFrom:
@@ -57,7 +57,7 @@ spec:
             main:
               image:
                 repository: ghcr.io/immich-app/immich-machine-learning
-                tag: "v2.7.5"
+                tag: "v2.7.5@sha256:a2501141440f10516d329fdfba2c68082e19eb9ba6016c061ac80d23beadf7f3"
       # nodeSelector:
       #   kubernetes.io/hostname: knode2
       #   intel.feature.node.kubernetes.io/gpu: "true"
