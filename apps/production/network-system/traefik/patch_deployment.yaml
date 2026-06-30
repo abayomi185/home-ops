@@ -1,10 +1,26 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: DaemonSet
 metadata:
   name: traefik
 spec:
   template:
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - knode2
+                      - knode3
+                      - yhld-vpsr1
+      tolerations:
+        - key: dedicated
+          operator: Equal
+          value: vps-public
+          effect: NoSchedule
       containers:
         - name: traefik
           args:
