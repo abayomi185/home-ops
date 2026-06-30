@@ -3,5 +3,6 @@ kind: Kustomization
 resources:
   - ../../../base/network-system/traefik
   - ./secret.sops.yaml
+  - ./deployment_vps.yaml
 patches:
   - path: ./patch_deployment.yaml
