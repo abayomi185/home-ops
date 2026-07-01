@@ -22,7 +22,7 @@ spec:
     - name: traefik-crds-production
   healthChecks:
     - apiVersion: apps/v1
-      kind: Deployment
+      kind: DaemonSet
       name: traefik
       namespace: network-system
   postBuild:
