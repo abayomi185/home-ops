@@ -5,17 +5,8 @@ metadata:
 spec:
   template:
     spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: kubernetes.io/hostname
-                    operator: In
-                    values:
-                      - knode2
-                      - knode3
-                      - yhld-vpsr1
+      nodeSelector:
+        yomitosh.media/ingress: "true"
       tolerations:
         - key: dedicated
           operator: Equal
