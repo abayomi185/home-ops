@@ -80,17 +80,14 @@ These land after the in-cluster Traefik + MetalLB cutover is stable.
       the cluster as a k8s deployment (option a). Forward-auth
       middleware now points at
       `authelia-service.productivity.svc:9091/api/authz/forward-auth`.
-- [ ] **Reconfigure SMTP notifier.** Switched to filesystem notifier
-      because the Gmail app password from 2021 is expired/revoked.
-      Generate a new Gmail app password (or switch to a different
-      SMTP provider) and update the SOPS secret + ConfigMap.
-- [ ] **Re-register TOTP.** The old SQLite DB from v4.37.5 was
+- [x] **Reconfigure SMTP notifier.** Done — Authelia uses Gmail SMTP
+      via `notifier.smtp.address` and reads the app password from the
+      SOPS-encrypted `smtp_password` key.
+- [ ] **Re-register TOTP/passkeys.** The old SQLite DB from v4.37.5 was
       incompatible with v4.39's encryption scheme and was deleted.
-      Users need to re-register TOTP devices.
-- [ ] **Clean up deprecated config keys.** v4.39 warns about
-      `jwt_secret` (→ `identity_validation.reset_password.jwt_secret`)
-      and `notifier.smtp.host`/`port` (→ `notifier.smtp.address`).
-      Update when switching back to SMTP.
+      Users need to re-register TOTP devices and enroll passkeys.
+- [x] **Clean up deprecated config keys.** Done — v4.39 config uses
+      `notifier.smtp.address`, passkeys/WebAuthn, and OIDC JWKS config.
 
 ## Grafana duplication
 
