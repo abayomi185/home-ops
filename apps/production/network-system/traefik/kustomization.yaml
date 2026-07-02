@@ -5,3 +5,4 @@ resources:
   - ./secret.sops.yaml
 patches:
   - path: ./patch_deployment.yaml
+  - path: ./patch_service.yaml
