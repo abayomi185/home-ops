@@ -16,11 +16,15 @@ data:
     log:
       level: info
     totp:
-      issuer: authelia.com
-    duo_api:
-      hostname: api-c60136e7.duosecurity.com
-      integration_key: DILCZ6YH0N7RNG8WL37V
-      enable_self_enrollment: true
+      issuer: Yomitosh Auth
+    webauthn:
+      enable_passkey_login: true
+      experimental_enable_passkey_uv_two_factors: true
+      display_name: Yomitosh Auth
+      attestation_conveyance_preference: indirect
+      selection_criteria:
+        discoverability: preferred
+        user_verification: required
     authentication_backend:
       file:
         path: /etc/authelia/users_database.yml
@@ -38,45 +42,10 @@ data:
             - 100.64.0.0/10
             - 10.0.1.0/24
           policy: bypass
-        - domain: rancher.yomitosh.media
-          policy: one_factor
-        - domain: home.yomitosh.media
-          policy: bypass
-          resources:
-            - "^/api(/.*)?$"
-            - "^/auth/token.*"
-        - domain: home.yomitosh.media
-          policy: one_factor
-        - domain: jellyfin.yomitosh.media
-          policy: bypass
-        - domain: heimdall.yomitosh.media
-          policy: one_factor
-        - domain: sonarr.yomitosh.media
-          policy: bypass
-          resources:
-            - "^/api(/.*)?$"
-        - domain: sonarr.yomitosh.media
-          policy: one_factor
-        - domain: radarr.yomitosh.media
-          policy: bypass
-          resources:
-            - "^/api(/.*)?$"
-        - domain: radarr.yomitosh.media
-          policy: one_factor
-        - domain: photoprism.yomitosh.media
+        - domain: immich.yomitosh.media
+          subject:
+            - group:admins
           policy: two_factor
-        - domain: ombi.yomitosh.media
-          policy: bypass
-        - domain: search.yomitosh.media
-          policy: bypass
-        - domain: nextcloud.yomitosh.media
-          policy: bypass
-        - domain: audiobookshelf.yomitosh.media
-          policy: bypass
-        - domain: fidi.yomitosh.media
-          policy: one_factor
-        - domain: ollama.yomitosh.media
-          policy: one_factor
     session:
       name: authelia_session
       expiration: 5400
@@ -84,7 +53,7 @@ data:
       remember_me: 864000
       cookies:
         - domain: yomitosh.media
-          authelia_url: 'https://auth.local.yomitosh.media'
+          authelia_url: 'https://auth.yomitosh.media'
           default_redirection_url: 'https://auth.yomitosh.media'
     regulation:
       max_retries: 3
@@ -94,8 +63,23 @@ data:
       local:
         path: /config/db.sqlite3
     notifier:
-      filesystem:
-        filename: /config/notification.txt
+      smtp:
+        address: 'submission://smtp.gmail.com:587'
+        username: 'captyomjnr@gmail.com'
+        sender: 'Yomitosh Auth <captyomjnr@gmail.com>'
+        startup_check_address: 'captyomjnr@gmail.com'
+        subject: '[Authelia] {title}'
+    identity_providers:
+      oidc:
+        hmac_secret: '{{ secret "/secrets/oidc_hmac_secret" }}'
+        jwks:
+          - key_id: default
+            algorithm: RS256
+            use: sig
+            key: {{ secret "/secrets/oidc_issuer_private_key" | mindent 10 "|" | msquote }}
+        authorization_policies:
+          default:
+            default_policy: two_factor
   users_database.yml: |
     ---
     users:

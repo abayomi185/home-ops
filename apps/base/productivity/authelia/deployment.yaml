@@ -22,14 +22,16 @@ spec:
               value: Europe/London
             - name: X_AUTHELIA_CONFIG
               value: /etc/authelia/configuration.yml
+            - name: X_AUTHELIA_CONFIG_FILTERS
+              value: template
             - name: AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE
               value: /secrets/storage_encryption_key
             - name: AUTHELIA_JWT_SECRET_FILE
               value: /secrets/jwt_secret
             - name: AUTHELIA_SESSION_SECRET_FILE
               value: /secrets/session_secret
-            - name: AUTHELIA_DUO_API_SECRET_KEY_FILE
-              value: /secrets/duo_secret_key
+            - name: AUTHELIA_NOTIFIER_SMTP_PASSWORD_FILE
+              value: /secrets/smtp_password
           ports:
             - containerPort: 9091
               name: http
