@@ -8,6 +8,8 @@ spec:
   # for the full list of values that can be overriden
   values:
     immich:
+      existingConfiguration: immich-secrets
+      configurationKind: Secret
       persistence:
         library:
           existingClaim: immich-data-pvc
