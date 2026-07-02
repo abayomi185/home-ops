@@ -8,17 +8,11 @@ spec:
   routes:
     - match: Host(`immich.local.${DOMAIN}`)
       kind: Rule
-      middlewares:
-        - name: authelia-forward-auth
-          namespace: network-system
       services:
         - name: immich-deployment-server
           port: 2283
     - match: Host(`immich.${DOMAIN}`)
       kind: Rule
-      middlewares:
-        - name: authelia-forward-auth
-          namespace: network-system
       services:
         - name: immich-deployment-server
           port: 2283

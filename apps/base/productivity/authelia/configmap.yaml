@@ -80,6 +80,31 @@ data:
         authorization_policies:
           default:
             default_policy: two_factor
+        clients:
+          - client_id: immich
+            client_name: Immich
+            client_secret: '{{ secret "/secrets/immich_oidc_client_secret_digest" }}'
+            public: false
+            authorization_policy: two_factor
+            require_pkce: false
+            pkce_challenge_method: ''
+            redirect_uris:
+              - https://immich.yomitosh.media/auth/login
+              - https://immich.yomitosh.media/user-settings
+              - https://immich.local.yomitosh.media/auth/login
+              - https://immich.local.yomitosh.media/user-settings
+              - app.immich:///oauth-callback
+            scopes:
+              - openid
+              - profile
+              - email
+            response_types:
+              - code
+            grant_types:
+              - authorization_code
+            access_token_signed_response_alg: none
+            userinfo_signed_response_alg: none
+            token_endpoint_auth_method: client_secret_post
   users_database.yml: |
     ---
     users:
