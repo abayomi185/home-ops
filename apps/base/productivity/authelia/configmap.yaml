@@ -62,7 +62,6 @@ data:
       local:
         path: /config/db.sqlite3
     notifier:
-      disable_startup_check: true
       smtp:
         address: 'submission://smtp.gmail.com:587'
         username: 'captyomjnr@gmail.com'
