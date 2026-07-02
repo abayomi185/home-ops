@@ -4,4 +4,4 @@ metadata:
   name: traefik
 spec:
   externalIPs:
-    - 194.9.62.17
+    - ${VPS_PUBLIC_IP}
