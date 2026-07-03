@@ -15,7 +15,35 @@ spec:
             - name: OLLAMA_BASE_URL
               valueFrom:
                 secretKeyRef:
-                  name: open-webui-public-secrets
+                  name: public-open-webui-public-secrets
                   key: ollama_api_base_url_local
             - name: ENABLE_ADMIN_CHAT_ACCESS
               value: "false"
+            - name: WEBUI_URL
+              value: https://chat.local.yomitosh.media
+            - name: ENABLE_OAUTH_SIGNUP
+              value: "true"
+            - name: OAUTH_MERGE_ACCOUNTS_BY_EMAIL
+              value: "true"
+            - name: OAUTH_CLIENT_ID
+              value: open-webui-public
+            - name: OAUTH_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: public-open-webui-public-secrets
+                  key: oauth_client_secret
+            - name: OPENID_PROVIDER_URL
+              value: https://auth.yomitosh.media/.well-known/openid-configuration
+            - name: OAUTH_PROVIDER_NAME
+              value: Authelia
+            - name: OAUTH_SCOPES
+              value: openid email profile groups
+            - name: OPENID_REDIRECT_URI
+              value: https://chat.local.yomitosh.media/oauth/oidc/callback
+            - name: OAUTH_CODE_CHALLENGE_METHOD
+              value: S256
+            - name: WEBUI_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: public-open-webui-public-secrets
+                  key: webui_secret_key
