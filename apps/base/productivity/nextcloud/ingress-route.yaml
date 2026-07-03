@@ -11,5 +11,10 @@ spec:
       services:
         - name: nextcloud-service
           port: 80
+    - match: Host(`nextcloud.${DOMAIN}`)
+      kind: Rule
+      services:
+        - name: nextcloud-service
+          port: 80
   tls:
     certResolver: letsencrypt
