@@ -152,6 +152,7 @@ data:
             pkce_challenge_method: S256
             redirect_uris:
               - https://chat.local.yomitosh.media/oauth/oidc/callback
+              - https://chat.yomitosh.media/oauth/oidc/callback
             scopes:
               - openid
               - profile

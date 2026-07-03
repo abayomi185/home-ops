@@ -20,7 +20,7 @@ spec:
             - name: ENABLE_ADMIN_CHAT_ACCESS
               value: "false"
             - name: WEBUI_URL
-              value: https://chat.local.yomitosh.media
+              value: https://chat.yomitosh.media
             - name: ENABLE_OAUTH_SIGNUP
               value: "true"
             - name: OAUTH_MERGE_ACCOUNTS_BY_EMAIL
@@ -39,7 +39,7 @@ spec:
             - name: OAUTH_SCOPES
               value: openid email profile groups
             - name: OPENID_REDIRECT_URI
-              value: https://chat.local.yomitosh.media/oauth/oidc/callback
+              value: https://chat.yomitosh.media/oauth/oidc/callback
             - name: OAUTH_CODE_CHALLENGE_METHOD
               value: S256
             - name: WEBUI_SECRET_KEY
