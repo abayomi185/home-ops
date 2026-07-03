@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
   - ./sc.yaml
   - ./pvc.yaml
+  - ./secret.sops.yaml
   - ../../../base/productivity/nextcloud/
 patches:
   - path: ./patch_deployment.yaml

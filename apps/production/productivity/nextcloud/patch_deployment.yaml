@@ -14,15 +14,61 @@ spec:
         - name: nfs-data-volume
           persistentVolumeClaim:
             claimName: nextcloud-shared-storage-pvc
-    initContainers:
-      - name: set-permissions
-        image: busybox:1.38@sha256:fd8d9aa63ba2f0982b5304e1ee8d3b90a210bc1ffb5314d980eb6962f1a9715d
-        command:
-          [
-            "sh",
-            "-c",
-            "chown -R 33:33 /var/www/html/data/nfs-share && chmod -R 755 /var/www/html/data/nfs-share",
-          ]
-        volumeMounts:
-          - name: nfs-data-volume
-            mountPath: /var/www/html/data/nfs-share
+      initContainers:
+        - name: set-permissions
+          image: busybox:1.38@sha256:fd8d9aa63ba2f0982b5304e1ee8d3b90a210bc1ffb5314d980eb6962f1a9715d
+          command:
+            [
+              "sh",
+              "-c",
+              "chown -R 33:33 /var/www/html/data/nfs-share && chmod -R 755 /var/www/html/data/nfs-share",
+            ]
+          volumeMounts:
+            - name: nfs-data-volume
+              mountPath: /var/www/html/data/nfs-share
+      containers:
+        - name: nextcloud
+          env:
+            - name: NEXTCLOUD_TRUSTED_DOMAINS
+              value: nextcloud.yomitosh.media nextcloud.local.yomitosh.media
+            - name: OVERWRITEHOST
+              value: nextcloud.yomitosh.media
+            - name: OVERWRITEPROTOCOL
+              value: https
+            - name: OVERWRITECLIURL
+              value: https://nextcloud.yomitosh.media
+            - name: NEXTCLOUD_OIDC_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: nextcloud-oidc-secrets
+                  key: oidc_client_secret
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - /bin/sh
+                  - -c
+                  - |
+                    set -eu
+
+                    occ() {
+                      su -s /bin/sh www-data -c "php occ $*"
+                    }
+
+                    for i in $(seq 1 60); do
+                      if occ status >/dev/null 2>&1; then
+                        break
+                      fi
+                      sleep 5
+                    done
+
+                    occ config:system:set trusted_domains 1 --value=nextcloud.yomitosh.media
+                    occ config:system:set trusted_domains 2 --value=nextcloud.local.yomitosh.media
+                    occ config:system:set overwritehost --value=nextcloud.yomitosh.media
+                    occ config:system:set overwriteprotocol --value=https
+                    occ config:system:set overwrite.cli.url --value=https://nextcloud.yomitosh.media
+
+                    occ app:install user_oidc || occ app:enable user_oidc
+                    occ config:system:set user_oidc default_token_endpoint_auth_method --value=client_secret_post
+                    occ config:system:set user_oidc enrich_login_id_token_with_userinfo --type=boolean --value=true
+                    occ user_oidc:provider Authelia --clientid=nextcloud --clientsecret="${NEXTCLOUD_OIDC_CLIENT_SECRET}" --discoveryuri=https://auth.yomitosh.media/.well-known/openid-configuration
