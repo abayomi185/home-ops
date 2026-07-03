@@ -71,4 +71,5 @@ spec:
                     occ app:install user_oidc || occ app:enable user_oidc
                     occ config:system:set user_oidc default_token_endpoint_auth_method --value=client_secret_post
                     occ config:system:set user_oidc enrich_login_id_token_with_userinfo --type=boolean --value=true
-                    occ user_oidc:provider Authelia --clientid=nextcloud --clientsecret-env=NEXTCLOUD_OIDC_CLIENT_SECRET --discoveryuri=https://auth.yomitosh.media/.well-known/openid-configuration
+                    occ config:system:set user_oidc disable_account_creation --type=boolean --value=true
+                    occ user_oidc:provider Authelia --clientid=nextcloud --clientsecret-env=NEXTCLOUD_OIDC_CLIENT_SECRET --discoveryuri=https://auth.yomitosh.media/.well-known/openid-configuration --mapping-uid=preferred_username --mapping-email=email
