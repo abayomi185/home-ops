@@ -38,6 +38,10 @@ spec:
               value: "9119"
             - name: HERMES_GATEWAY_BOOTSTRAP_STATE
               value: running
+            - name: DISCORD_REQUIRE_MENTION
+              value: "true"
+            - name: DISCORD_THREAD_REQUIRE_MENTION
+              value: "true"
             - name: API_SERVER_ENABLED
               value: "true"
             - name: API_SERVER_HOST
