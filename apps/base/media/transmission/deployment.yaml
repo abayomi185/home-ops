@@ -24,7 +24,7 @@ spec:
               value: /config/transmission-home
             - name: GLOBAL_APPLY_PERMISSIONS
               value: "false"
-          image: haugene/transmission-openvpn:latest@sha256:18e5789dfd8aa9c95506d8bf2e4ef88ccd5e4c6102fb75b43f488cb5d5e4dcc5
+          image: haugene/transmission-openvpn:latest@sha256:e6b30be8008121489994a5d57363c214481171fec11dba31cdb94f428878dd68
           imagePullPolicy: IfNotPresent
           name: transmission
           ports:
