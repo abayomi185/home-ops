@@ -22,7 +22,7 @@ spec:
               value: Europe/London
             - name: UMASK
               value: "007"
-          image: linuxserver/jellyfin:latest@sha256:96d21c396f46f10578931c2941e3f2789f7087b5ab0e166afedf29e7385c6aa7
+          image: linuxserver/jellyfin:latest@sha256:b8dcc7b71d0ea872b74314da4b995c0cf282b1778438c295996e7be88c70fdda
           imagePullPolicy: IfNotPresent
           name: jellyfin
           ports:

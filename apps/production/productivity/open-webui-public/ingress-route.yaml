@@ -11,5 +11,10 @@ spec:
       services:
         - name: public-open-webui-service
           port: 8080
+    - match: Host(`chat.${DOMAIN}`)
+      kind: Rule
+      services:
+        - name: public-open-webui-service
+          port: 8080
   tls:
     certResolver: letsencrypt

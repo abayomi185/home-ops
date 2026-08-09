@@ -20,7 +20,7 @@ spec:
               value: "1001"
             - name: PGID
               value: "100"
-          image: lscr.io/linuxserver/ombi:latest@sha256:86ecbe5081f0824e667f536019e5f9a17da3be34abe1bf3d9a57df0afbbe8323
+          image: lscr.io/linuxserver/ombi:latest@sha256:a89d63c66cd139a8515773749237a0a3cb114a62b092abd4fa2df6b144a2613f
           imagePullPolicy: IfNotPresent
           name: ombi
           ports:
