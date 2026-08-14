@@ -11,3 +11,4 @@ resources:
   - ./send2ereader/ks.yaml
   - ./wayom/ks.yaml
   - ./hermes-agent/ks.yaml
+  - ./hermes-webui/ks.yaml

@@ -1,0 +1,99 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &deploymentName hermes-webui-deployment
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: *deploymentName
+  template:
+    metadata:
+      labels:
+        app: *deploymentName
+    spec:
+      initContainers:
+        - name: hermes-agent-source
+          image: nousresearch/hermes-agent:v2026.7.7@sha256:ce3b39adf33fffae8cb19dcae74f971975b972efe91207f7d7539f80a0aae66a
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/sh
+            - -c
+          args:
+            - cp -a /opt/hermes/. /agent-source/
+          volumeMounts:
+            - mountPath: /agent-source
+              name: agent-source
+      containers:
+        - name: hermes-webui
+          image: ghcr.io/nesquena/hermes-webui:0.52.113@sha256:48ba6ee4a837079955c00e997b751065cc0324ae6eaa0f2fec592c8f4b2a746e
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PUID
+              value: "1001"
+            - name: PGID
+              value: "100"
+            - name: UMASK
+              value: "007"
+            - name: TZ
+              value: Europe/London
+            - name: WANTED_UID
+              value: "1001"
+            - name: WANTED_GID
+              value: "100"
+            - name: HERMES_HOME
+              value: /home/hermeswebui/.hermes
+            - name: HERMES_WEBUI_HOST
+              value: 0.0.0.0
+            - name: HERMES_WEBUI_PORT
+              value: "8787"
+            - name: HERMES_WEBUI_STATE_DIR
+              value: /home/hermeswebui/.hermes/webui
+            - name: HERMES_WEBUI_DEFAULT_WORKSPACE
+              value: /home/hermeswebui/.hermes/workspace
+            - name: HERMES_API_URL
+              value: http://hermes-agent-service:8642
+            - name: HERMES_SKIP_CHMOD
+              value: "1"
+          ports:
+            - containerPort: 8787
+              name: http
+              protocol: TCP
+          startupProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 60
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 15
+            timeoutSeconds: 3
+            failureThreshold: 4
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 30
+            timeoutSeconds: 3
+            failureThreshold: 3
+          volumeMounts:
+            - mountPath: /home/hermeswebui/.hermes
+              name: config-data
+              subPath: hermes-agent/config
+            - mountPath: /home/hermeswebui/.hermes/hermes-agent
+              name: agent-source
+              readOnly: true
+      hostname: hermes-webui
+      volumes:
+        - name: agent-source
+          emptyDir: {}
+        - name: config-data
+          nfs:
+            server: ${NFS_STORAGE_HOST_FAST}
+            path: ${NFS_STORAGE_CONFIG_DATA_PATH}
