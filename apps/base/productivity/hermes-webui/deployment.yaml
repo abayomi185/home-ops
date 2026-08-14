@@ -14,6 +14,13 @@ spec:
       labels:
         app: *deploymentName
     spec:
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app: hermes-agent-deployment
+              topologyKey: kubernetes.io/hostname
       initContainers:
         - name: hermes-agent-source
           image: nousresearch/hermes-agent:v2026.8.13@sha256:68e15ae2a6d894d0ccbd9f8aacbbe13d4d28fa5dc9b6a303970b67bb2499b1a6
