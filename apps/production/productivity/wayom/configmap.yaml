@@ -6,8 +6,7 @@ data:
   wayom.toml: |
     # Wayom production config.
     # Secrets (DATABASE_URL, JWT_SECRET, LUNCH_FLOW_API_KEY, GITHUB_OAUTH_*)
-    # are injected from the wayom-secrets Secret / CNPG wayom-database-app Secret
-    # as env vars, NOT from this file.
+    # are injected from the wayom-secrets Secret as env vars, NOT from this file.
 
     [general]
     # External URL the browser/frontend uses to reach this API.
