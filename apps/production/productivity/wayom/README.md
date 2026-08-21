@@ -14,10 +14,6 @@ and GoCardless, stores transactions/holdings in PostgreSQL.
 - **Migrations**: run automatically on server startup via `sqlx::migrate!`
   (embedded at compile time). No initContainer needed — the server panics
   if migrations fail, causing Kubernetes to restart the pod.
-- **Sync scheduler**: in-server tokio task that calls `sync_accounts` for the
-  seeded `system` user every hour (`WAYOM_SYNC_INTERVAL_SECS`). Builds a
-  financial record without manual HTTP calls. Disable with
-  `WAYOM_SYNC_ENABLED=false`.
 - **Exposure**: ClusterIP + Traefik IngressRoute at `wayom.local.${DOMAIN}` (TLS via Let's Encrypt).
 
 ## Secrets

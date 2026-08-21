@@ -14,5 +14,5 @@ data:
     # Served via Traefik IngressRoute at wayom.local.${DOMAIN}.
     base_url = "https://wayom.local.yomitosh.media"
 
-    # Primary provider for the sync scheduler. Defaults to "lunchflow".
+    # Primary provider for account sync. Defaults to "lunchflow".
     # primary_provider = "lunchflow"

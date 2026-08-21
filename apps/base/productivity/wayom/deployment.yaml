@@ -16,7 +16,7 @@ spec:
         - name: ghcr-pull-secret
       containers:
         - name: wayom
-          image: ghcr.io/abayomi185/wayom:latest@sha256:b11b530aaf664479ff46ec50e3fbd8a992af2b619217d74187823dfce07ad46d # renovate: datasource=docker depName=ghcr.io/abayomi185/wayom
+          image: ghcr.io/abayomi185/wayom:latest@sha256:9bb5e5cb260713f52b8a0d0884e3b6ee493fa75a08771dadaefd5a294cddaa6a # renovate: datasource=docker depName=ghcr.io/abayomi185/wayom
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3080
@@ -59,12 +59,6 @@ spec:
                 secretKeyRef:
                   name: wayom-secrets
                   key: lunch_flow_api_key
-            - name: WAYOM_SYNC_ENABLED
-              value: "true"
-            - name: WAYOM_SYNC_INTERVAL_SECS
-              value: "3600"
-            - name: WAYOM_SYSTEM_USERNAME
-              value: "system"
           volumeMounts:
             - mountPath: /config
               name: config
