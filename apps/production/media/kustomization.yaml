@@ -10,7 +10,6 @@ resources:
   - ./jackett/ks.yaml
   - ./jellyfin/ks.yaml
   - ./lidarr/ks.yaml
-  - ./nginx-test/ks.yaml
   - ./ombi/ks.yaml
   # - ./overseerr/ks.yaml
   - ./prowlarr/ks.yaml
