@@ -9,7 +9,7 @@ commonLabels:
   app: public-open-webui-deployment
 images:
   - name: ghcr.io/open-webui/open-webui
-    newTag: main@sha256:6a773e5c3a246b65cbe74ce942b294292c0e5f81c138f703d111bc162f7d7c3d
+    newTag: main@sha256:c792953395b43d4f49085fa4026850c5e923578345ebeaf56eabd980bcfc273a
 patches:
   - path: ./patch_deployment.yaml
   - path: ./patch_service.yaml
