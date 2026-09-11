@@ -15,7 +15,7 @@ spec:
       enableServiceLinks: false
       containers:
         - name: authelia
-          image: docker.io/authelia/authelia:4.39.23@sha256:0b6409d5cfa1bc244812fa4094f0272421ac156b864ed4178c60480c3f6d3ee9
+          image: docker.io/authelia/authelia:4.39.25@sha256:a039d87fb842f0af4f83c03434f5fb6ec45d4b46e86b8b3ac571cc104bbe6e6d
           imagePullPolicy: IfNotPresent
           env:
             - name: TZ
