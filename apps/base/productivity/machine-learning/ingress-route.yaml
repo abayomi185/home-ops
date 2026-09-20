@@ -1,0 +1,39 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: llm
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`llm.local.${DOMAIN}`)
+      kind: Rule
+      middlewares:
+        - name: machine-learning-lan
+      services:
+        - name: llm
+          port: 9000
+  tls:
+    certResolver: letsencrypt
+    domains:
+      - main: llm.local.${DOMAIN}
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: comfyui
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`comfyui.local.${DOMAIN}`)
+      kind: Rule
+      middlewares:
+        - name: machine-learning-lan
+      services:
+        - name: comfyui
+          port: 8188
+  tls:
+    certResolver: letsencrypt
+    domains:
+      - main: comfyui.local.${DOMAIN}

@@ -23,6 +23,7 @@ spec:
             - "--ping=true"
             - "--providers.kubernetescrd"
             - "--providers.kubernetescrd.allowCrossNamespace=true"
+            - "--providers.kubernetescrd.allowExternalNameServices=true"
             # ACME via Cloudflare DNS-01 challenge
             - "--certificatesresolvers.letsencrypt.acme.storage=/data/acme.json"
             - "--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=cloudflare"

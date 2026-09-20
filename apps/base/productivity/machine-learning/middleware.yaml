@@ -1,0 +1,14 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: machine-learning-lan
+spec:
+  ipAllowList:
+    # Native, infrastructure, main LAN, cluster backplane and WireGuard.
+    # Deliberately excludes the guest and IoT VLANs.
+    sourceRange:
+      - 10.1.1.0/24
+      - 10.1.5.0/24
+      - 10.1.10.0/24
+      - 10.0.7.0/24
+      - 10.13.13.0/24
