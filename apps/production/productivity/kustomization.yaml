@@ -13,3 +13,4 @@ resources:
   - ./hermes-agent/ks.yaml
   - ./hermes-webui/ks.yaml
   - ./machine-learning/ks.yaml
+  - ./home-assistant/ks.yaml
