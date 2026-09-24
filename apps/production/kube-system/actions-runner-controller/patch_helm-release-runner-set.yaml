@@ -1,0 +1,13 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: arc-runner-set
+spec:
+  releaseName: homelab
+  values:
+    # Workflows target these runners with `runs-on: homelab`.
+    runnerScaleSetName: homelab
+    githubConfigUrl: https://github.com/Work-With-Yomi
+    githubConfigSecret: arc-github-app
+    minRunners: 0
+    maxRunners: 2
