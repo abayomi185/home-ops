@@ -1,6 +1,8 @@
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 # Ephemeral Docker-in-Docker runners. The pod template is spelled out (instead of
-# containerMode: dind) so the runner and dind containers can carry resource limits.
+# containerMode: dind) so resources can be set. A job loads either the runner (lint,
+# typecheck, tests) or dind (image builds), rarely both, so one pod-level budget is
+# shared instead of splitting it into per-container limits.
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -23,6 +25,12 @@ spec:
       name: arc-controller
     template:
       spec:
+        resources:
+          requests:
+            cpu: "1"
+            memory: 2Gi
+          limits:
+            memory: 4Gi
         initContainers:
           - name: init-dind-externals
             image: ghcr.io/actions/actions-runner:2.337.0
@@ -41,12 +49,6 @@ spec:
                 value: "123"
             securityContext:
               privileged: true
-            resources:
-              requests:
-                cpu: 500m
-                memory: 1Gi
-              limits:
-                memory: 4Gi
             restartPolicy: Always
             startupProbe:
               exec:
@@ -70,12 +72,6 @@ spec:
                 value: unix:///var/run/docker.sock
               - name: RUNNER_WAIT_FOR_DOCKER_IN_SECONDS
                 value: "120"
-            resources:
-              requests:
-                cpu: 500m
-                memory: 1Gi
-              limits:
-                memory: 3Gi
             volumeMounts:
               - name: work
                 mountPath: /home/runner/_work
