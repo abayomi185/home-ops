@@ -30,7 +30,7 @@ spec:
             cpu: "1"
             memory: 2Gi
           limits:
-            cpu: "2"
+            cpu: "3"
             memory: 6Gi
         initContainers:
           - name: init-dind-externals
