@@ -32,6 +32,14 @@ spec:
           limits:
             cpu: "3"
             memory: 6Gi
+        # Keep CI off the control-plane/etcd node: a full disk there takes down the cluster.
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: node-role.kubernetes.io/control-plane
+                      operator: DoesNotExist
         initContainers:
           - name: init-dind-externals
             image: ghcr.io/actions/actions-runner:2.337.0
@@ -50,6 +58,13 @@ spec:
                 value: "123"
             securityContext:
               privileged: true
+            # Disk is bounded per container (pod-level resources only cover CPU/memory).
+            # Exceeding the limit evicts the job instead of filling the node disk.
+            resources:
+              requests:
+                ephemeral-storage: 3Gi
+              limits:
+                ephemeral-storage: 10Gi
             restartPolicy: Always
             startupProbe:
               exec:
@@ -64,6 +79,8 @@ spec:
                 mountPath: /var/run
               - name: dind-externals
                 mountPath: /home/runner/externals
+              - name: dind-storage
+                mountPath: /var/lib/docker
         containers:
           - name: runner
             image: ghcr.io/actions/actions-runner:2.337.0
@@ -73,6 +90,11 @@ spec:
                 value: unix:///var/run/docker.sock
               - name: RUNNER_WAIT_FOR_DOCKER_IN_SECONDS
                 value: "120"
+            resources:
+              requests:
+                ephemeral-storage: 1Gi
+              limits:
+                ephemeral-storage: 4Gi
             volumeMounts:
               - name: work
                 mountPath: /home/runner/_work
@@ -84,4 +106,6 @@ spec:
           - name: dind-sock
             emptyDir: {}
           - name: dind-externals
+            emptyDir: {}
+          - name: dind-storage
             emptyDir: {}
