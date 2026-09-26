@@ -66,4 +66,4 @@ spec:
         - name: media-volume
           nfs:
             server: ${NFS_STORAGE_HOST_FAST}
-            path: /mnt/mopower/swarm-data
+            path: ${NFS_STORAGE_MAIN_DATA_PATH}
