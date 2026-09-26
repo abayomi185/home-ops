@@ -5,6 +5,7 @@ resources:
   # Flux Kustomizations
   # - ./audiobookshelf/ks.yaml # pvc not available
   - ./bazarr/ks.yaml
+  - ./calibre-web/ks.yaml
   - ./doplarr/ks.yaml
   - ./immich/ks.yaml
   - ./jackett/ks.yaml
