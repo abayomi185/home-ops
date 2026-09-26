@@ -7,11 +7,11 @@ setup. The route uses the existing Let's Encrypt resolver.
 
 ## Before merging
 
-On `${NFS_STORAGE_HOST_FAST}`, prepare these directories with ownership `1001:100`
-and permissions `0770`:
+On `${NFS_STORAGE_HOST_FAST}`, prepare these directories with group `100` (users)
+and mode `2770`:
 
 - `${NFS_STORAGE_CONFIG_DATA_PATH}/calibre-web/config`
-- `/mnt/mopower/swarm-data/calibre-web/library`
+- `${NFS_STORAGE_MAIN_DATA_PATH}/calibre-web/library`
 
 Copy an existing Calibre library, including `metadata.db`, into the library
 directory, or create one with the Calibre desktop app first. A directory of loose
