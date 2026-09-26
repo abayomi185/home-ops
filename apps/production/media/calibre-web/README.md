@@ -12,3 +12,7 @@ On `${NFS_STORAGE_HOST_FAST}`, group `100`, mode `2770`:
 ## First login
 
 `admin` / `admin123`. Change the password, set library to `/books`.
+
+## Kobo sync
+
+Public at `https://calibre.${DOMAIN}/kobo/<token>` (only `/kobo/` exposed). Set as `api_endpoint` in `.kobo/Kobo/Kobo eReader.conf`.
