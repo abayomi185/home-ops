@@ -4,3 +4,4 @@ resources:
   - ./helm-repository.yaml
   - ./helm-release-controller.yaml
   - ./helm-release-runner-set.yaml
+  - ./pvc-tool-cache.yaml

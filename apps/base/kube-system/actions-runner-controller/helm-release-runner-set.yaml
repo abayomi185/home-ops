@@ -41,6 +41,15 @@ spec:
                     - key: node-role.kubernetes.io/control-plane
                       operator: DoesNotExist
         initContainers:
+          # NFS creates the volume root-owned; the runner user (1001) must be able to write to it.
+          - name: init-tool-cache
+            image: ghcr.io/actions/actions-runner:2.337.0
+            command: ["chown", "1001:1001", "/opt/hostedtoolcache"]
+            securityContext:
+              runAsUser: 0
+            volumeMounts:
+              - name: tool-cache
+                mountPath: /opt/hostedtoolcache
           - name: init-dind-externals
             image: ghcr.io/actions/actions-runner:2.337.0
             command: ["cp", "-r", "/home/runner/externals/.", "/home/runner/tmpDir/"]
@@ -90,6 +99,8 @@ spec:
                 value: unix:///var/run/docker.sock
               - name: RUNNER_WAIT_FOR_DOCKER_IN_SECONDS
                 value: "120"
+              - name: RUNNER_TOOL_CACHE
+                value: /opt/hostedtoolcache
             resources:
               requests:
                 ephemeral-storage: 1Gi
@@ -100,6 +111,8 @@ spec:
                 mountPath: /home/runner/_work
               - name: dind-sock
                 mountPath: /var/run
+              - name: tool-cache
+                mountPath: /opt/hostedtoolcache
         volumes:
           - name: work
             emptyDir: {}
@@ -109,3 +122,6 @@ spec:
             emptyDir: {}
           - name: dind-storage
             emptyDir: {}
+          - name: tool-cache
+            persistentVolumeClaim:
+              claimName: arc-tool-cache

@@ -1,0 +1,12 @@
+# Shared cache for actions/setup-* (Node, Python, ...) so runners download each version once.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: arc-tool-cache
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: nfs-csi-default
+  resources:
+    requests:
+      storage: 5Gi
