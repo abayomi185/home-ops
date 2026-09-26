@@ -53,6 +53,9 @@ spec:
               - dockerd
               - --host=unix:///var/run/docker.sock
               - --group=$(DOCKER_GROUP_GID)
+              # Keep dind bridge packets under the pod network MTU (overlay CNIs are <1500);
+              # otherwise large downloads inside image builds (apk, npm) stall silently.
+              - --mtu=1400
             env:
               - name: DOCKER_GROUP_GID
                 value: "123"
