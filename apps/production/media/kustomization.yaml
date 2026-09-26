@@ -4,6 +4,7 @@ resources:
   - ./namespace.yaml
   # Flux Kustomizations
   # - ./audiobookshelf/ks.yaml # pvc not available
+  - ./moonlight-web/ks.yaml
   - ./bazarr/ks.yaml
   - ./doplarr/ks.yaml
   - ./immich/ks.yaml
