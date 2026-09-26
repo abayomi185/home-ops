@@ -13,7 +13,7 @@ spec:
         app: *deploymentName
     spec:
       containers:
-        - image: nextcloud:latest@sha256:1468bb3c8bdcfb2d301cc885daa36ead108c0589984991320c5fb66754fbfba6
+        - image: nextcloud:latest@sha256:1969514cbcc9ae1e9a15ba2e388c7a0de5ee49ecd9c1da81e1e1a92d3dda46ca
           imagePullPolicy: IfNotPresent
           name: nextcloud
           ports:
