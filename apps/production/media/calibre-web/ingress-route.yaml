@@ -11,5 +11,11 @@ spec:
       services:
         - name: calibre-web-service
           port: 8083
+    # Public: Kobo sync only (token-authenticated)
+    - match: Host(`calibre.${DOMAIN}`) && PathPrefix(`/kobo/`)
+      kind: Rule
+      services:
+        - name: calibre-web-service
+          port: 8083
   tls:
     certResolver: letsencrypt
