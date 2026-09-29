@@ -17,6 +17,8 @@ spec:
           args:
             - "--entryPoints.web.address=:8000/tcp"
             - "--entryPoints.websecure.address=:8443/tcp"
+            # Default 60s cuts off slow uploads (Calibre-Web, Nextcloud, Immich)
+            - "--entryPoints.websecure.transport.respondingTimeouts.readTimeout=600s"
             - "--entryPoints.traefik.address=:9000/tcp"
             - "--api=true"
             - "--api.dashboard=true"
