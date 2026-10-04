@@ -51,6 +51,14 @@
       ]
     },
     {
+      "description": "Bump ARC controller + runner-set together (CRDs must land first)",
+      "matchDepNames": [
+        "gha-runner-scale-set-controller",
+        "gha-runner-scale-set"
+      ],
+      "groupName": "actions-runner-controller"
+    },
+    {
       "matchManagers": [
         "flux"
       ],
