@@ -11,6 +11,10 @@ spec:
   interval: 30m
   dependsOn:
     - name: arc-controller
+  # Retry if upgraded before the controller lands new CRDs.
+  upgrade:
+    remediation:
+      retries: 3
   chart:
     spec:
       chart: gha-runner-scale-set
