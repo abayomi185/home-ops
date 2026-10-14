@@ -13,7 +13,7 @@ spec:
         app: *deploymentName
     spec:
       containers:
-        - image: ghcr.io/open-webui/open-webui:main@sha256:e597ba2ca4425ff40f1f677930baae1278cc1e44cea399d5f588d5ce53611910
+        - image: ghcr.io/open-webui/open-webui:main@sha256:f179b139e120666eb9ca0fb4af0cfd12a8872f4e1b7bde25f53f099527a5f0aa
           imagePullPolicy: IfNotPresent
           name: open-webui
           ports:
