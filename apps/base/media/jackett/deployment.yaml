@@ -20,7 +20,7 @@ spec:
               value: "1001"
             - name: PGID
               value: "100"
-          image: lscr.io/linuxserver/jackett:latest@sha256:4fcf3cc22dd3ee9718ac70db6edc8f805e5a74b315caccf1f699e3bd2d9fd0b2
+          image: lscr.io/linuxserver/jackett:latest@sha256:94ee04d06870b7204533dd93da093004f70b1b33eb1cab2822b3f921fd7c4a44
           imagePullPolicy: IfNotPresent
           name: jackett
           ports:
