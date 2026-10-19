@@ -20,7 +20,7 @@ spec:
               value: "1001"
             - name: PGID
               value: "100"
-          image: ghcr.io/linuxserver/prowlarr:develop@sha256:e7a05286500b6e51084b0ba263dbbaf825db1ec7b731bf18aea30df84714e5f6
+          image: ghcr.io/linuxserver/prowlarr:develop@sha256:45c0a6350f4c78178ec2a7f608da3e7e696b6a5e374cbd925d132bf053b99c58
           imagePullPolicy: IfNotPresent
           name: prowlarr
           ports:
