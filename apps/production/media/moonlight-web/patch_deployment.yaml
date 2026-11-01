@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moonlight-web-deployment
+spec:
+  template:
+    spec:
+      # Advertise the node LAN IP so browser WebRTC traffic reaches the pod.
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+        - name: moonlight-web
+          env:
+            - name: WEBRTC_NAT_1TO1_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+          ports:
+            - name: http
+              containerPort: 8087
+              hostPort: 8087
+              protocol: TCP
