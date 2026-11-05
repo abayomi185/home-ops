@@ -46,6 +46,15 @@ home-ops/
 - NFS volumes for config (`${NFS_STORAGE_HOST}`, `${NFS_STORAGE_CONFIG_DATA_PATH}`)
 - NFS volumes for media (`/mnt/mopower/swarm-data`)
 
+### Ingress
+- `*.local.${DOMAIN}` → LAN/VPN only (`websecure` entrypoint, MetalLB `10.1.5.96`)
+- Public (VPS IP): non-`.local` host **and** opt in to the `public` entrypoint:
+  ```yaml
+  entryPoints:
+    - websecure
+    - public
+  ```
+
 ### Secret Management
 - Secrets MUST be SOPS-encrypted: `sops -e -i secret.sops.yaml`
 - Pattern: `*.sops.yaml` or `*.enc.yaml`
