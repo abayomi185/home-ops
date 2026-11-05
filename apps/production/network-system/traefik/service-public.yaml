@@ -1,0 +1,26 @@
+# Public ingress on the VPS IP. Only routes that list the `public`
+# entrypoint are reachable here; *.local routes stay LAN/VPN-only.
+apiVersion: v1
+kind: Service
+metadata:
+  name: traefik-public
+  labels:
+    app.kubernetes.io/instance: traefik
+    app.kubernetes.io/name: traefik
+spec:
+  selector:
+    app.kubernetes.io/instance: traefik
+    app.kubernetes.io/name: traefik
+  type: NodePort
+  externalTrafficPolicy: Local
+  externalIPs:
+    - ${VPS_PUBLIC_IP}
+  ports:
+    - port: 80
+      name: web
+      targetPort: web
+      protocol: TCP
+    - port: 443
+      name: public
+      targetPort: 8444
+      protocol: TCP

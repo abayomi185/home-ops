@@ -5,6 +5,7 @@ metadata:
 spec:
   entryPoints:
     - websecure
+    - public
   routes:
     - match: Host(`auth.local.${DOMAIN}`) || Host(`auth.${DOMAIN}`)
       kind: Rule

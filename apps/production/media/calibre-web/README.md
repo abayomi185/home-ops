@@ -15,4 +15,4 @@ On `${NFS_STORAGE_HOST_FAST}`, group `100`, mode `2770`:
 
 ## Kobo sync
 
-Public at `https://calibre.${DOMAIN}/kobo/<token>` (only `/kobo/` exposed). Set as `api_endpoint` in `.kobo/Kobo/Kobo eReader.conf`.
+LAN/VPN only: `https://calibre.local.${DOMAIN}/kobo/<token>`. Set as `api_endpoint` in `.kobo/Kobo/Kobo eReader.conf`.

@@ -5,6 +5,7 @@ metadata:
 spec:
   entryPoints:
     - websecure
+    - public
   routes:
     - match: Host(`chat.local.${DOMAIN}`)
       kind: Rule
