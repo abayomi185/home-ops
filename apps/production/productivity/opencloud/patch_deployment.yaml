@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: opencloud-deployment
+spec:
+  template:
+    spec:
+      volumes:
+        - name: config-data
+          nfs:
+            server: ${NFS_STORAGE_HOST_FAST}
+            path: ${NFS_STORAGE_CONFIG_DATA_PATH}
+      initContainers:
+        - name: set-permissions
+          image: busybox:1.38@sha256:fd7dc98638c8e305f4dc34e979f1c0fdfdcaeb0fbf8fcff77ae834b6da3d7e6e
+          command: ["sh", "-c", "mkdir -p /cfg/opencloud/config /cfg/opencloud/data && chown 1001:100 /cfg/opencloud /cfg/opencloud/config /cfg/opencloud/data"]
+          volumeMounts:
+            - name: config-data
+              mountPath: /cfg
