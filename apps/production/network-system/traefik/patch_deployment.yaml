@@ -19,6 +19,8 @@ spec:
             - "--entryPoints.websecure.address=:8443/tcp"
             # Default 60s cuts off slow uploads
             - "--entryPoints.websecure.transport.respondingTimeouts.readTimeout=600s"
+            - "--entryPoints.public.address=:8444/tcp"
+            - "--entryPoints.public.transport.respondingTimeouts.readTimeout=600s"
             - "--entryPoints.traefik.address=:9000/tcp"
             - "--api=true"
             - "--api.dashboard=true"
@@ -37,3 +39,6 @@ spec:
             - "--entrypoints.websecure.http.tls.domains[0].sans=*.${DOMAIN}"
             - "--entrypoints.websecure.http.tls.domains[1].main=local.${DOMAIN}"
             - "--entrypoints.websecure.http.tls.domains[1].sans=*.local.${DOMAIN}"
+            # Public entrypoint (VPS IP) only gets the public wildcard
+            - "--entrypoints.public.http.tls.domains[0].main=${DOMAIN}"
+            - "--entrypoints.public.http.tls.domains[0].sans=*.${DOMAIN}"
