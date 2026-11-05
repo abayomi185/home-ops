@@ -11,10 +11,5 @@ spec:
       services:
         - name: immich-deployment-server
           port: 2283
-    - match: Host(`immich.${DOMAIN}`)
-      kind: Rule
-      services:
-        - name: immich-deployment-server
-          port: 2283
   tls:
     certResolver: letsencrypt
