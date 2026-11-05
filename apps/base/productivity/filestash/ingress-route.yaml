@@ -5,7 +5,13 @@ metadata:
 spec:
   entryPoints:
     - websecure
+    - public
   routes:
+    - match: Host(`files.local.${DOMAIN}`)
+      kind: Rule
+      services:
+        - name: filestash-service
+          port: 8334
     - match: Host(`files.${DOMAIN}`)
       kind: Rule
       services:
