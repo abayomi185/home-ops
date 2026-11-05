@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: filestash-deployment
+spec:
+  template:
+    spec:
+      volumes:
+        - name: config-data
+          nfs:
+            server: ${NFS_STORAGE_HOST_FAST}
+            path: ${NFS_STORAGE_CONFIG_DATA_PATH}
+        # Existing Nextcloud share, mounted directly so it outlives Nextcloud
+        - name: share-data
+          nfs:
+            server: ${NFS_STORAGE_HOST_FAST}
+            path: ${NFS_STORAGE_MAIN_DATA_PATH}/nextcloud/nextcloud-shared-storage-pvc
+      initContainers:
+        # Image runs as filestash (1000:1000)
+        - name: set-permissions
+          image: busybox:1.38@sha256:fd7dc98638c8e305f4dc34e979f1c0fdfdcaeb0fbf8fcff77ae834b6da3d7e6e
+          command: ["sh", "-c", "mkdir -p /cfg/filestash/state && chown -R 1000:1000 /cfg/filestash"]
+          volumeMounts:
+            - name: config-data
+              mountPath: /cfg

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: filestash-service
+spec:
+  selector:
+    app: filestash-deployment
+  ports:
+    - name: http
+      port: 8334
+      targetPort: 8334
+      protocol: TCP
