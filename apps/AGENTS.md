@@ -13,7 +13,7 @@ apps/
 ├── kustomization.yaml       # Entry point → references production/
 ├── base/                    # Shared configs (no env values)
 │   ├── media/               # Sonarr, Radarr, Jellyfin, etc.
-│   ├── productivity/        # Nextcloud, Open-WebUI
+│   ├── productivity/        # Open-WebUI, Authelia
 │   ├── maker/               # Bambuddy, printer tooling
 │   ├── network-system/      # Traefik, MetalLB
 │   ├── kube-system/         # CSI-driver, Intel plugin, NFD
