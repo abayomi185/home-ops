@@ -4,6 +4,7 @@
     "config:recommended"
   ],
   "dependencyDashboard": true,
+  "automergeStrategy": "squash",
   "ignorePaths": [
     "clusters/**/gotk-components.yaml",
     "clusters/**/gotk-sync.yaml"
