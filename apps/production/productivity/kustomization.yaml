@@ -4,7 +4,7 @@ resources:
   - ./namespace.yaml
   # Flux Kustomizations
   - ./nextcloud/ks.yaml
-  - ./filestash/ks.yaml
+  - ./filebrowser/ks.yaml
   - ./open-webui/ks.yaml
   - ./open-webui-public/ks.yaml
   - ./authelia/ks.yaml

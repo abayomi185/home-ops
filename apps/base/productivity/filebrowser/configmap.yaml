@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: filebrowser-config
+data:
+  config.yaml: |
+    server:
+      sources:
+        - path: /data
+          name: files
+          config:
+            readOnly: true
+            defaultEnabled: true
+            defaultPermissions:
+              view: true
+              download: true
+    http:
+      port: 80
+      externalUrl: https://files.${DOMAIN}
+      trustProxyHeaders: true
+    auth:
+      methods:
+        password:
+          enabled: false
+        oidc:
+          enabled: true
+          clientId: filebrowser
+          issuerUrl: https://auth.${DOMAIN}
+          scopes: openid email profile groups
+          adminGroup: admins
+          # Only admins may log in; share links stay public
+          userGroups:
+            - admins
