@@ -6,6 +6,7 @@ resources:
   - ./pvc.yaml
   - ./secret.enc.yaml
   - ../../../base/media/immich
+  - ./public-proxy.yaml
 patches:
   - path: ./patch_helm-release.yaml
     target:
