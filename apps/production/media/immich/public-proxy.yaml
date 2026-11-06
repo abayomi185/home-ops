@@ -1,0 +1,66 @@
+# Serves only Immich shared links publicly; Immich itself stays LAN/VPN-only.
+# https://github.com/alangrainger/immich-public-proxy
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &name immich-public-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: *name
+  template:
+    metadata:
+      labels:
+        app: *name
+    spec:
+      containers:
+        - name: *name
+          image: alangrainger/immich-public-proxy:4.1.2@sha256:d6480d1e6beb3da661cb895e1b368340df48904ecbfe53ece2d5da343e78b857
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: IMMICH_URL
+              value: http://immich-deployment-server:2283
+            - name: PUBLIC_BASE_URL
+              value: https://photos.${DOMAIN}
+          ports:
+            - containerPort: 3000
+              name: http
+          livenessProbe:
+            httpGet:
+              path: /share/healthcheck
+              port: http
+          securityContext:
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: immich-public-proxy
+spec:
+  selector:
+    app: immich-public-proxy
+  ports:
+    - name: http
+      port: 3000
+      targetPort: http
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: immich-public-proxy
+spec:
+  entryPoints:
+    - websecure
+    - public
+  routes:
+    - match: Host(`photos.${DOMAIN}`)
+      kind: Rule
+      services:
+        - name: immich-public-proxy
+          port: 3000
+  tls:
+    certResolver: letsencrypt
