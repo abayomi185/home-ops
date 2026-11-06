@@ -116,6 +116,26 @@ data:
             access_token_signed_response_alg: none
             userinfo_signed_response_alg: none
             token_endpoint_auth_method: client_secret_post
+          - client_id: filebrowser
+            client_name: FileBrowser
+            client_secret: '{{ secret "/secrets/filebrowser_oidc_client_secret_digest" }}'
+            public: false
+            authorization_policy: two_factor
+            redirect_uris:
+              - https://files.yomitosh.media/api/auth/oidc/callback
+              - https://files.local.yomitosh.media/api/auth/oidc/callback
+            scopes:
+              - openid
+              - profile
+              - email
+              - groups
+            response_types:
+              - code
+            grant_types:
+              - authorization_code
+            access_token_signed_response_alg: none
+            userinfo_signed_response_alg: none
+            token_endpoint_auth_method: client_secret_basic
           - client_id: open-webui-public
             client_name: Open WebUI Public
             client_secret: '{{ secret "/secrets/open_webui_public_oidc_client_secret_digest" }}'
