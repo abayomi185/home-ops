@@ -42,10 +42,6 @@ data:
             - 100.64.0.0/10
             - 10.0.1.0/24
           policy: bypass
-        - domain: immich.yomitosh.media
-          subject:
-            - group:admins
-          policy: two_factor
     session:
       name: authelia_session
       expiration: 5400
@@ -85,8 +81,6 @@ data:
             require_pkce: false
             pkce_challenge_method: ''
             redirect_uris:
-              - https://immich.yomitosh.media/auth/login
-              - https://immich.yomitosh.media/user-settings
               - https://immich.local.yomitosh.media/auth/login
               - https://immich.local.yomitosh.media/user-settings
               - app.immich:///oauth-callback
