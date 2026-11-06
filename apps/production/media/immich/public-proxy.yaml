@@ -23,6 +23,9 @@ spec:
               value: http://immich-deployment-server:2283
             - name: PUBLIC_BASE_URL
               value: https://photos.${DOMAIN}
+            # Show download buttons when the Immich share allows downloads
+            - name: CONFIG
+              value: '{"ipp":{"allowDownload":1}}'
           ports:
             - containerPort: 3000
               name: http
