@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &deploymentName filebrowser-deployment
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: *deploymentName
+  template:
+    metadata:
+      labels:
+        app: *deploymentName
+    spec:
+      containers:
+        - image: gtstef/filebrowser:2.0.2-stable@sha256:de2b4c4d18485ea202ab2cdada5bd25d8f0b8ed071712c8216a67194c31285ae
+          imagePullPolicy: IfNotPresent
+          name: filebrowser
+          env:
+            - name: TZ
+              value: Europe/London
+            - name: FILEBROWSER_CONFIG
+              value: /config/config.yaml
+            - name: FILEBROWSER_DATABASE_PATH
+              value: /home/filebrowser/data/database.sqlite
+            - name: FILEBROWSER_OIDC_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: filebrowser-secrets
+                  key: oidc_client_secret
+          ports:
+            - containerPort: 80
+              name: http
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /config
+              name: config
+              readOnly: true
+            - mountPath: /home/filebrowser/data
+              name: config-data
+              subPath: filebrowser/data
+            - mountPath: /data
+              name: share-data
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: filebrowser-config
+      hostname: filebrowser
+      # config-data and share-data volumes are defined in the production patch
