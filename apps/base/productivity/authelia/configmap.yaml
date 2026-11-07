@@ -20,6 +20,9 @@ data:
     webauthn:
       enable_passkey_login: true
       experimental_enable_passkey_uv_two_factors: true
+      # Safari/iCloud omits credProps on registration, so passkeys get stored as
+      # non-discoverable and passkey login rejects them. Accept and upgrade them.
+      experimental_enable_passkey_upgrade: true
       display_name: Yomitosh Auth
       attestation_conveyance_preference: indirect
       selection_criteria:
