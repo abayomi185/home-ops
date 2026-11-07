@@ -16,10 +16,10 @@ spec:
             server: ${NFS_STORAGE_HOST_FAST}
             path: ${NFS_STORAGE_MAIN_DATA_PATH}/nextcloud/nextcloud-shared-storage-pvc
       initContainers:
-        # Image runs as filebrowser (1000:1000)
+        # Container runs as 1001:100
         - name: set-permissions
           image: busybox:1.38@sha256:fd7dc98638c8e305f4dc34e979f1c0fdfdcaeb0fbf8fcff77ae834b6da3d7e6e
-          command: ["sh", "-c", "mkdir -p /cfg/filebrowser/data && chown -R 1000:1000 /cfg/filebrowser /share"]
+          command: ["sh", "-c", "mkdir -p /cfg/filebrowser/data && chown -R 1001:100 /cfg/filebrowser /share"]
           volumeMounts:
             - name: config-data
               mountPath: /cfg
