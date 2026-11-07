@@ -9,11 +9,13 @@ data:
         - path: /data
           name: files
           config:
-            readOnly: true
             defaultEnabled: true
             defaultPermissions:
               view: true
               download: true
+              create: true
+              modify: true
+              delete: true
     http:
       port: 80
       externalUrl: https://files.${DOMAIN}
