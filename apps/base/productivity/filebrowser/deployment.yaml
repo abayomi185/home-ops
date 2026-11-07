@@ -43,7 +43,6 @@ spec:
               subPath: filebrowser/data
             - mountPath: /data
               name: share-data
-              readOnly: true
       volumes:
         - name: config
           configMap:

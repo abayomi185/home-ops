@@ -19,7 +19,10 @@ spec:
         # Image runs as filebrowser (1000:1000)
         - name: set-permissions
           image: busybox:1.38@sha256:fd7dc98638c8e305f4dc34e979f1c0fdfdcaeb0fbf8fcff77ae834b6da3d7e6e
-          command: ["sh", "-c", "mkdir -p /cfg/filebrowser/data && chown -R 1000:1000 /cfg/filebrowser"]
+          command: ["sh", "-c", "mkdir -p /cfg/filebrowser/data && chown -R 1000:1000 /cfg/filebrowser /share"]
           volumeMounts:
             - name: config-data
               mountPath: /cfg
+            # Own the share so uploads work; also fixes files copied in by hand
+            - name: share-data
+              mountPath: /share
