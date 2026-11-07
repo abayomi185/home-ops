@@ -18,6 +18,10 @@ spec:
         - image: gtstef/filebrowser:2.0.2-stable@sha256:de2b4c4d18485ea202ab2cdada5bd25d8f0b8ed071712c8216a67194c31285ae
           imagePullPolicy: IfNotPresent
           name: filebrowser
+          # Repo convention (image default is 1000:1000)
+          securityContext:
+            runAsUser: 1001
+            runAsGroup: 100
           env:
             - name: TZ
               value: Europe/London
@@ -43,9 +47,14 @@ spec:
               subPath: filebrowser/data
             - mountPath: /data
               name: share-data
+            # Image tmp dir is owned by 1000
+            - mountPath: /home/filebrowser/tmp
+              name: tmp
       volumes:
         - name: config
           configMap:
             name: filebrowser-config
+        - name: tmp
+          emptyDir: {}
       hostname: filebrowser
       # config-data and share-data volumes are defined in the production patch
