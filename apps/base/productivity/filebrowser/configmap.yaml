@@ -31,3 +31,6 @@ data:
           # Only admins may log in; share links stay public
           userGroups:
             - admins
+    frontend:
+      # Bar shows share size vs whole disk, not pool usage
+      disableUsedPercentage: true
