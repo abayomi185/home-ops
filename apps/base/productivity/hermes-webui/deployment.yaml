@@ -35,7 +35,7 @@ spec:
               name: agent-source
       containers:
         - name: hermes-webui
-          image: ghcr.io/nesquena/hermes-webui:0.52.555@sha256:d0bbb1c5371b1f4b0a28e4cffa5f403780eb81601b66a6d6843f6fc338f08523
+          image: ghcr.io/nesquena/hermes-webui:0.52.651@sha256:2c82abb0b941f1609a720330eeb9fdfda49bef27201d49c23941a954e616472e
           imagePullPolicy: IfNotPresent
           env:
             - name: PUID
