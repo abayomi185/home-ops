@@ -15,7 +15,7 @@ spec:
         app: *deploymentName
     spec:
       containers:
-        - image: machines/filestash:latest@sha256:0e310316f71e6107a4c8777182003edfcc757ee5b8909d8db31365c050321951
+        - image: machines/filestash:latest@sha256:8335b641238350f603585d17b1922adcdc0fd8e73da18fb4f3d59f98d32294c0
           imagePullPolicy: IfNotPresent
           name: filestash
           env:
