@@ -36,3 +36,9 @@ data:
     frontend:
       # Bar shows share size vs whole disk, not pool usage
       disableUsedPercentage: true
+    integrations:
+      media:
+        convert:
+          imagePreview:
+            # HEIC/HEIF previews via ffmpeg (off by default)
+            heic: true
