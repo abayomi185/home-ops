@@ -43,7 +43,7 @@ spec:
               value: "true"
             - name: BAMBUDDY_OIDC_GROUP_MAPPING
               value: '{"admins": "Administrators"}'
-          image: ghcr.io/abayomi185/bambuddy:emmc-1626170@sha256:14e25d9c830908a5c1f7d74c42b8595f8ece11dab559b4934344546095d7a6e9 # TEMP: fork testing maziggy/bambuddy#2762
+          image: ghcr.io/maziggy/bambuddy:1.3.0@sha256:f69650347010b279c85373fa52f0c9aab3982b5f10704fabbd76d7e46158eef5
           imagePullPolicy: IfNotPresent
           name: bambubuddy
           ports:
