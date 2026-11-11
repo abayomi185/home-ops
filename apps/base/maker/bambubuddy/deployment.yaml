@@ -26,6 +26,23 @@ spec:
               value: "100"
             - name: PORT
               value: "8000"
+            - name: BAMBUDDY_OIDC_NAME
+              value: Authelia
+            - name: BAMBUDDY_OIDC_ISSUER_URL
+              value: https://auth.${DOMAIN}
+            - name: BAMBUDDY_OIDC_CLIENT_ID
+              value: bambubuddy
+            - name: BAMBUDDY_OIDC_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: bambubuddy-secrets
+                  key: oidc_client_secret
+            - name: BAMBUDDY_OIDC_SCOPES
+              value: openid email profile groups
+            - name: BAMBUDDY_OIDC_AUTO_LINK_EXISTING
+              value: "true"
+            - name: BAMBUDDY_OIDC_GROUP_MAPPING
+              value: '{"admins": "Administrators"}'
           image: ghcr.io/maziggy/bambuddy:1.3.0@sha256:f69650347010b279c85373fa52f0c9aab3982b5f10704fabbd76d7e46158eef5
           imagePullPolicy: IfNotPresent
           name: bambubuddy

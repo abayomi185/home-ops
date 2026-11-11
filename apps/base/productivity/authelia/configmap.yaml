@@ -143,6 +143,28 @@ data:
             access_token_signed_response_alg: none
             userinfo_signed_response_alg: none
             token_endpoint_auth_method: client_secret_basic
+          - client_id: bambubuddy
+            client_name: Bambubuddy
+            client_secret: '{{ secret "/secrets/bambubuddy_oidc_client_secret_digest" }}'
+            public: false
+            authorization_policy: two_factor
+            pre_configured_consent_duration: 1y
+            require_pkce: true
+            pkce_challenge_method: S256
+            redirect_uris:
+              - https://bambubuddy.local.yomitosh.media/api/v1/auth/oidc/callback
+            scopes:
+              - openid
+              - profile
+              - email
+              - groups
+            response_types:
+              - code
+            grant_types:
+              - authorization_code
+            access_token_signed_response_alg: none
+            userinfo_signed_response_alg: none
+            token_endpoint_auth_method: client_secret_post
   users_database.yml: |
     ---
     users:
