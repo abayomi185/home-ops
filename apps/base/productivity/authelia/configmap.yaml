@@ -75,6 +75,15 @@ data:
             algorithm: RS256
             use: sig
             key: {{ secret "/secrets/oidc_issuer_private_key" | mindent 10 "|" | msquote }}
+        # Put user claims in the ID token for clients that ignore userinfo
+        claims_policies:
+          id_token_claims:
+            id_token:
+              - email
+              - email_verified
+              - preferred_username
+              - name
+              - groups
         clients:
           - client_id: immich
             client_name: Immich
@@ -145,6 +154,7 @@ data:
             token_endpoint_auth_method: client_secret_basic
           - client_id: bambubuddy
             client_name: Bambubuddy
+            claims_policy: id_token_claims
             client_secret: '{{ secret "/secrets/bambubuddy_oidc_client_secret_digest" }}'
             public: false
             authorization_policy: two_factor
