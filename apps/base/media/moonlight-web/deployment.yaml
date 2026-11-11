@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moonlight-web-deployment
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: moonlight-web-deployment
+  template:
+    metadata:
+      labels:
+        app: moonlight-web-deployment
+    spec:
+      securityContext:
+        runAsUser: 1001
+        runAsGroup: 100
+        runAsNonRoot: true
+      containers:
+        - name: moonlight-web
+          image: mrcreativ3001/moonlight-web-stream:v2.10.0@sha256:4ee561ec4043526e93b0b3dba4926031c86ee3c9dab0333475a6b3c7117c701a
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: TZ
+              value: Europe/London
+            - name: BIND_ADDRESS
+              value: "0.0.0.0:8087"
+            - name: WEBRTC_PORT_RANGE
+              value: "40000:40010"
+          ports:
+            - name: http
+              containerPort: 8087
+              protocol: TCP
+          startupProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 5
+            failureThreshold: 60
+          readinessProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 20
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              memory: 1Gi
+          volumeMounts:
+            - name: config-volume
+              mountPath: /moonlight-web/server
+              subPath: moonlight-web/server
+      volumes:
+        - name: config-volume
+          nfs:
+            server: ${NFS_STORAGE_HOST_FAST}
+            path: ${NFS_STORAGE_CONFIG_DATA_PATH}
