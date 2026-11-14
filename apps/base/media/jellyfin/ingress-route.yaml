@@ -5,8 +5,14 @@ metadata:
 spec:
   entryPoints:
     - websecure
+    - public
   routes:
     - match: Host(`jellyfin.local.${DOMAIN}`)
+      kind: Rule
+      services:
+        - name: jellyfin-service
+          port: 8096
+    - match: Host(`jellyfin.${DOMAIN}`)
       kind: Rule
       services:
         - name: jellyfin-service
