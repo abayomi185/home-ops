@@ -4,6 +4,8 @@ metadata:
   name: &deploymentName bazarr-deployment
 spec:
   replicas: 1
+  strategy:
+    type: Recreate # SQLite on NFS: never run two pods on the same DB
   selector:
     matchLabels:
       app: *deploymentName
