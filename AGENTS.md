@@ -54,6 +54,8 @@ home-ops/
     - websecure
     - public
   ```
+- Wildcard DNS `*.${DOMAIN}` → VPS, so no per-app DNS record needed
+- Currently public: `auth`, `chat`, `files`, `jellyfin`, `photos`
 
 ### Secret Management
 - Secrets MUST be SOPS-encrypted: `sops -e -i secret.sops.yaml`
