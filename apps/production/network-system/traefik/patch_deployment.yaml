@@ -42,3 +42,13 @@ spec:
             # Public entrypoint (VPS IP) only gets the public wildcard
             - "--entrypoints.public.http.tls.domains[0].main=${DOMAIN}"
             - "--entrypoints.public.http.tls.domains[0].sans=*.${DOMAIN}"
+            # Access logs feed CrowdSec; plugin is the CrowdSec bouncer
+            - "--accesslog=true"
+            - "--experimental.plugins.crowdsec-bouncer.modulename=github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
+            - "--experimental.plugins.crowdsec-bouncer.version=v1.8.1"
+          volumeMounts:
+            - mountPath: /plugins-storage
+              name: plugins-storage
+      volumes:
+        - name: plugins-storage
+          emptyDir: {}

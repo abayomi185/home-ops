@@ -8,3 +8,4 @@ resources:
   # Config depends on CRDs being installed
   - ./metallb-config/ks.yaml
   - ./traefik/ks.yaml
+  - ./crowdsec/ks.yaml
