@@ -41,6 +41,9 @@ data:
           value: "crowdsecurity/traefik LePresidente/jellyfin"
         - name: PARSERS
           value: "crowdsecurity/whitelists"
+        # Never ban Cloudflare edges
+        - name: POSTOVERFLOWS
+          value: "crowdsecurity/cdn-whitelist"
       resources:
         requests:
           cpu: 50m
