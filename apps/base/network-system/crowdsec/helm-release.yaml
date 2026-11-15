@@ -14,4 +14,3 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: crowdsec
-        namespace: flux-system
