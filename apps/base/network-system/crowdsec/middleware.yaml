@@ -1,0 +1,20 @@
+# Opt in per route:
+#   middlewares:
+#     - name: crowdsec
+#       namespace: network-system
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: crowdsec
+  namespace: network-system
+spec:
+  plugin:
+    crowdsec-bouncer:
+      enabled: true
+      crowdsecMode: stream
+      crowdsecLapiScheme: http
+      crowdsecLapiHost: crowdsec-service.network-system.svc.cluster.local:8080
+      crowdsecLapiKey: urn:k8s:secret:crowdsec-bouncer-key:key
+      # Fail open: a LAPI outage must not take public apps down
+      updateMaxFailure: -1
+      streamStartupBlock: false
