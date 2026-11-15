@@ -56,6 +56,7 @@ home-ops/
   ```
 - Wildcard DNS `*.${DOMAIN}` → VPS, so no per-app DNS record needed
 - Currently public: `auth`, `chat`, `files`, `jellyfin`, `photos`
+- CrowdSec: opt a route in with middleware `crowdsec` (namespace `network-system`). Traefik access logs are parsed already; for app-level detection add a log acquisition + hub collection in `apps/production/network-system/crowdsec/configmap.yaml`
 
 ### Secret Management
 - Secrets MUST be SOPS-encrypted: `sops -e -i secret.sops.yaml`
