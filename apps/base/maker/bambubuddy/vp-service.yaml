@@ -1,0 +1,28 @@
+# Exposes virtual printer ports on a LAN IP so Bambu Studio (other VLAN) can reach them.
+# Set the VP's remote interface IP in Bambuddy to this address; add printer in slicer by IP.
+apiVersion: v1
+kind: Service
+metadata:
+  name: bambubuddy-vp-service
+  annotations:
+    metallb.io/loadBalancerIPs: 10.1.5.97
+spec:
+  type: LoadBalancer
+  selector:
+    app: bambubuddy-deployment
+  ports:
+    - { name: ftps, port: 990, protocol: TCP }
+    - { name: bind, port: 3000, protocol: TCP }
+    - { name: bind-tls, port: 3002, protocol: TCP }
+    - { name: mqtt, port: 8883, protocol: TCP }
+    # FTP passive ports: 10 per VP, VP id 1 -> 50000-50009
+    - { name: ftp-pasv-00, port: 50000, protocol: TCP }
+    - { name: ftp-pasv-01, port: 50001, protocol: TCP }
+    - { name: ftp-pasv-02, port: 50002, protocol: TCP }
+    - { name: ftp-pasv-03, port: 50003, protocol: TCP }
+    - { name: ftp-pasv-04, port: 50004, protocol: TCP }
+    - { name: ftp-pasv-05, port: 50005, protocol: TCP }
+    - { name: ftp-pasv-06, port: 50006, protocol: TCP }
+    - { name: ftp-pasv-07, port: 50007, protocol: TCP }
+    - { name: ftp-pasv-08, port: 50008, protocol: TCP }
+    - { name: ftp-pasv-09, port: 50009, protocol: TCP }
