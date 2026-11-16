@@ -1,0 +1,18 @@
+# knode6 shares its NVIDIA GPU through this RuntimeClass, not a device plugin:
+# any pod with `runtimeClassName: gpu` gets the whole card, and pods share it.
+# The handler is the containerd runtime k3s registers when it finds
+# nvidia-container-runtime.cdi (nix-dotfiles hosts/knode/nvidia.nix). The
+# node's label and taint come from its k3s flags in nix-dotfiles.
+apiVersion: node.k8s.io/v1
+kind: RuntimeClass
+metadata:
+  name: gpu
+handler: nvidia-cdi
+scheduling:
+  nodeSelector:
+    yomitosh.media/gpu: nvidia
+  tolerations:
+    - key: dedicated
+      operator: Equal
+      value: gpu
+      effect: NoSchedule
