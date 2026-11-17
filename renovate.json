@@ -59,6 +59,14 @@
       "groupName": "actions-runner-controller"
     },
     {
+      "description": "Bambuddy tags vary in part count (1.2.5.7 -> 1.3.0); docker versioning skips those",
+      "matchDepNames": [
+        "ghcr.io/maziggy/bambuddy"
+      ],
+      "versioning": "loose",
+      "allowedVersions": "/^\\d+(\\.\\d+)+$/"
+    },
+    {
       "matchManagers": [
         "flux"
       ],
