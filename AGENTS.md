@@ -55,7 +55,7 @@ home-ops/
     - public
   ```
 - Wildcard DNS `*.${DOMAIN}` → VPS, so no per-app DNS record needed
-- Currently public: `auth`, `chat`, `files`, `jellyfin`, `photos`
+- Currently public: `auth`, `chat`, `files`, `jellyfin`, `obsidian-couchdb`, `photos`
 - CrowdSec: opt a route in with middleware `crowdsec` (namespace `network-system`). See `docs/crowdsec.md`
 
 ### Secret Management
