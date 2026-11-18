@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: couchdb-service
+  name: obsidian-couchdb-service
 spec:
   selector:
-    app: couchdb-deployment
+    app: obsidian-couchdb-deployment
   ports:
     - name: http
       port: 5984

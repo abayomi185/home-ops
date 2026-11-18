@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: &deploymentName couchdb-deployment
+  name: &deploymentName obsidian-couchdb-deployment
 spec:
   replicas: 1
   strategy:
@@ -28,17 +28,17 @@ spec:
             - name: COUCHDB_USER
               valueFrom:
                 secretKeyRef:
-                  name: couchdb-secrets
+                  name: obsidian-couchdb-secrets
                   key: admin_user
             - name: COUCHDB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: couchdb-secrets
+                  name: obsidian-couchdb-secrets
                   key: admin_password
             - name: COUCHDB_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: couchdb-secrets
+                  name: obsidian-couchdb-secrets
                   key: cookie_secret
           ports:
             - containerPort: 5984
@@ -47,7 +47,7 @@ spec:
           volumeMounts:
             - mountPath: /opt/couchdb/data
               name: config-volume
-              subPath: couchdb
+              subPath: obsidian-couchdb
             - mountPath: /opt/couchdb/etc/default.d/20-livesync.ini
               name: config
               subPath: livesync.ini
@@ -74,7 +74,7 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: couchdb-config
+            name: obsidian-couchdb-config
         - name: local-config
           emptyDir: {}
         - name: config-volume
