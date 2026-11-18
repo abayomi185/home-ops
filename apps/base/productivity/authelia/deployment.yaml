@@ -4,6 +4,8 @@ metadata:
   name: &deploymentName authelia-deployment
 spec:
   replicas: 1
+  strategy:
+    type: Recreate # SQLite on NFS: never run two pods against db.sqlite3
   selector:
     matchLabels:
       app: *deploymentName
@@ -17,6 +19,13 @@ spec:
         - name: authelia
           image: docker.io/authelia/authelia:4.39.28@sha256:bd97cff4fcbf715b5ff1f9ae286afbe6033afce385302520b0368122d43a6f54
           imagePullPolicy: IfNotPresent
+          securityContext:
+            runAsUser: 1001
+            runAsGroup: 100
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: [ALL]
           env:
             - name: TZ
               value: Europe/London
