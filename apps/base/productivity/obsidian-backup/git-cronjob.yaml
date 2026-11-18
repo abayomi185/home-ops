@@ -69,7 +69,14 @@ spec:
                 - mountPath: /ssh
                   name: ssh
                   readOnly: true
+                - mountPath: /etc/passwd
+                  name: passwd
+                  subPath: passwd
+                  readOnly: true
           volumes:
+            - name: passwd
+              configMap:
+                name: obsidian-backup-git-passwd
             - name: ssh
               secret:
                 secretName: obsidian-backup-secrets

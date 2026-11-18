@@ -1,0 +1,9 @@
+# OpenSSH exits if the running UID has no passwd entry; alpine/git has none for 1001
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: obsidian-backup-git-passwd
+data:
+  passwd: |
+    root:x:0:0:root:/root:/bin/sh
+    backup:x:1001:100:backup:/tmp:/sbin/nologin
