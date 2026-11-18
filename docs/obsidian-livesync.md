@@ -41,6 +41,39 @@ curl -u '<user>:<password>' https://obsidian-couchdb.<domain>/_up   # {"status":
 3. **Use the copied setup URI**, paste it, enter the passphrase, then choose the option for a device joining an existing vault (not the one that initialises the remote)
 4. Wait for the first full sync before editing anything
 
+## Backup to git
+
+App: `apps/{base,production}/productivity/obsidian-backup`.
+
+- **Bridge** ([livesync-bridge](https://github.com/vrtmrz/livesync-bridge), pinned commit): decrypts the CouchDB vault into plain files at `${NFS_STORAGE_CONFIG_DATA_PATH}/obsidian-backup/vault`
+- **CronJob** (hourly): commits that folder (git dir `obsidian-backup/vault.git`, kept outside the vault) and pushes to a private GitHub repo over SSH with a deploy key
+- The bridge syncs both ways, but nothing else writes to the mirror folder, so in practice data only flows out. Don't edit files there
+
+### One-off setup
+
+1. Create the NFS dirs on the storage host:
+   ```bash
+   d=/mnt/mofp0/kubernetes/home-cluster/configs/obsidian-backup
+   mkdir -p $d/vault $d/location_data && chgrp -R users $d && chmod 2770 $d $d/vault $d/location_data
+   ```
+2. Create the private repo set in `git_repo` and add the deploy key **with write access**. Get the public key with:
+   ```bash
+   sops -d --extract '["stringData"]["ssh_private_key"]' apps/production/productivity/obsidian-backup/secret.sops.yaml | ssh-keygen -y -f /dev/stdin
+   ```
+3. Once the first device has initialised the vault, fill the placeholders in `bridge_config.json`: `sops apps/production/productivity/obsidian-backup/secret.sops.yaml`
+   - `passphrase`: the E2EE passphrase
+   - `obfuscatePassphrase`: the same passphrase if path obfuscation is on, otherwise `""`
+   - `idDerivationKey`: plugin settings → **Show current recovery code**. Remove the field if the vault doesn't have one
+   - If the plugin uses Unicode NFC path identity, add `"pathNormalizationVersion": 1` to both peers
+4. If the bridge started before the vault was initialised, it logs `Remote database looks like empty` and doesn't watch. Restart it:
+   ```bash
+   kubectl -n productivity rollout restart deploy/obsidian-backup-bridge-deployment
+   ```
+
+### Restore
+
+Clone the repo and open it as a vault, or copy the files into an existing one and let LiveSync sync them.
+
 ## Troubleshooting
 
 - **Suddenly getting 403s from the public URL:** CrowdSec may have banned your IP:
