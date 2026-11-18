@@ -5,9 +5,18 @@ metadata:
 spec:
   entryPoints:
     - websecure
+    - public
   routes:
     - match: Host(`obsidian-couchdb.local.${DOMAIN}`)
       kind: Rule
+      services:
+        - name: obsidian-couchdb-service
+          port: 5984
+    - match: Host(`obsidian-couchdb.${DOMAIN}`)
+      kind: Rule
+      middlewares:
+        - name: crowdsec
+          namespace: network-system
       services:
         - name: obsidian-couchdb-service
           port: 5984
