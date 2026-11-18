@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: couchdb-config
+  name: obsidian-couchdb-config
 data:
   # Settings required by obsidian-livesync:
   # https://github.com/vrtmrz/obsidian-livesync/blob/main/docs/setup_own_server.md
