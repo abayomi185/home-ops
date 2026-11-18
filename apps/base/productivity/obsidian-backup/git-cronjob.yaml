@@ -1,0 +1,85 @@
+# Commits the mirrored vault and pushes it to a private GitHub repo.
+# Git dir sits next to the vault, so the bridge never sees .git.
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: obsidian-backup-git
+spec:
+  schedule: "0 * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        spec:
+          restartPolicy: Never
+          securityContext:
+            runAsUser: 1001
+            runAsGroup: 100
+            fsGroup: 100 # deploy key readable via group (0440)
+          containers:
+            - name: git
+              image: alpine/git:2.54.1@sha256:2306e2b05ee0ef99f5d25b0779f645b24ae9f91ba187107503592fcdfe78da3a
+              command: ["/bin/sh", "-c"]
+              args:
+                - |
+                  set -eu
+                  if [ ! -d "$GIT_DIR" ]; then
+                    git init -q -b main
+                    git remote add origin "$REPO"
+                  fi
+                  git add -A
+                  git commit -q -m "backup: $(date -u +%FT%TZ)" || echo "nothing to commit"
+                  git rev-parse -q --verify HEAD >/dev/null || exit 0 # empty vault
+                  git push -q origin main
+              env:
+                - name: HOME
+                  value: /tmp
+                - name: GIT_DIR
+                  value: /data/vault.git
+                - name: GIT_WORK_TREE
+                  value: /data/vault
+                - name: REPO
+                  valueFrom:
+                    secretKeyRef:
+                      name: obsidian-backup-secrets
+                      key: git_repo
+                - name: GIT_SSH_COMMAND
+                  value: ssh -i /ssh/id_ed25519 -o IdentitiesOnly=yes -o UserKnownHostsFile=/ssh/known_hosts
+                - name: GIT_CONFIG_COUNT
+                  value: "3"
+                - name: GIT_CONFIG_KEY_0
+                  value: safe.directory
+                - name: GIT_CONFIG_VALUE_0
+                  value: "*"
+                - name: GIT_CONFIG_KEY_1
+                  value: user.name
+                - name: GIT_CONFIG_VALUE_1
+                  value: obsidian-backup
+                - name: GIT_CONFIG_KEY_2
+                  value: user.email
+                - name: GIT_CONFIG_VALUE_2
+                  value: obsidian-backup@localhost
+              volumeMounts:
+                - mountPath: /data
+                  name: config-volume
+                  subPath: obsidian-backup
+                - mountPath: /ssh
+                  name: ssh
+                  readOnly: true
+          volumes:
+            - name: ssh
+              secret:
+                secretName: obsidian-backup-secrets
+                defaultMode: 0440
+                items:
+                  - key: ssh_private_key
+                    path: id_ed25519
+                  - key: ssh_known_hosts
+                    path: known_hosts
+            - name: config-volume
+              nfs:
+                server: ${NFS_STORAGE_HOST_FAST}
+                path: ${NFS_STORAGE_CONFIG_DATA_PATH}

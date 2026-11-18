@@ -15,3 +15,4 @@ resources:
   - ./machine-learning/ks.yaml
   - ./home-assistant/ks.yaml
   - ./obsidian-couchdb/ks.yaml
+  - ./obsidian-backup/ks.yaml
