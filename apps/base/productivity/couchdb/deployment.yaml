@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &deploymentName couchdb-deployment
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate # single-node CouchDB: never run two pods against the same data dir
+  selector:
+    matchLabels:
+      app: *deploymentName
+  template:
+    metadata:
+      labels:
+        app: *deploymentName
+    spec:
+      containers:
+        - name: couchdb
+          image: couchdb:3.5.3@sha256:907eab5b7e55ab7cfd241d39b90b2a335ea40bef82acee5a37388c08bf201dda
+          imagePullPolicy: IfNotPresent
+          # Repo convention (image default is root -> couchdb:5984)
+          securityContext:
+            runAsUser: 1001
+            runAsGroup: 100
+          env:
+            - name: TZ
+              value: Europe/London
+            - name: COUCHDB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: couchdb-secrets
+                  key: admin_user
+            - name: COUCHDB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: couchdb-secrets
+                  key: admin_password
+            - name: COUCHDB_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: couchdb-secrets
+                  key: cookie_secret
+          ports:
+            - containerPort: 5984
+              name: http
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /opt/couchdb/data
+              name: config-volume
+              subPath: couchdb
+            - mountPath: /opt/couchdb/etc/default.d/20-livesync.ini
+              name: config
+              subPath: livesync.ini
+              readOnly: true
+            # Entrypoint writes admin creds to local.d/docker.ini; image dir is owned by 5984
+            - mountPath: /opt/couchdb/etc/local.d
+              name: local-config
+          readinessProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 30
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+      volumes:
+        - name: config
+          configMap:
+            name: couchdb-config
+        - name: local-config
+          emptyDir: {}
+        - name: config-volume
+          nfs:
+            server: ${NFS_STORAGE_HOST_FAST}
+            path: ${NFS_STORAGE_CONFIG_DATA_PATH}
