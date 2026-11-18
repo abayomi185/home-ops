@@ -1,0 +1,86 @@
+# livesync-bridge mirrors the LiveSync CouchDB vault to plain files on NFS.
+# No published image: run a pinned upstream commit on the official Deno image.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &deploymentName obsidian-backup-bridge-deployment
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: *deploymentName
+  template:
+    metadata:
+      labels:
+        app: *deploymentName
+    spec:
+      securityContext:
+        runAsUser: 1001
+        runAsGroup: 100
+      initContainers:
+        - name: fetch-source
+          image: alpine/git:2.54.1@sha256:2306e2b05ee0ef99f5d25b0779f645b24ae9f91ba187107503592fcdfe78da3a
+          env:
+            - name: BRIDGE_COMMIT
+              value: 1c252305bbddcacd200b8560d3bb786afe0906e9
+          command: ["/bin/sh", "-c"]
+          args:
+            - >-
+              git init -q /app/src &&
+              git -C /app/src fetch -q --depth 1 https://github.com/vrtmrz/livesync-bridge "$BRIDGE_COMMIT" &&
+              git -C /app/src checkout -q FETCH_HEAD
+          volumeMounts:
+            - mountPath: /app
+              name: app
+      containers:
+        - name: bridge
+          image: denoland/deno:2.9.7@sha256:fa335acdf6b72106eda2cb6a8cb5f4187e7630e357467489db4b2e7352d5e432
+          imagePullPolicy: IfNotPresent
+          workingDir: /app/src
+          command: ["/bin/sh", "-c"]
+          args: ["deno install --frozen && exec deno run -A main.ts"]
+          env:
+            - name: TZ
+              value: Europe/London
+            - name: DENO_DIR
+              value: /deno-dir
+            - name: LSB_CONFIG
+              value: /config/config.json
+          volumeMounts:
+            - mountPath: /app
+              name: app
+            - mountPath: /deno-dir
+              name: deno-dir
+            # Deno localStorage: bridge resume positions
+            - mountPath: /deno-dir/location_data
+              name: config-volume
+              subPath: obsidian-backup/location_data
+            - mountPath: /data/vault
+              name: config-volume
+              subPath: obsidian-backup/vault
+            - mountPath: /config
+              name: bridge-config
+              readOnly: true
+          resources:
+            requests:
+              cpu: 20m
+              memory: 128Mi
+            limits:
+              memory: 512Mi
+      volumes:
+        - name: app
+          emptyDir: {}
+        - name: deno-dir
+          emptyDir: {}
+        - name: bridge-config
+          secret:
+            secretName: obsidian-backup-secrets
+            items:
+              - key: bridge_config.json
+                path: config.json
+        - name: config-volume
+          nfs:
+            server: ${NFS_STORAGE_HOST_FAST}
+            path: ${NFS_STORAGE_CONFIG_DATA_PATH}
