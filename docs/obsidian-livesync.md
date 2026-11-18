@@ -46,7 +46,7 @@ curl -u '<user>:<password>' https://obsidian-couchdb.<domain>/_up   # {"status":
 App: `apps/{base,production}/productivity/obsidian-backup`.
 
 - **Bridge** ([livesync-bridge](https://github.com/vrtmrz/livesync-bridge), pinned commit): decrypts the CouchDB vault into plain files at `${NFS_STORAGE_CONFIG_DATA_PATH}/obsidian-backup/vault`
-- **CronJob** (every 4 hours): commits that folder (git dir `obsidian-backup/vault.git`, kept outside the vault) and pushes to a private GitHub repo over SSH with a deploy key
+- **CronJob** (daily, 19:00): commits that folder (git dir `obsidian-backup/vault.git`, kept outside the vault) and pushes to a private GitHub repo over SSH with a deploy key
 - The bridge syncs both ways, but nothing else writes to the mirror folder, so in practice data only flows out. Don't edit files there
 
 ### One-off setup
