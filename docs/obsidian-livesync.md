@@ -60,11 +60,8 @@ App: `apps/{base,production}/productivity/obsidian-backup`.
    ```bash
    sops -d --extract '["stringData"]["ssh_private_key"]' apps/production/productivity/obsidian-backup/secret.sops.yaml | ssh-keygen -y -f /dev/stdin
    ```
-3. Once the first device has initialised the vault, fill the placeholders in `bridge_config.json`: `sops apps/production/productivity/obsidian-backup/secret.sops.yaml`
-   - `passphrase`: the E2EE passphrase
-   - `obfuscatePassphrase`: the same passphrase if path obfuscation is on, otherwise `""`
-   - `idDerivationKey`: plugin settings → **Show current recovery code**. Remove the field if the vault doesn't have one
-   - If the plugin uses Unicode NFC path identity, add `"pathNormalizationVersion": 1` to both peers
+3. Once the first device has initialised the vault, replace both `REPLACE_E2EE_PASSPHRASE` placeholders in `bridge_config.json` with the E2EE passphrase: `sops apps/production/productivity/obsidian-backup/secret.sops.yaml`
+   - The config matches the current vault: path obfuscation on (so `obfuscatePassphrase` = passphrase), no ID key, legacy path identity. The vault's settings are in the `_local/obsydian_livesync_milestone` doc (`tweak_values`) if they change
 4. If the bridge started before the vault was initialised, it logs `Remote database looks like empty` and doesn't watch. Restart it:
    ```bash
    kubectl -n productivity rollout restart deploy/obsidian-backup-bridge-deployment
