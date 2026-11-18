@@ -5,7 +5,8 @@ kind: CronJob
 metadata:
   name: obsidian-backup-git
 spec:
-  schedule: "0 */4 * * *"
+  schedule: "0 19 * * *" # after the work day
+  timeZone: Europe/London
   concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 3
