@@ -27,14 +27,11 @@ spec:
               args:
                 - |
                   set -eu
-                  if [ ! -d "$GIT_DIR" ]; then
-                    git init -q -b main
-                    git remote add origin "$REPO"
-                  fi
+                  [ -d "$GIT_DIR" ] || git init -q -b main
                   git add -A
-                  git commit -q -m "backup: $(date -u +%FT%TZ)" || echo "nothing to commit"
+                  git diff --cached --quiet || git commit -q -m "backup: $(date -u +%FT%TZ)"
                   git rev-parse -q --verify HEAD >/dev/null || exit 0 # empty vault
-                  git push -q origin main
+                  git push -q "$REPO" main
               env:
                 - name: HOME
                   value: /tmp
