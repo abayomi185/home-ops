@@ -63,6 +63,31 @@ spec:
             - mountPath: /config
               name: bridge-config
               readOnly: true
+          # The bridge logs most failures and keeps running; it writes its own
+          # health to /tmp/lsb-health.json every 10s (ts, ok, restartWorthy).
+          startupProbe: # allows for `deno install` on each start
+            exec:
+              command: ["deno", "eval", "Deno.readTextFileSync('/tmp/lsb-health.json')"]
+            periodSeconds: 10
+            failureThreshold: 30
+          readinessProbe: # unready = not syncing (bad config/credentials, CouchDB down)
+            exec:
+              command:
+                - deno
+                - eval
+                - "const h = JSON.parse(Deno.readTextFileSync('/tmp/lsb-health.json')); if (Date.now() - h.ts > 60000 || !h.ok) Deno.exit(1)"
+            periodSeconds: 30
+            failureThreshold: 3
+            timeoutSeconds: 10
+          livenessProbe: # stale heartbeat = wedged event loop
+            exec:
+              command:
+                - deno
+                - eval
+                - "const h = JSON.parse(Deno.readTextFileSync('/tmp/lsb-health.json')); if (Date.now() - h.ts > 60000 || h.restartWorthy) Deno.exit(1)"
+            periodSeconds: 30
+            failureThreshold: 3
+            timeoutSeconds: 10
           resources:
             requests:
               cpu: 20m
