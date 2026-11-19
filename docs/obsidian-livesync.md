@@ -58,14 +58,19 @@ App: `apps/{base,production}/productivity/obsidian-backup`.
    ```
 2. Create the private repo set in `git_repo` and add the deploy key **with write access**. Get the public key with:
    ```bash
-   sops -d --extract '["stringData"]["ssh_private_key"]' apps/production/productivity/obsidian-backup/secret.sops.yaml | ssh-keygen -y -f /dev/stdin
+   k=$(mktemp) && sops -d --extract '["stringData"]["ssh_private_key"]' apps/production/productivity/obsidian-backup/secret.sops.yaml > "$k" && ssh-keygen -y -f "$k"; rm -f "$k"
    ```
-3. Once the first device has initialised the vault, replace both `REPLACE_E2EE_PASSPHRASE` placeholders in `bridge_config.json` with the E2EE passphrase: `sops apps/production/productivity/obsidian-backup/secret.sops.yaml`
+3. `bridge_config.json` in the secret holds the E2EE passphrase (also used as `obfuscatePassphrase`). If it changes, edit it with `sops apps/production/productivity/obsidian-backup/secret.sops.yaml`
    - The config matches the current vault: path obfuscation on (so `obfuscatePassphrase` = passphrase), no ID key, legacy path identity. The vault's settings are in the `_local/obsydian_livesync_milestone` doc (`tweak_values`) if they change
 4. If the bridge started before the vault was initialised, it logs `Remote database looks like empty` and doesn't watch. Restart it:
    ```bash
    kubectl -n productivity rollout restart deploy/obsidian-backup-bridge-deployment
    ```
+
+### Health
+
+- Bridge pod **not ready**: it isn't syncing (bad config or credentials, CouchDB unreachable). Check `kubectl -n productivity logs deploy/obsidian-backup-bridge-deployment`
+- Last backup: `kubectl -n productivity get jobs`; a failed commit or push leaves a failed Job
 
 ### Restore
 
