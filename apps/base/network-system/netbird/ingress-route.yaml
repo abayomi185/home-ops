@@ -1,0 +1,46 @@
+# netbird.${DOMAIN} is a DNS-only Cloudflare record: STUN is UDP and gRPC
+# streams don't survive the proxy.
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: netbird
+spec:
+  entryPoints:
+    - public
+  routes:
+    - match: Host(`netbird.${DOMAIN}`) && PathPrefix(`/management.ManagementService/`)
+      kind: Rule
+      middlewares: &crowdsec
+        - name: crowdsec
+          namespace: network-system
+      services:
+        - name: netbird
+          port: 8011
+          scheme: h2c
+    - match: Host(`netbird.${DOMAIN}`) && PathPrefix(`/signalexchange.SignalExchange/`)
+      kind: Rule
+      middlewares: *crowdsec
+      services:
+        - name: netbird
+          port: 8012
+          scheme: h2c
+    - match: Host(`netbird.${DOMAIN}`) && PathPrefix(`/api`)
+      kind: Rule
+      middlewares: *crowdsec
+      services:
+        - name: netbird
+          port: 8011
+    - match: Host(`netbird.${DOMAIN}`) && PathPrefix(`/relay`)
+      kind: Rule
+      middlewares: *crowdsec
+      services:
+        - name: netbird
+          port: 33080
+    - match: Host(`netbird.${DOMAIN}`)
+      kind: Rule
+      middlewares: *crowdsec
+      services:
+        - name: netbird
+          port: 8013
+  tls:
+    certResolver: letsencrypt
