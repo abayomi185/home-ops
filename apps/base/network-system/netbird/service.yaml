@@ -1,0 +1,33 @@
+# NetBird runs on the YHLD-VPSR1 host (nix-dotfiles hosts/yhld-vpsr1/netbird.nix),
+# not in the cluster. Traefik on the VPS reaches it at the node IP.
+apiVersion: v1
+kind: Service
+metadata:
+  name: netbird
+spec:
+  ports:
+    - name: management
+      port: 8011
+    - name: signal
+      port: 8012
+    - name: dashboard
+      port: 8013
+    - name: relay
+      port: 33080
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: netbird
+subsets:
+  - addresses:
+      - ip: 10.13.13.1
+    ports:
+      - name: management
+        port: 8011
+      - name: signal
+        port: 8012
+      - name: dashboard
+        port: 8013
+      - name: relay
+        port: 33080
