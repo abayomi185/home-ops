@@ -21,7 +21,7 @@ spec:
         runAsGroup: 100
       initContainers:
         - name: fetch-source
-          image: alpine/git:2.54.1@sha256:2306e2b05ee0ef99f5d25b0779f645b24ae9f91ba187107503592fcdfe78da3a
+          image: alpine/git:2.54.1@sha256:29cff25811f790b9f72fc266bf8009a5a911714c0e03c31c47339c50909d9aef
           env:
             - name: BRIDGE_COMMIT
               value: 1c252305bbddcacd200b8560d3bb786afe0906e9
