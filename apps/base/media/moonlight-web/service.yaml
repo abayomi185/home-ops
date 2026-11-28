@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: moonlight-web-service
+spec:
+  selector:
+    app: moonlight-web-deployment
+  ports:
+    - name: http
+      port: 8087
+      targetPort: http
+      protocol: TCP
