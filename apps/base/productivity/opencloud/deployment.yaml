@@ -1,0 +1,115 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &deploymentName opencloud-deployment
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: *deploymentName
+  template:
+    metadata:
+      labels:
+        app: *deploymentName
+    spec:
+      containers:
+        - image: opencloudeu/opencloud-rolling:9.0.0@sha256:bd57f039d0dd3df510fb25f178beefdf0b1f049097285feead607824460e6506
+          imagePullPolicy: IfNotPresent
+          name: opencloud
+          # init creates opencloud.yaml with random secrets on first run, fails harmlessly after
+          command: ["/bin/sh", "-c", "opencloud init || true; opencloud server"]
+          securityContext:
+            runAsUser: 1001
+            runAsGroup: 100
+          env:
+            - name: OC_URL
+              value: https://opencloud.local.${DOMAIN}
+            - name: OC_LOG_LEVEL
+              value: info
+            - name: PROXY_TLS
+              value: "false"
+            - name: OC_INSECURE
+              value: "false"
+            - name: IDM_CREATE_DEMO_USERS
+              value: "false"
+            # Plain files on disk (default, set explicitly). Files copied in outside OpenCloud are
+            # picked up by the startup scan only: inotify can't see changes made on the NAS
+            - name: STORAGE_USERS_DRIVER
+              value: posix
+            - name: STORAGE_USERS_POSIX_ROOT
+              value: /srv/opencloud
+            - name: PROXY_CSP_CONFIG_FILE_LOCATION
+              value: /etc/opencloud-extra/csp.yaml
+            # External IdP (Authelia), see authelia.com/integration/openid-connect/clients/opencloud
+            - name: OC_EXCLUDE_RUN_SERVICES
+              value: idp
+            - name: OC_OIDC_ISSUER
+              value: https://auth.${DOMAIN}
+            - name: PROXY_OIDC_ACCESS_TOKEN_VERIFY_METHOD
+              value: jwt
+            - name: PROXY_OIDC_REWRITE_WELLKNOWN
+              value: "true"
+            - name: PROXY_AUTOPROVISION_ACCOUNTS
+              value: "true"
+            - name: PROXY_USER_OIDC_CLAIM
+              value: preferred_username
+            - name: PROXY_AUTOPROVISION_CLAIM_USERNAME
+              value: preferred_username
+            - name: PROXY_AUTOPROVISION_CLAIM_EMAIL
+              value: email
+            - name: PROXY_AUTOPROVISION_CLAIM_DISPLAYNAME
+              value: name
+            - name: PROXY_AUTOPROVISION_CLAIM_GROUPS
+              value: groups
+            - name: PROXY_ROLE_ASSIGNMENT_DRIVER
+              value: oidc
+            - name: PROXY_ROLE_ASSIGNMENT_OIDC_CLAIM
+              value: groups
+            - name: GRAPH_ASSIGN_DEFAULT_USER_ROLE
+              value: "false"
+            - name: WEB_OIDC_CLIENT_ID
+              value: opencloud
+            - name: WEBFINGER_WEB_OIDC_CLIENT_ID
+              value: opencloud
+            - name: WEBFINGER_WEB_OIDC_CLIENT_SCOPES
+              value: openid profile email groups offline_access
+            - name: WEBFINGER_ANDROID_OIDC_CLIENT_ID
+              value: opencloud-android
+            - name: WEBFINGER_ANDROID_OIDC_CLIENT_SCOPES
+              value: openid profile email groups offline_access
+            - name: WEBFINGER_IOS_OIDC_CLIENT_ID
+              value: opencloud-ios
+            - name: WEBFINGER_IOS_OIDC_CLIENT_SCOPES
+              value: openid profile email groups offline_access
+            - name: WEBFINGER_DESKTOP_OIDC_CLIENT_ID
+              value: opencloud-desktop
+            - name: WEBFINGER_DESKTOP_OIDC_CLIENT_SCOPES
+              value: openid profile email groups offline_access
+          ports:
+            - containerPort: 9200
+              name: http
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /etc/opencloud
+              name: config-data
+              subPath: opencloud/config
+            - mountPath: /var/lib/opencloud
+              name: config-data
+              subPath: opencloud/data
+            - mountPath: /srv/opencloud
+              name: user-data
+              subPath: opencloud
+            - mountPath: /etc/opencloud-extra
+              name: opencloud-extra
+            # Merged over opencloud.yaml: maps Authelia groups to OpenCloud roles
+            - mountPath: /etc/opencloud/proxy.yaml
+              name: opencloud-extra
+              subPath: proxy.yaml
+      volumes:
+        - name: opencloud-extra
+          configMap:
+            name: opencloud-config
+      hostname: opencloud
+      # config-data and user-data volumes are defined in the production patch

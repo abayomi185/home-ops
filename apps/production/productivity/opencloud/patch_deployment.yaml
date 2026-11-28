@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: opencloud-deployment
+spec:
+  template:
+    spec:
+      volumes:
+        - name: config-data
+          nfs:
+            server: ${NFS_STORAGE_HOST_FAST}
+            path: ${NFS_STORAGE_CONFIG_DATA_PATH}
+        # Spaces as plain folders (posix driver). Needs xattrs, which NFS 4.2 provides
+        - name: user-data
+          nfs:
+            server: ${NFS_STORAGE_HOST_FAST}
+            path: ${NFS_STORAGE_MAIN_DATA_PATH}
+      initContainers:
+        - name: set-permissions
+          image: busybox:1.38@sha256:fd7dc98638c8e305f4dc34e979f1c0fdfdcaeb0fbf8fcff77ae834b6da3d7e6e
+          command: ["sh", "-c", "mkdir -p /cfg/opencloud/config /cfg/opencloud/data && chown 1001:100 /cfg/opencloud /cfg/opencloud/config /cfg/opencloud/data && mkdir -p /data/opencloud && chown 1001:100 /data/opencloud"]
+          volumeMounts:
+            - name: config-data
+              mountPath: /cfg
+            - name: user-data
+              mountPath: /data
+        # Excalidraw web app (local mode; live collaboration would also need an opencloudeu/yjs server)
+        - name: install-excalidraw
+          image: alpine:3.24.4@sha256:f59abe656b692d901e184be3445e084786602108599d2a51d229c0f5a48c71bf
+          securityContext:
+            runAsUser: 1001
+            runAsGroup: 100
+          env:
+            - name: VERSION
+              value: "1.1.0"
+            - name: SHA256
+              value: ecfe128a9b9a44a5b8cf39d82825de4341a9d89a72319efe1516f14c3f4763e7
+          command:
+            - sh
+            - -ec
+            - |
+              apps=/var/lib/opencloud/web/assets/apps
+              [ "$(cat $apps/excalidraw/.version 2>/dev/null)" = "$VERSION" ] && exit 0
+              wget -qO /tmp/e.zip https://github.com/opencloud-eu/web-extensions/releases/download/excalidraw-v$VERSION/excalidraw-$VERSION.zip
+              echo "$SHA256  /tmp/e.zip" | sha256sum -c -
+              mkdir -p $apps && rm -rf $apps/excalidraw
+              unzip -q /tmp/e.zip -d $apps
+              echo "$VERSION" > $apps/excalidraw/.version
+          volumeMounts:
+            - name: config-data
+              mountPath: /var/lib/opencloud
+              subPath: opencloud/data
