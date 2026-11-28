@@ -18,7 +18,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`esphome.local.${DOMAIN}`)
+    - match: Host(`esphome.home.local.${DOMAIN}`)
       kind: Rule
       middlewares:
         - name: home-assistant-lan
@@ -28,4 +28,4 @@ spec:
   tls:
     certResolver: letsencrypt
     domains:
-      - main: esphome.local.${DOMAIN}
+      - main: esphome.home.local.${DOMAIN}

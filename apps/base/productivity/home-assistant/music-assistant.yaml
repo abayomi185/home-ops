@@ -18,7 +18,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`music.local.${DOMAIN}`)
+    - match: Host(`music.home.local.${DOMAIN}`)
       kind: Rule
       middlewares:
         - name: home-assistant-lan
@@ -28,4 +28,4 @@ spec:
   tls:
     certResolver: letsencrypt
     domains:
-      - main: music.local.${DOMAIN}
+      - main: music.home.local.${DOMAIN}
