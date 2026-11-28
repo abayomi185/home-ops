@@ -18,7 +18,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`zigbee.local.${DOMAIN}`)
+    - match: Host(`zigbee.home.local.${DOMAIN}`)
       kind: Rule
       middlewares:
         - name: home-assistant-lan
@@ -28,4 +28,4 @@ spec:
   tls:
     certResolver: letsencrypt
     domains:
-      - main: zigbee.local.${DOMAIN}
+      - main: zigbee.home.local.${DOMAIN}
