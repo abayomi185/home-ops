@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: music-assistant
+spec:
+  type: ExternalName
+  externalName: home.internal.${DOMAIN}
+  ports:
+    - name: http
+      port: 8095
+      protocol: TCP
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: music-assistant
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`music.local.${DOMAIN}`)
+      kind: Rule
+      middlewares:
+        - name: home-assistant-lan
+      services:
+        - name: music-assistant
+          port: 8095
+  tls:
+    certResolver: letsencrypt
+    domains:
+      - main: music.local.${DOMAIN}

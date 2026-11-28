@@ -4,3 +4,7 @@ resources:
   - ./service.yaml
   - ./ingress-route.yaml
   - ./middleware.yaml
+  # Add-on UIs on the NixOS HA host, LAN-only like HA.
+  - ./music-assistant.yaml
+  - ./zigbee2mqtt.yaml
+  - ./esphome.yaml
