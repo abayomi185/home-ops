@@ -29,6 +29,8 @@ spec:
             - "--api.dashboard=true"
             - "--ping=true"
             - "--providers.kubernetescrd"
+            # Without cluster-wide secret access, watch only namespaces with routes.
+            - "--providers.kubernetescrd.namespaces=maker,media,network-system,productivity"
             - "--providers.kubernetescrd.allowCrossNamespace=true"
           env:
             - name: CF_DNS_API_TOKEN
